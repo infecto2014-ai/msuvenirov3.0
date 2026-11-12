@@ -34,6 +34,12 @@ if (shotDir) mkdirSync(shotDir, { recursive: true });
 const pages = [];
 for (const f of files.sort()) {
   const url = toUrl(f);
+  const raw = readFileSync(join(dist, f), 'utf8');
+  const refresh = raw.match(/http-equiv="refresh" content="[^"]*url=([^"]+)"/);
+  if (refresh) { // страница-переадресация: в браузере не открываем, чтобы не уйти по редиректу
+    pages.push({ file: f, url, redirectTo: refresh[1], title: (raw.match(/<title>([^<]*)/) ?? [])[1] ?? '', description: null, robots: (raw.match(/name="robots" content="([^"]+)"/) ?? [])[1] ?? null, canonical: (raw.match(/rel="canonical" href="([^"]+)"/) ?? [])[1] ?? null, lang: 'ru', h1: [], h2: [], h3count: 0, jsonld: [], breadcrumbs: [], internal: [refresh[1]], external: [], special: [], images: 0, imagesNoAlt: 0, imagesEmptyAlt: 0, words: 0, mainChars: 0, islands: [], forms: 0, inputs: 0, orderButtons: 0, chatButtons: 0, tables: 0, details: 0, videos: 0, sections: [], mobile: { overflowX: false, viewport: null }, jsErrors: [] });
+    continue;
+  }
   const page = await desk.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e).slice(0, 200)));

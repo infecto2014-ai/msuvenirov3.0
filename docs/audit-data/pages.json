@@ -280,7 +280,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "card.html",
@@ -499,7 +499,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "faq.html",
@@ -619,7 +619,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "fotopodarki.html",
@@ -749,7 +749,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "index.html",
@@ -888,7 +888,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 37
+  "inboundCount": 35
  },
  {
   "file": "kalendari.html",
@@ -1048,7 +1048,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "kontakty.html",
@@ -1157,7 +1157,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "korporativnym-klientam.html",
@@ -1310,7 +1310,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 37
+  "inboundCount": 35
  },
  {
   "file": "kp.html",
@@ -1512,163 +1512,44 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "mug-print.html",
   "url": "/mug-print",
-  "title": "Печать на кружках в Калининграде — кружки с фото и логотипом",
-  "description": "Печать на кружках в Калининграде от 1 шт: фото, надпись, логотип. 330 и 425 мл, хамелеон, золото, кофейный набор, пивная 600 мл. Оптом — счёт без НДС.",
-  "robots": null,
+  "redirectTo": "/pechat-na-kruzhkah",
+  "title": "Страница переехала",
+  "description": null,
+  "robots": "noindex, follow",
   "canonical": "https://msuvenirov.ru/pechat-na-kruzhkah",
   "lang": "ru",
-  "ogTitle": "Печать на кружках в Калининграде — кружки с фото и логотипом",
-  "ogDescription": "Печать на кружках в Калининграде от 1 шт: фото, надпись, логотип. 330 и 425 мл, хамелеон, золото, кофейный набор, пивная 600 мл. Оптом — счёт без НДС.",
-  "ogImage": "https://msuvenirov.ru/portfolio/portfolio-30.webp",
-  "ogType": "website",
-  "h1": [
-   "Печать на кружках в Калининграде"
-  ],
-  "h2": [
-   "Посчитайте свои кружки",
-   "Готовые варианты с ценой",
-   "Кружки 330 и 425 мл, кофейный набор и пивная кружка",
-   "Покрытия кружки 330 мл",
-   "Что можно напечатать на кружке",
-   "Сублимация: рисунок внутри покрытия, а не наклейка",
-   "Кому дарят и заказывают кружки с печатью",
-   "Как заказать печать на кружке",
-   "Примеры: кружки и кофейные наборы",
-   "Отзывы о кружках",
-   "Вопросы о печати на кружках",
-   "Печать на кружках на заказ в Калининграде",
-   "Ещё печатаем",
-   "Хотите кружку со своим фото?"
-  ],
-  "h3count": 41,
-  "jsonld": [
-   "LocalBusiness",
-   "Store",
-   "WebSite",
-   "BreadcrumbList",
-   "Service",
-   "FAQPage"
-  ],
-  "breadcrumbs": [
-   "Главная",
-   "Услуги"
-  ],
+  "h1": [],
+  "h2": [],
+  "h3count": 0,
+  "jsonld": [],
+  "breadcrumbs": [],
   "internal": [
-   "/",
-   "/pechat-na-odezhde",
-   "/pechat-na-futbolkah",
-   "/pechat-na-hudi",
-   "/pechat-na-shopperah",
-   "/pechat-na-kepkah",
-   "/pechat-na-specodezhde",
-   "/pechat-na-sportivnoy-forme",
-   "/sublimacionnaya-pechat",
-   "/dtf-pechat",
-   "/pechat-na-kruzhkah",
-   "/znachki",
-   "/breloki",
-   "/magnity",
-   "/nakleyki",
-   "/fotopodarki",
-   "/vizitki",
-   "/poligrafiya",
-   "/kalendari",
-   "/shirokoformatnaya-pechat",
-   "/price",
-   "/korporativnym-klientam",
-   "/portfolio",
-   "/stati",
-   "/o-nas",
-   "/kontakty",
-   "/trebovaniya-k-maketam",
-   "/faq",
-   "/uslugi",
-   "/pechat-na-kruzhkah?calc=mugs:mug#calc",
-   "/pechat-na-kruzhkah?calc=mugs:mug-big#calc",
-   "/pechat-na-kruzhkah?calc=mugs:coffee-set#calc",
-   "/pechat-na-kruzhkah?calc=mugs:beer-mug#calc",
-   "/otzyvy",
-   "/public-offer",
-   "/privacy-policy"
+   "/pechat-na-kruzhkah"
   ],
-  "external": [
-   "https://t.me/msuvenirov39zakaz",
-   "https://www.avito.ru/brands/i75765968/all/predlozheniya_uslug",
-   "https://yandex.ru/maps/org/105530576058/reviews/",
-   "https://2gis.ru/kaliningrad/firm/70000001042531447/tab/reviews",
-   "https://max.ru/u/f9LHodD0cOLo7HDSJw672fSH82yru_atZ9KDVODSf_2mghJHg1xe7H2qOC8",
-   "https://vk.com/msuvenirov39"
-  ],
-  "special": [
-   "#main",
-   "tel:+79521142350",
-   "#calc",
-   "#kind-mug330",
-   "#kind-mug425",
-   "#kind-coffee",
-   "#kind-beer600",
-   "mailto:msuvenirov39@yandex.ru"
-  ],
-  "images": 16,
+  "external": [],
+  "special": [],
+  "images": 0,
   "imagesNoAlt": 0,
-  "imagesEmptyAlt": 10,
-  "words": 2772,
-  "mainChars": 21298,
-  "islands": [
-   "Calculator",
-   "OrderDialog",
-   "ChatWidget"
-  ],
-  "forms": 1,
-  "inputs": 4,
-  "orderButtons": 12,
-  "chatButtons": 1,
+  "imagesEmptyAlt": 0,
+  "words": 0,
+  "mainChars": 0,
+  "islands": [],
+  "forms": 0,
+  "inputs": 0,
+  "orderButtons": 0,
+  "chatButtons": 0,
   "tables": 0,
-  "details": 14,
+  "details": 0,
   "videos": 0,
-  "sections": [
-   ".mhero",
-   ".band.band-tint",
-   "#calc .section.calc-sec",
-   ".band",
-   ".section.mpk",
-   ".band.band-tint",
-   ".section.kinds",
-   ".band",
-   ".section.fin",
-   ".band",
-   ".section.prn",
-   ".band",
-   ".section.tech",
-   ".band.band-tint",
-   ".section.aud",
-   ".band",
-   ".section.how",
-   "script",
-   ".band.band-tint",
-   ".section.works",
-   ".band",
-   ".section.reviews",
-   ".band.band-tint",
-   ".section.faq-sec",
-   ".band",
-   ".section.seo-text",
-   ".band.band-tint",
-   ".section.tr",
-   ".wrap.cta-wrap"
-  ],
+  "sections": [],
   "mobile": {
-   "scrollW": 390,
-   "innerW": 390,
-   "height": 12928,
-   "mobileBar": true,
-   "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
-   "overflowX": false
+   "overflowX": false,
+   "viewport": null
   },
   "jsErrors": [],
   "brokenInternal": [],
@@ -1832,7 +1713,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "o-nas.html",
@@ -1953,7 +1834,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "otzyvy.html",
@@ -2061,7 +1942,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-futbolkah.html",
@@ -2195,7 +2076,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 35
  },
  {
   "file": "pechat-na-hudi.html",
@@ -2334,7 +2215,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-kepkah.html",
@@ -2480,7 +2361,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-kruzhkah.html",
@@ -2640,7 +2521,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 35
  },
  {
   "file": "pechat-na-odezhde.html",
@@ -2771,7 +2652,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-shopperah.html",
@@ -2924,7 +2805,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-specodezhde.html",
@@ -3072,7 +2953,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat-na-sportivnoy-forme.html",
@@ -3220,137 +3101,44 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "pechat_na_tkani.html",
   "url": "/pechat_na_tkani",
-  "title": "Печать на футболках в Калининграде от 1 шт | Мастерская сувениров",
-  "description": "Печать на футболках в Калининграде от 1 шт: фото, надписи, парные и командные футболки. DTF на белых и чёрных. ТЦ «Экватор», +7 952 114-23-50.",
-  "robots": null,
+  "redirectTo": "/pechat-na-futbolkah",
+  "title": "Страница переехала",
+  "description": null,
+  "robots": "noindex, follow",
   "canonical": "https://msuvenirov.ru/pechat-na-futbolkah",
   "lang": "ru",
-  "ogTitle": "Печать на футболках в Калининграде от 1 шт | Мастерская сувениров",
-  "ogDescription": "Печать на футболках в Калининграде от 1 шт: фото, надписи, парные и командные футболки. DTF на белых и чёрных. ТЦ «Экватор», +7 952 114-23-50.",
-  "ogImage": "https://msuvenirov.ru/img/showcase/tshirt.webp",
-  "ogType": "website",
-  "h1": [
-   "Печать на футболках в Калининграде"
-  ],
-  "h2": [
-   "Посчитайте свой вариант",
-   "Готовые варианты с ценой",
-   "Футболка унисекс: цвет, ткань, размеры",
-   "Какой размер принта выбрать",
-   "Что чаще всего заказывают",
-   "Примеры: печать на футболках",
-   "Отзывы: печать на футболках",
-   "Вопросы: печать на футболках",
-   "Ещё печатаем",
-   "Не знаете, с чего начать?"
-  ],
-  "h3count": 17,
-  "jsonld": [
-   "LocalBusiness",
-   "Store",
-   "WebSite",
-   "BreadcrumbList",
-   "Service",
-   "FAQPage"
-  ],
-  "breadcrumbs": [
-   "Главная",
-   "Услуги"
-  ],
+  "h1": [],
+  "h2": [],
+  "h3count": 0,
+  "jsonld": [],
+  "breadcrumbs": [],
   "internal": [
-   "/",
-   "/pechat-na-odezhde",
-   "/pechat-na-futbolkah",
-   "/pechat-na-hudi",
-   "/pechat-na-shopperah",
-   "/pechat-na-kepkah",
-   "/pechat-na-specodezhde",
-   "/pechat-na-sportivnoy-forme",
-   "/sublimacionnaya-pechat",
-   "/dtf-pechat",
-   "/pechat-na-kruzhkah",
-   "/znachki",
-   "/breloki",
-   "/magnity",
-   "/nakleyki",
-   "/fotopodarki",
-   "/vizitki",
-   "/poligrafiya",
-   "/kalendari",
-   "/shirokoformatnaya-pechat",
-   "/price",
-   "/korporativnym-klientam",
-   "/portfolio",
-   "/stati",
-   "/o-nas",
-   "/kontakty",
-   "/trebovaniya-k-maketam",
-   "/faq",
-   "/uslugi",
-   "/otzyvy",
-   "/public-offer",
-   "/privacy-policy"
+   "/pechat-na-futbolkah"
   ],
-  "external": [
-   "https://t.me/msuvenirov39zakaz",
-   "https://www.avito.ru/brands/i75765968/all/predlozheniya_uslug",
-   "https://yandex.ru/maps/org/105530576058/reviews/",
-   "https://2gis.ru/kaliningrad/firm/70000001042531447/tab/reviews",
-   "https://max.ru/u/f9LHodD0cOLo7HDSJw672fSH82yru_atZ9KDVODSf_2mghJHg1xe7H2qOC8",
-   "https://vk.com/msuvenirov39"
-  ],
-  "special": [
-   "#main",
-   "tel:+79521142350",
-   "#calc",
-   "mailto:msuvenirov39@yandex.ru"
-  ],
-  "images": 30,
+  "external": [],
+  "special": [],
+  "images": 0,
   "imagesNoAlt": 0,
-  "imagesEmptyAlt": 15,
-  "words": 1409,
-  "mainChars": 13376,
-  "islands": [
-   "Calculator",
-   "OrderDialog",
-   "ChatWidget"
-  ],
-  "forms": 1,
-  "inputs": 3,
-  "orderButtons": 10,
-  "chatButtons": 1,
-  "tables": 1,
-  "details": 9,
+  "imagesEmptyAlt": 0,
+  "words": 0,
+  "mainChars": 0,
+  "islands": [],
+  "forms": 0,
+  "inputs": 0,
+  "orderButtons": 0,
+  "chatButtons": 0,
+  "tables": 0,
+  "details": 0,
   "videos": 0,
-  "sections": [
-   ".th",
-   ".band.band-tint",
-   "#calc .section.tcalc",
-   ".section.ob",
-   ".band.band-ink",
-   ".section.tdet",
-   ".section.tc",
-   ".band.band-tint",
-   ".section.ti",
-   ".section.works",
-   ".band.band-tint",
-   ".section.reviews",
-   ".section.faq-sec",
-   ".section.tr",
-   ".wrap.cta-wrap"
-  ],
+  "sections": [],
   "mobile": {
-   "scrollW": 390,
-   "innerW": 390,
-   "height": 11221,
-   "mobileBar": true,
-   "viewport": "width=device-width, initial-scale=1, viewport-fit=cover",
-   "overflowX": false
+   "overflowX": false,
+   "viewport": null
   },
   "jsErrors": [],
   "brokenInternal": [],
@@ -3487,7 +3275,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "portfolio.html",
@@ -3591,7 +3379,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 37
+  "inboundCount": 35
  },
  {
   "file": "price.html",
@@ -3735,7 +3523,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 37
+  "inboundCount": 35
  },
  {
   "file": "privacy-policy.html",
@@ -3845,7 +3633,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 38
+  "inboundCount": 36
  },
  {
   "file": "public-offer.html",
@@ -3957,7 +3745,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "shirokoformatnaya-pechat.html",
@@ -4088,7 +3876,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "stati.html",
@@ -4193,7 +3981,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "stati/novogodnie-podarki.html",
@@ -4462,7 +4250,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "trebovaniya-k-maketam.html",
@@ -4576,7 +4364,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "uslugi.html",
@@ -4686,7 +4474,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 20
+  "inboundCount": 18
  },
  {
   "file": "vizitki.html",
@@ -4816,7 +4604,7 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  },
  {
   "file": "yandex_6ce0ad5c2373fb26.html",
@@ -5013,6 +4801,6 @@
   },
   "jsErrors": [],
   "brokenInternal": [],
-  "inboundCount": 36
+  "inboundCount": 34
  }
 ]
