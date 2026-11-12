@@ -1,0 +1,6456 @@
+[
+ {
+  "id": "textile",
+  "name": "Одежда и текстиль",
+  "page": "/pechat-na-futbolkah",
+  "from": {
+   "price": 290,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "tshirt-unisex",
+    "name": "Футболка унисекс",
+    "short": "160–180 г/м², белая или чёрная",
+    "image": "/img/showcase/tshirt.webp",
+    "fromPrice": 830,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "blank",
+      "label": "Футболка",
+      "type": "one",
+      "default": "ours",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "ours",
+        "label": "Наша футболка",
+        "hint": "с печатью"
+       },
+       {
+        "id": "own",
+        "label": "Своя футболка",
+        "hint": "только печать"
+       }
+      ]
+     },
+     {
+      "id": "color",
+      "label": "Цвет изделия",
+      "type": "one",
+      "default": "white",
+      "addable": false,
+      "hideWhen": {
+       "group": "blank",
+       "value": "own"
+      },
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "white",
+        "label": "Белый",
+        "hint": null
+       },
+       {
+        "id": "black",
+        "label": "Чёрный",
+        "hint": null
+       },
+       {
+        "id": "other",
+        "label": "Другой цвет",
+        "hint": "от 10 шт"
+       }
+      ]
+     },
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print3",
+      "label": "Третий принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print4",
+      "label": "Четвёртый принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Футболка унисекс",
+       "cells": [
+        "750 ₽",
+        "650 ₽",
+        "550 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А3",
+       "cells": [
+        "+1 100 ₽",
+        "+900 ₽",
+        "+680 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "blank": "ours",
+      "color": "white",
+      "print1": "a4",
+      "print2": "none",
+      "print3": "none",
+      "print4": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1550,
+     "total": 1550,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Футболка унисекс",
+       "amount": 750,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1550
+     },
+     {
+      "from": 5,
+      "price": 1300
+     },
+     {
+      "from": 20,
+      "price": 1000
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "tshirt-kids",
+    "name": "Футболка детская",
+    "short": "100% хлопок, размеры 98–164",
+    "image": "/img/showcase/tshirt.webp",
+    "fromPrice": 780,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "color",
+      "label": "Цвет изделия",
+      "type": "one",
+      "default": "white",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "white",
+        "label": "Белый",
+        "hint": null
+       },
+       {
+        "id": "black",
+        "label": "Чёрный",
+        "hint": null
+       },
+       {
+        "id": "other",
+        "label": "Другой цвет",
+        "hint": "от 10 шт"
+       }
+      ]
+     },
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Футболка детская",
+       "cells": [
+        "750 ₽",
+        "550 ₽",
+        "500 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "color": "white",
+      "print1": "a4",
+      "print2": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1550,
+     "total": 1550,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Футболка детская",
+       "amount": 750,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1550
+     },
+     {
+      "from": 5,
+      "price": 1200
+     },
+     {
+      "from": 20,
+      "price": 950
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "hoodie",
+    "name": "Худи",
+    "short": "уточняйте наличие",
+    "image": "/img/showcase/hoodie.webp",
+    "fromPrice": 2280,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print3",
+      "label": "Третий принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print4",
+      "label": "Четвёртый принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Худи",
+       "cells": [
+        "от 2 000 ₽",
+        "от 2 000 ₽",
+        "от 2 000 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А3",
+       "cells": [
+        "+1 100 ₽",
+        "+900 ₽",
+        "+680 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none",
+      "print3": "none",
+      "print4": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 2800,
+     "total": 2800,
+     "from": true,
+     "breakdown": [
+      {
+       "label": "Худи (от)",
+       "amount": 2000,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Наличие и точную цену изделия уточнит менеджер."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 2800
+     },
+     {
+      "from": 5,
+      "price": 2650
+     },
+     {
+      "from": 20,
+      "price": 2450
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "oversize",
+    "name": "Футболка оверсайз",
+    "short": "от 180 г/м², уточняйте наличие",
+    "image": "/img/showcase/tshirt.webp",
+    "fromPrice": 1480,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print3",
+      "label": "Третий принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Футболка оверсайз",
+       "cells": [
+        "от 1 200 ₽",
+        "от 1 200 ₽",
+        "от 1 200 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А3",
+       "cells": [
+        "+1 100 ₽",
+        "+900 ₽",
+        "+680 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none",
+      "print3": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 2000,
+     "total": 2000,
+     "from": true,
+     "breakdown": [
+      {
+       "label": "Футболка оверсайз (от)",
+       "amount": 1200,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Наличие и точную цену изделия уточнит менеджер."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 2000
+     },
+     {
+      "from": 5,
+      "price": 1850
+     },
+     {
+      "from": 20,
+      "price": 1650
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "polo",
+    "name": "Поло",
+    "short": "уточняйте наличие",
+    "image": "/portfolio/corporate-polo.webp",
+    "fromPrice": 1480,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Поло",
+       "cells": [
+        "от 1 200 ₽",
+        "от 1 200 ₽",
+        "от 1 200 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 2000,
+     "total": 2000,
+     "from": true,
+     "breakdown": [
+      {
+       "label": "Поло (от)",
+       "amount": 1200,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Наличие и точную цену изделия уточнит менеджер."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 2000
+     },
+     {
+      "from": 5,
+      "price": 1850
+     },
+     {
+      "from": 20,
+      "price": 1650
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "cap",
+    "name": "Бейсболка",
+    "short": "TEXTILLER, 100% хлопок, саржа, 5 панелей",
+    "image": "/img/showcase/cap.webp",
+    "fromPrice": 730,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "blank",
+      "label": "Бейсболка",
+      "type": "one",
+      "default": "ours",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "ours",
+        "label": "Наша бейсболка",
+        "hint": "с печатью"
+       },
+       {
+        "id": "own",
+        "label": "Своя бейсболка",
+        "hint": "только печать"
+       }
+      ]
+     },
+     {
+      "id": "color",
+      "label": "Цвет изделия",
+      "type": "one",
+      "default": "black",
+      "addable": false,
+      "hideWhen": {
+       "group": "blank",
+       "value": "own"
+      },
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "black",
+        "label": "Чёрный",
+        "hint": null
+       },
+       {
+        "id": "white",
+        "label": "Белый",
+        "hint": null
+       },
+       {
+        "id": "red",
+        "label": "Красный",
+        "hint": null
+       },
+       {
+        "id": "blue",
+        "label": "Синий",
+        "hint": null
+       },
+       {
+        "id": "yellow",
+        "label": "Жёлтый",
+        "hint": null
+       },
+       {
+        "id": "green",
+        "label": "Зелёный",
+        "hint": null
+       },
+       {
+        "id": "khaki",
+        "label": "Хаки",
+        "hint": null
+       }
+      ]
+     },
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a6",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       }
+      ]
+     },
+     {
+      "id": "print3",
+      "label": "Третий принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–19 шт",
+      "20–29 шт",
+      "30–100 шт"
+     ],
+     "rows": [
+      {
+       "label": "Бейсболка",
+       "cells": [
+        "650 ₽",
+        "650 ₽",
+        "550 ₽",
+        "550 ₽",
+        "450 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+350 ₽",
+        "+280 ₽",
+        "+280 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 100 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "blank": "ours",
+      "color": "black",
+      "print1": "a6",
+      "print2": "none",
+      "print3": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1250,
+     "total": 1250,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Бейсболка",
+       "amount": 650,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А6",
+       "amount": 600,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1250
+     },
+     {
+      "from": 5,
+      "price": 1000
+     },
+     {
+      "from": 10,
+      "price": 900
+     },
+     {
+      "from": 20,
+      "price": 830
+     },
+     {
+      "from": 30,
+      "price": 730
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "shopper",
+    "name": "Шоппер",
+    "short": "хлопковая сумка",
+    "image": "/img/showcase/shopper.webp",
+    "fromPrice": 530,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "color",
+      "label": "Цвет изделия",
+      "type": "one",
+      "default": "light",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "light",
+        "label": "Светлый",
+        "hint": "как лён"
+       },
+       {
+        "id": "black",
+        "label": "Чёрный",
+        "hint": null
+       },
+       {
+        "id": "other",
+        "label": "Другой цвет",
+        "hint": "от 20 шт"
+       }
+      ]
+     },
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Шоппер",
+       "cells": [
+        "450 ₽",
+        "350 ₽",
+        "250 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "color": "light",
+      "print1": "a4",
+      "print2": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1250,
+     "total": 1250,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Шоппер",
+       "amount": 450,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1250
+     },
+     {
+      "from": 5,
+      "price": 1000
+     },
+     {
+      "from": 20,
+      "price": 700
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "shopper-sub",
+    "name": "Шоппер для сублимации",
+    "short": "небелёный лён, 330 г/м², от 10 шт",
+    "image": "/img/showcase/shopper.webp",
+    "fromPrice": 290,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 10,
+     "max": 2000,
+     "default": 10
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Сторона 1 · сублимация",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5×14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×29,7 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7×42 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Сторона 2 · сублимация",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5×14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×29,7 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7×42 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–10 шт",
+      "11–20 шт",
+      "21–99 шт",
+      "от 100 шт"
+     ],
+     "rows": [
+      {
+       "label": "Шоппер для сублимации",
+       "cells": [
+        "250 ₽",
+        "250 ₽",
+        "250 ₽",
+        "230 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А6",
+       "cells": [
+        "+175 ₽",
+        "+110 ₽",
+        "+80 ₽",
+        "+60 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А5",
+       "cells": [
+        "+240 ₽",
+        "+150 ₽",
+        "+100 ₽",
+        "+80 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А4",
+       "cells": [
+        "+400 ₽",
+        "+210 ₽",
+        "+150 ₽",
+        "+130 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А3",
+       "cells": [
+        "+600 ₽",
+        "+380 ₽",
+        "+250 ₽",
+        "+200 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none"
+     },
+     "dims": {},
+     "qty": 10
+    },
+    "defaultQuote": {
+     "unit": 650,
+     "total": 6500,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Шоппер для сублимации",
+       "amount": 250,
+       "per": "шт"
+      },
+      {
+       "label": "Сублимация А4 (сторона 1)",
+       "amount": 400,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Светлый шоппер цвета небелёного льна, 330 г/м², 36×42 см (±3 см), ручки 70 см. Сублимация — яркая полноцветная печать, от 10 шт."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 10,
+      "price": 650
+     },
+     {
+      "from": 11,
+      "price": 460
+     },
+     {
+      "from": 21,
+      "price": 400
+     },
+     {
+      "from": 50,
+      "price": 380
+     },
+     {
+      "from": 100,
+      "price": 360
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "tshirt-sub",
+    "name": "Футболка для сублимации",
+    "short": "50% полиэстер / 50% хлопок, от 10 шт",
+    "image": "/img/showcase/tshirt.webp",
+    "fromPrice": 780,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 10,
+     "max": 2000,
+     "default": 10
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Перед · сублимация",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5×14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×29,7 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7×42 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Спина · сублимация",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5×14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×29,7 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7×42 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–10 шт",
+      "11–20 шт",
+      "21–99 шт",
+      "от 100 шт"
+     ],
+     "rows": [
+      {
+       "label": "Футболка для сублимации",
+       "cells": [
+        "720 ₽",
+        "720 ₽",
+        "720 ₽",
+        "720 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А6",
+       "cells": [
+        "+175 ₽",
+        "+110 ₽",
+        "+80 ₽",
+        "+60 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А5",
+       "cells": [
+        "+240 ₽",
+        "+150 ₽",
+        "+100 ₽",
+        "+80 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А4",
+       "cells": [
+        "+400 ₽",
+        "+210 ₽",
+        "+150 ₽",
+        "+130 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А3",
+       "cells": [
+        "+600 ₽",
+        "+380 ₽",
+        "+250 ₽",
+        "+200 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none"
+     },
+     "dims": {},
+     "qty": 10
+    },
+    "defaultQuote": {
+     "unit": 1120,
+     "total": 11200,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Футболка для сублимации",
+       "amount": 720,
+       "per": "шт"
+      },
+      {
+       "label": "Сублимация А4 (перед)",
+       "amount": 400,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Белая футболка для сублимации: 50% полиэстер / 50% хлопок, кулирная гладь, 180 г/м², Россия. Размеры детские 128–152 и взрослые 42–60 (XS–6XL). Заказ от 10 шт."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 10,
+      "price": 1120
+     },
+     {
+      "from": 11,
+      "price": 930
+     },
+     {
+      "from": 21,
+      "price": 870
+     },
+     {
+      "from": 100,
+      "price": 850
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "sub-print",
+    "name": "Сублимационная печать",
+    "short": "на вашем изделии из светлой синтетики",
+    "image": null,
+    "fromPrice": 60,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 2000,
+     "default": 1
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Размер печати · сублимация",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5×14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×29,7 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7×42 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–10 шт",
+      "11–20 шт",
+      "21–99 шт",
+      "от 100 шт"
+     ],
+     "rows": [
+      {
+       "label": "+ сублимация А6",
+       "cells": [
+        "+175 ₽",
+        "+110 ₽",
+        "+80 ₽",
+        "+60 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А5",
+       "cells": [
+        "+240 ₽",
+        "+150 ₽",
+        "+100 ₽",
+        "+80 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А4",
+       "cells": [
+        "+400 ₽",
+        "+210 ₽",
+        "+150 ₽",
+        "+130 ₽"
+       ]
+      },
+      {
+       "label": "+ сублимация А3",
+       "cells": [
+        "+600 ₽",
+        "+380 ₽",
+        "+250 ₽",
+        "+200 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 400,
+     "total": 400,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Сублимация А4",
+       "amount": 400,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Сублимация подходит для светлых тканей из полиэстера и изделий с полимерным покрытием. Подойдёт ли ваше изделие — подскажем."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 400
+     },
+     {
+      "from": 11,
+      "price": 210
+     },
+     {
+      "from": 21,
+      "price": 150
+     },
+     {
+      "from": 100,
+      "price": 130
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "apron",
+    "name": "Фартук",
+    "short": "уточняйте наличие",
+    "image": null,
+    "fromPrice": 1280,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "Фартук",
+       "cells": [
+        "от 1 000 ₽",
+        "от 1 000 ₽",
+        "от 1 000 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1800,
+     "total": 1800,
+     "from": true,
+     "breakdown": [
+      {
+       "label": "Фартук (от)",
+       "amount": 1000,
+       "per": "шт"
+      },
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Наличие и точную цену изделия уточнит менеджер."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1800
+     },
+     {
+      "from": 5,
+      "price": 1650
+     },
+     {
+      "from": 20,
+      "price": 1450
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "own-item",
+    "name": "Печать на вашем изделии",
+    "short": "принесите свою вещь",
+    "image": null,
+    "fromPrice": 280,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "print1",
+      "label": "Основной принт (DTF)",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print2",
+      "label": "Второй принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     },
+     {
+      "id": "print3",
+      "label": "Третий принт",
+      "type": "one",
+      "default": "none",
+      "addable": true,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Нет",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10×15 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "15×21 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21×28 см"
+       },
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "28×38 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–19 шт",
+      "20–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "+ печать DTF А6",
+       "cells": [
+        "+600 ₽",
+        "+350 ₽",
+        "+280 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А5",
+       "cells": [
+        "+600 ₽",
+        "+450 ₽",
+        "+330 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А4",
+       "cells": [
+        "+800 ₽",
+        "+650 ₽",
+        "+450 ₽"
+       ]
+      },
+      {
+       "label": "+ печать DTF А3",
+       "cells": [
+        "+1 100 ₽",
+        "+900 ₽",
+        "+680 ₽"
+       ]
+      }
+     ],
+     "note": "Больше 50 шт — цена рассчитывается индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "print1": "a4",
+      "print2": "none",
+      "print3": "none"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 800,
+     "total": 800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Печать DTF А4",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Печать на вашем изделии. Подойдут хлопок, смесовые ткани, синтетика."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 800
+     },
+     {
+      "from": 5,
+      "price": 650
+     },
+     {
+      "from": 20,
+      "price": 450
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "transfers",
+  "name": "DTF и сублимация без нанесения",
+  "page": "/dtf-pechat",
+  "from": {
+   "price": 60,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "dtf-sheet",
+    "name": "DTF-печать листами А3",
+    "short": "готовые трансферы, поле 28×38 см",
+    "image": null,
+    "fromPrice": 400,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–29 шт",
+      "30–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "DTF-печать листами А3",
+       "cells": [
+        "900 ₽",
+        "700 ₽",
+        "500 ₽",
+        "400 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 900,
+     "total": 900,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "DTF-печать листами А3",
+       "amount": 900,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Цена за лист: на одном листе можно разместить сколько угодно принтов, которые поместятся в поле 28×38 см."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 900
+     },
+     {
+      "from": 5,
+      "price": 700
+     },
+     {
+      "from": 10,
+      "price": 500
+     },
+     {
+      "from": 30,
+      "price": 400
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "sub-sheet",
+    "name": "Сублимационная печать листами",
+    "short": "на сублимационной бумаге, А3 или А4",
+    "image": null,
+    "fromPrice": 60,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 50,
+     "default": 1,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Формат листа",
+      "type": "one",
+      "default": "a3",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "29,7 × 42 см"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "21 × 29,7 см"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–29 шт",
+      "30–50 шт"
+     ],
+     "rows": [
+      {
+       "label": "А3",
+       "cells": [
+        "220 ₽",
+        "180 ₽",
+        "150 ₽",
+        "120 ₽"
+       ]
+      },
+      {
+       "label": "А4",
+       "cells": [
+        "110 ₽",
+        "90 ₽",
+        "75 ₽",
+        "60 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "a3"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 220,
+     "total": 220,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "А3",
+       "amount": 220,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Цена за лист: на листе можно разместить несколько принтов."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 220
+     },
+     {
+      "from": 5,
+      "price": 180
+     },
+     {
+      "from": 10,
+      "price": 150
+     },
+     {
+      "from": 30,
+      "price": 120
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "mugs",
+  "name": "Кружки",
+  "page": "/pechat-na-kruzhkah",
+  "from": {
+   "price": 250,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "mug",
+    "name": "Кружка 330 мл",
+    "short": "классическая, d=82 мм — кружка и печать в цене",
+    "image": "/img/showcase/mug.webp",
+    "fromPrice": 250,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 300,
+     "default": 1
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Вид кружки",
+      "type": "one",
+      "default": "white",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "white",
+        "label": "Белая",
+        "hint": "330 мл"
+       },
+       {
+        "id": "color",
+        "label": "Цветная внутри или ручка",
+        "hint": null
+       },
+       {
+        "id": "chameleon",
+        "label": "Хамелеон",
+        "hint": "рисунок проявляется от горячего"
+       },
+       {
+        "id": "glitter",
+        "label": "Глиттер",
+        "hint": "4 цвета блёсток"
+       },
+       {
+        "id": "marble",
+        "label": "Мрамор, зеркальное золото или серебро",
+        "hint": "3 цвета мрамора"
+       },
+       {
+        "id": "gold",
+        "label": "Золото, серебро, стекло",
+        "hint": null
+       }
+      ]
+     },
+     {
+      "id": "inner",
+      "label": "Цвет ручки и внутри",
+      "type": "one",
+      "default": "red",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": {
+       "group": "variant",
+       "value": "color"
+      },
+      "choices": [
+       {
+        "id": "navy",
+        "label": "Тёмно-синий",
+        "hint": null
+       },
+       {
+        "id": "darkgreen",
+        "label": "Тёмно-зелёный",
+        "hint": null
+       },
+       {
+        "id": "black",
+        "label": "Чёрный",
+        "hint": null
+       },
+       {
+        "id": "pink",
+        "label": "Розовый",
+        "hint": null
+       },
+       {
+        "id": "blue",
+        "label": "Синий",
+        "hint": null
+       },
+       {
+        "id": "lime",
+        "label": "Салатовый",
+        "hint": null
+       },
+       {
+        "id": "red",
+        "label": "Красный",
+        "hint": null
+       },
+       {
+        "id": "orange",
+        "label": "Оранжевый",
+        "hint": null
+       },
+       {
+        "id": "yellow",
+        "label": "Жёлтый",
+        "hint": null
+       }
+      ]
+     },
+     {
+      "id": "glitter",
+      "label": "Цвет глиттера",
+      "type": "one",
+      "default": "gold",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": {
+       "group": "variant",
+       "value": "glitter"
+      },
+      "choices": [
+       {
+        "id": "gold",
+        "label": "Золотой",
+        "hint": null
+       },
+       {
+        "id": "silver",
+        "label": "Серебряный",
+        "hint": null
+       },
+       {
+        "id": "turquoise",
+        "label": "Бирюзовый",
+        "hint": null
+       },
+       {
+        "id": "pink",
+        "label": "Розовый",
+        "hint": null
+       }
+      ]
+     },
+     {
+      "id": "marble",
+      "label": "Покрытие",
+      "type": "one",
+      "default": "grey",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": {
+       "group": "variant",
+       "value": "marble"
+      },
+      "choices": [
+       {
+        "id": "grey",
+        "label": "Мрамор серый",
+        "hint": null
+       },
+       {
+        "id": "pink",
+        "label": "Мрамор розовый",
+        "hint": null
+       },
+       {
+        "id": "blue",
+        "label": "Мрамор голубой",
+        "hint": null
+       },
+       {
+        "id": "mgold",
+        "label": "Зеркальное золото",
+        "hint": null
+       },
+       {
+        "id": "msilver",
+        "label": "Зеркальное серебро",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–49 шт",
+      "50–199 шт",
+      "от 200 шт"
+     ],
+     "rows": [
+      {
+       "label": "Белая",
+       "cells": [
+        "650 ₽",
+        "450 ₽",
+        "350 ₽",
+        "315 ₽",
+        "250 ₽"
+       ]
+      },
+      {
+       "label": "Цветная внутри или ручка",
+       "cells": [
+        "750 ₽",
+        "550 ₽",
+        "470 ₽",
+        "425 ₽",
+        "340 ₽"
+       ]
+      },
+      {
+       "label": "Хамелеон",
+       "cells": [
+        "1 100 ₽",
+        "980 ₽",
+        "890 ₽",
+        "815 ₽",
+        "650 ₽"
+       ]
+      },
+      {
+       "label": "Глиттер",
+       "cells": [
+        "1 630 ₽",
+        "980 ₽",
+        "890 ₽",
+        "815 ₽",
+        "650 ₽"
+       ]
+      },
+      {
+       "label": "Мрамор, зеркальное золото или серебро",
+       "cells": [
+        "1 945 ₽",
+        "1 170 ₽",
+        "1 070 ₽",
+        "970 ₽",
+        "780 ₽"
+       ]
+      },
+      {
+       "label": "Золото, серебро, стекло",
+       "cells": [
+        "1 320 ₽",
+        "790 ₽",
+        "730 ₽",
+        "660 ₽",
+        "530 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "white",
+      "inner": "red",
+      "glitter": "gold",
+      "marble": "grey"
+     },
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 650,
+     "total": 650,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Белая",
+       "amount": 650,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Кружка для сублимации 330 мл, d=82 мм. Цена включает кружку, печать по кругу и подготовку макета."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 650
+     },
+     {
+      "from": 5,
+      "price": 450
+     },
+     {
+      "from": 10,
+      "price": 350
+     },
+     {
+      "from": 50,
+      "price": 315
+     },
+     {
+      "from": 200,
+      "price": 250
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "mug-big",
+    "name": "Кружка 425 мл",
+    "short": "увеличенной ёмкости, белая, d=82 мм",
+    "image": "/img/showcase/mug.webp",
+    "fromPrice": 400,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 300,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–49 шт",
+      "50–199 шт",
+      "от 200 шт"
+     ],
+     "rows": [
+      {
+       "label": "Кружка 425 мл",
+       "cells": [
+        "800 ₽",
+        "600 ₽",
+        "500 ₽",
+        "425 ₽",
+        "400 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 800,
+     "total": 800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Кружка 425 мл",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Кружка для сублимации увеличенной ёмкости, 425 мл, d=82 мм. Цена включает кружку и печать."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 800
+     },
+     {
+      "from": 5,
+      "price": 600
+     },
+     {
+      "from": 10,
+      "price": 500
+     },
+     {
+      "from": 50,
+      "price": 425
+     },
+     {
+      "from": 200,
+      "price": 400
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "coffee-set",
+    "name": "Кофейный набор",
+    "short": "чашка 150 мл, блюдце и ложка, белый",
+    "image": "/img/showcase/mug.webp",
+    "fromPrice": 650,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 300,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–49 шт",
+      "50–199 шт",
+      "от 200 шт"
+     ],
+     "rows": [
+      {
+       "label": "Кофейный набор",
+       "cells": [
+        "1 630 ₽",
+        "980 ₽",
+        "890 ₽",
+        "815 ₽",
+        "650 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1630,
+     "total": 1630,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Кофейный набор",
+       "amount": 1630,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Кофейный набор для сублимации: чашка 150 мл (d=78 мм), блюдце и ложка. Цена включает набор и печать."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 1630
+     },
+     {
+      "from": 5,
+      "price": 980
+     },
+     {
+      "from": 10,
+      "price": 890
+     },
+     {
+      "from": 50,
+      "price": 815
+     },
+     {
+      "from": 200,
+      "price": 650
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "beer-mug",
+    "name": "Пивная кружка 600 мл",
+    "short": "белая, d=82 мм",
+    "image": "/img/mug/gallery-3.jpg",
+    "fromPrice": 650,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 300,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–4 шт",
+      "5–9 шт",
+      "10–49 шт",
+      "50–199 шт",
+      "от 200 шт"
+     ],
+     "rows": [
+      {
+       "label": "Пивная кружка 600 мл",
+       "cells": [
+        "950 ₽",
+        "800 ₽",
+        "750 ₽",
+        "690 ₽",
+        "650 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 950,
+     "total": 950,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Пивная кружка 600 мл",
+       "amount": 950,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Пивная кружка для сублимации, 600 мл, d=82 мм. Цена включает кружку и печать."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 950
+     },
+     {
+      "from": 5,
+      "price": 800
+     },
+     {
+      "from": 10,
+      "price": 750
+     },
+     {
+      "from": 50,
+      "price": 690
+     },
+     {
+      "from": 200,
+      "price": 650
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "badges",
+  "name": "Значки",
+  "page": "/znachki",
+  "from": {
+   "price": 30,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "badge-roll",
+    "name": "Значок закатной",
+    "short": "круглый, на булавке",
+    "image": "/img/showcase/keychains.webp",
+    "fromPrice": 30,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 10,
+     "max": 1000,
+     "default": 25
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Диаметр",
+      "type": "one",
+      "default": "d38",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "d38",
+        "label": "38 мм",
+        "hint": null
+       },
+       {
+        "id": "d56",
+        "label": "56 мм",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "10–49 шт",
+      "50–99 шт",
+      "100–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "38 мм",
+       "cells": [
+        "85 ₽",
+        "59,5 ₽",
+        "42,5 ₽",
+        "38 ₽",
+        "35 ₽",
+        "32 ₽",
+        "30 ₽"
+       ]
+      },
+      {
+       "label": "56 мм",
+       "cells": [
+        "100 ₽",
+        "70 ₽",
+        "50 ₽",
+        "45 ₽",
+        "41 ₽",
+        "38 ₽",
+        "33 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "d38"
+     },
+     "dims": {},
+     "qty": 25
+    },
+    "defaultQuote": {
+     "unit": 85,
+     "total": 2125,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "38 мм",
+       "amount": 85,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 10,
+      "price": 85
+     },
+     {
+      "from": 50,
+      "price": 59.5
+     },
+     {
+      "from": 100,
+      "price": 42.5
+     },
+     {
+      "from": 200,
+      "price": 38
+     },
+     {
+      "from": 300,
+      "price": 35
+     },
+     {
+      "from": 400,
+      "price": 32
+     },
+     {
+      "from": 500,
+      "price": 30
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "badge-pin",
+    "name": "Значок на цанге",
+    "short": "металлический, круглый",
+    "image": null,
+    "fromPrice": 75,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 25,
+     "max": 1000,
+     "default": 25
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Диаметр",
+      "type": "one",
+      "default": "d15",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "d15",
+        "label": "15 мм",
+        "hint": null
+       },
+       {
+        "id": "d25",
+        "label": "25 мм",
+        "hint": null
+       },
+       {
+        "id": "d30",
+        "label": "30 мм",
+        "hint": null
+       },
+       {
+        "id": "d35",
+        "label": "35 мм",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "25–49 шт",
+      "50–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "15 мм",
+       "cells": [
+        "120 ₽",
+        "110 ₽",
+        "100 ₽",
+        "92 ₽",
+        "85 ₽",
+        "75 ₽"
+       ]
+      },
+      {
+       "label": "25 мм",
+       "cells": [
+        "200 ₽",
+        "185 ₽",
+        "170 ₽",
+        "155 ₽",
+        "140 ₽",
+        "125 ₽"
+       ]
+      },
+      {
+       "label": "30 мм",
+       "cells": [
+        "250 ₽",
+        "230 ₽",
+        "210 ₽",
+        "190 ₽",
+        "170 ₽",
+        "150 ₽"
+       ]
+      },
+      {
+       "label": "35 мм",
+       "cells": [
+        "310 ₽",
+        "285 ₽",
+        "260 ₽",
+        "240 ₽",
+        "210 ₽",
+        "190 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "d15"
+     },
+     "dims": {},
+     "qty": 25
+    },
+    "defaultQuote": {
+     "unit": 120,
+     "total": 3000,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "15 мм",
+       "amount": 120,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 25,
+      "price": 120
+     },
+     {
+      "from": 50,
+      "price": 110
+     },
+     {
+      "from": 200,
+      "price": 100
+     },
+     {
+      "from": 300,
+      "price": 92
+     },
+     {
+      "from": 400,
+      "price": 85
+     },
+     {
+      "from": 500,
+      "price": 75
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "keychains",
+  "name": "Брелоки",
+  "page": "/breloki",
+  "from": {
+   "price": 43,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "keychain-acrylic",
+    "name": "Брелок акриловый",
+    "short": "40×56 мм, печать с двух сторон",
+    "image": "/img/showcase/keychains.webp",
+    "fromPrice": 43,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 1000,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–24 шт",
+      "25–99 шт",
+      "100–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "Брелок акриловый",
+       "cells": [
+        "150 ₽",
+        "130 ₽",
+        "65 ₽",
+        "60 ₽",
+        "54 ₽",
+        "49 ₽",
+        "43 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 150,
+     "total": 150,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Брелок акриловый",
+       "amount": 150,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 150
+     },
+     {
+      "from": 25,
+      "price": 130
+     },
+     {
+      "from": 100,
+      "price": 65
+     },
+     {
+      "from": 200,
+      "price": 60
+     },
+     {
+      "from": 300,
+      "price": 54
+     },
+     {
+      "from": 400,
+      "price": 49
+     },
+     {
+      "from": 500,
+      "price": 43
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "keychain-metal",
+    "name": "Брелок металлический",
+    "short": "с полноцветной печатью",
+    "image": null,
+    "fromPrice": 330,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 1000,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–99 шт",
+      "100–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "Брелок металлический",
+       "cells": [
+        "500 ₽",
+        "420 ₽",
+        "400 ₽",
+        "380 ₽",
+        "350 ₽",
+        "330 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 500,
+     "total": 500,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Брелок металлический",
+       "amount": 500,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 500
+     },
+     {
+      "from": 100,
+      "price": 420
+     },
+     {
+      "from": 200,
+      "price": 400
+     },
+     {
+      "from": 300,
+      "price": 380
+     },
+     {
+      "from": 400,
+      "price": 350
+     },
+     {
+      "from": 500,
+      "price": 330
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "magnets",
+  "name": "Магниты",
+  "page": "/magnity",
+  "from": {
+   "price": 26,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "magnet-vinyl",
+    "name": "Магнит виниловый",
+    "short": "тиражи от 100 шт",
+    "image": null,
+    "fromPrice": 26,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 100,
+     "max": 3000,
+     "default": 100
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Размер",
+      "type": "one",
+      "default": "r4060",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "r4060",
+        "label": "40×60 мм",
+        "hint": null
+       },
+       {
+        "id": "s6060",
+        "label": "60×60 мм",
+        "hint": null
+       },
+       {
+        "id": "r6080",
+        "label": "60×80 мм",
+        "hint": null
+       },
+       {
+        "id": "c68",
+        "label": "Круг 68 мм",
+        "hint": null
+       },
+       {
+        "id": "c50",
+        "label": "Круг 50 мм",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "100–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "40×60 мм",
+       "cells": [
+        "35 ₽",
+        "30 ₽",
+        "28 ₽",
+        "28 ₽",
+        "26 ₽"
+       ]
+      },
+      {
+       "label": "60×60 мм",
+       "cells": [
+        "36 ₽",
+        "31 ₽",
+        "30 ₽",
+        "29 ₽",
+        "28 ₽"
+       ]
+      },
+      {
+       "label": "60×80 мм",
+       "cells": [
+        "39 ₽",
+        "35 ₽",
+        "33 ₽",
+        "30 ₽",
+        "29 ₽"
+       ]
+      },
+      {
+       "label": "Круг 68 мм",
+       "cells": [
+        "36 ₽",
+        "31 ₽",
+        "30 ₽",
+        "29 ₽",
+        "28 ₽"
+       ]
+      },
+      {
+       "label": "Круг 50 мм",
+       "cells": [
+        "35 ₽",
+        "30 ₽",
+        "28 ₽",
+        "28 ₽",
+        "26 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "r4060"
+     },
+     "dims": {},
+     "qty": 100
+    },
+    "defaultQuote": {
+     "unit": 35,
+     "total": 3500,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "40×60 мм",
+       "amount": 35,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 100,
+      "price": 35
+     },
+     {
+      "from": 200,
+      "price": 30
+     },
+     {
+      "from": 300,
+      "price": 28
+     },
+     {
+      "from": 400,
+      "price": 28
+     },
+     {
+      "from": 500,
+      "price": 26
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "magnet-acrylic",
+    "name": "Магнит акриловый",
+    "short": "тиражи от 100 шт",
+    "image": null,
+    "fromPrice": 75,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 100,
+     "max": 3000,
+     "default": 100
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Размер",
+      "type": "one",
+      "default": "s105",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "s105",
+        "label": "105×105 мм",
+        "hint": null
+       },
+       {
+        "id": "r10570",
+        "label": "105×70 мм",
+        "hint": null
+       },
+       {
+        "id": "r8055",
+        "label": "80×55 мм",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "100–199 шт",
+      "200–299 шт",
+      "300–399 шт",
+      "400–499 шт",
+      "от 500 шт"
+     ],
+     "rows": [
+      {
+       "label": "105×105 мм",
+       "cells": [
+        "160 ₽",
+        "140 ₽",
+        "120 ₽",
+        "110 ₽",
+        "90 ₽"
+       ]
+      },
+      {
+       "label": "105×70 мм",
+       "cells": [
+        "160 ₽",
+        "140 ₽",
+        "120 ₽",
+        "110 ₽",
+        "90 ₽"
+       ]
+      },
+      {
+       "label": "80×55 мм",
+       "cells": [
+        "130 ₽",
+        "100 ₽",
+        "90 ₽",
+        "80 ₽",
+        "75 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "s105"
+     },
+     "dims": {},
+     "qty": 100
+    },
+    "defaultQuote": {
+     "unit": 160,
+     "total": 16000,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "105×105 мм",
+       "amount": 160,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 100,
+      "price": 160
+     },
+     {
+      "from": 200,
+      "price": 140
+     },
+     {
+      "from": 300,
+      "price": 120
+     },
+     {
+      "from": 400,
+      "price": 110
+     },
+     {
+      "from": 500,
+      "price": 90
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "photo-magnet",
+    "name": "Фотомагнит акриловый, 1 шт",
+    "short": "подарок с вашим фото",
+    "image": null,
+    "fromPrice": 250,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Фотомагнит акриловый, 1 шт",
+       "cells": [
+        "250 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 250,
+     "total": 250,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Фотомагнит акриловый, 1 шт",
+       "amount": 250,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "stickers",
+  "name": "Стикеры",
+  "page": "/nakleyki",
+  "from": {
+   "price": 5,
+   "unit": "см²"
+  },
+  "products": [
+   {
+    "id": "sticker-3d",
+    "name": "3D-стикеры с эпоксидной смолой",
+    "short": "объёмные наклейки, от 30 шт",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 5,
+    "fromUnit": "см²",
+    "qty": {
+     "min": 30,
+     "max": 300,
+     "default": 50,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "cut",
+      "label": "Вырубка",
+      "type": "one",
+      "default": "simple",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "simple",
+        "label": "Простая",
+        "hint": "круг, квадрат, прямоугольник · 5 ₽/см²"
+       },
+       {
+        "id": "complex",
+        "label": "Сложная",
+        "hint": "по контуру рисунка · 7 ₽/см²"
+       }
+      ]
+     }
+    ],
+    "dims": [
+     {
+      "id": "w",
+      "label": "Ширина",
+      "unit": "см",
+      "min": 1,
+      "max": 20,
+      "default": 4
+     },
+     {
+      "id": "h",
+      "label": "Высота",
+      "unit": "см",
+      "min": 1,
+      "max": 20,
+      "default": 4
+     }
+    ],
+    "table": {
+     "columns": [
+      "30–99 шт",
+      "100–199 шт",
+      "200–300 шт"
+     ],
+     "rows": [
+      {
+       "label": "Стикер: простая вырубка, за см²",
+       "cells": [
+        "5 ₽",
+        "4,75 ₽",
+        "4,5 ₽"
+       ]
+      },
+      {
+       "label": "Стикер: сложная вырубка, за см²",
+       "cells": [
+        "7 ₽",
+        "6,65 ₽",
+        "6,3 ₽"
+       ]
+      }
+     ],
+     "note": "Стикер меньше 4 см² — +30% к цене. Минимальный заказ — 30 стикеров и не меньше 850 ₽ (для маленьких стикеров — больше штук), больше 300 — индивидуально. Цена стикера = площадь (ширина × высота, см²) × цена за см²."
+    },
+    "defaultSelection": {
+     "options": {
+      "cut": "simple"
+     },
+     "dims": {
+      "w": 4,
+      "h": 4
+     },
+     "qty": 50
+    },
+    "defaultQuote": {
+     "unit": 80,
+     "total": 4000,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Стикер 4×4 см, простая вырубка",
+       "amount": 80,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Площадь стикера 16 см² × 5 ₽/см²."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 30,
+      "price": 80
+     },
+     {
+      "from": 100,
+      "price": 76
+     },
+     {
+      "from": 200,
+      "price": 72
+     }
+    ],
+    "minQtyDefault": 30
+   },
+   {
+    "id": "sticker-pack",
+    "name": "Стикерпак из 3D-стикеров",
+    "short": "набор из нескольких разных стикеров",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 5,
+    "fromUnit": "см²",
+    "qty": {
+     "min": 10,
+     "max": 200,
+     "default": 10,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "count",
+      "label": "Стикеров в одном наборе",
+      "type": "one",
+      "default": "6",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "3",
+        "label": "3 шт",
+        "hint": null
+       },
+       {
+        "id": "4",
+        "label": "4 шт",
+        "hint": null
+       },
+       {
+        "id": "5",
+        "label": "5 шт",
+        "hint": null
+       },
+       {
+        "id": "6",
+        "label": "6 шт",
+        "hint": null
+       },
+       {
+        "id": "8",
+        "label": "8 шт",
+        "hint": null
+       },
+       {
+        "id": "10",
+        "label": "10 шт",
+        "hint": null
+       },
+       {
+        "id": "12",
+        "label": "12 шт",
+        "hint": null
+       }
+      ]
+     },
+     {
+      "id": "cut",
+      "label": "Вырубка",
+      "type": "one",
+      "default": "simple",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "simple",
+        "label": "Простая",
+        "hint": "круг, квадрат, прямоугольник · 5 ₽/см²"
+       },
+       {
+        "id": "complex",
+        "label": "Сложная",
+        "hint": "по контуру рисунка · 7 ₽/см²"
+       }
+      ]
+     }
+    ],
+    "dims": [
+     {
+      "id": "w",
+      "label": "Ширина стикера",
+      "unit": "см",
+      "min": 1,
+      "max": 20,
+      "default": 4
+     },
+     {
+      "id": "h",
+      "label": "Высота стикера",
+      "unit": "см",
+      "min": 1,
+      "max": 20,
+      "default": 4
+     }
+    ],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Стикерпак",
+       "cells": [
+        "по той же цене за см²"
+       ]
+      }
+     ],
+     "note": "Стикеры в наборе считаются по площади, как отдельные; от 10 до 200 наборов, больше — индивидуально. Стикеры разного размера — посчитаем индивидуально."
+    },
+    "defaultSelection": {
+     "options": {
+      "count": "6",
+      "cut": "simple"
+     },
+     "dims": {
+      "w": 4,
+      "h": 4
+     },
+     "qty": 10
+    },
+    "defaultQuote": {
+     "unit": 480,
+     "total": 4800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "6 стикеров 4×4 см по 80 ₽",
+       "amount": 480,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "В заказе 60 стикеров (10 × 6). Скидка считается по общему числу стикеров: −5% от 100, −10% от 200.",
+      "Стикеры разного размера или сложная раскладка — посчитаем индивидуально."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 10,
+      "price": 480
+     },
+     {
+      "from": 17,
+      "price": 456
+     },
+     {
+      "from": 34,
+      "price": 432
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "sticker-set",
+    "name": "Набор 3D-стикеров 3×3 см",
+    "short": "по вашим фото или картинкам, от 3 шт",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 100,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 3,
+     "max": 30,
+     "default": 3,
+     "moreIn": {
+      "product": "sticker-3d",
+      "label": "как 3D-стикеры",
+      "dims": {
+       "w": 3,
+       "h": 3
+      }
+     }
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "3–4 шт",
+      "5–9 шт",
+      "10–30 шт"
+     ],
+     "rows": [
+      {
+       "label": "Набор 3D-стикеров 3×3 см",
+       "cells": [
+        "200 ₽",
+        "150 ₽",
+        "100 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 3
+    },
+    "defaultQuote": {
+     "unit": 200,
+     "total": 600,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Набор 3D-стикеров 3×3 см",
+       "amount": 200,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Стикеры 3×3 см по вашим фото или картинкам. От 30 шт выгоднее считать как 3D-стикеры из эпоксидной смолы — по цене за см²."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 3,
+      "price": 200
+     },
+     {
+      "from": 5,
+      "price": 150
+     },
+     {
+      "from": 10,
+      "price": 100
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "vinyl-sticker",
+    "name": "Виниловые стикеры с контурной резкой",
+    "short": "глянец или мат, от 100 шт",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 0.2,
+    "fromUnit": "см²",
+    "qty": {
+     "min": 100,
+     "max": 10000,
+     "default": 140
+    },
+    "options": [
+     {
+      "id": "film",
+      "label": "Плёнка",
+      "type": "one",
+      "default": "gloss",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "gloss",
+        "label": "Глянцевая",
+        "hint": null
+       },
+       {
+        "id": "matte",
+        "label": "Матовая",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [
+     {
+      "id": "w",
+      "label": "Ширина",
+      "unit": "см",
+      "min": 1,
+      "max": 30,
+      "default": 5
+     },
+     {
+      "id": "h",
+      "label": "Высота",
+      "unit": "см",
+      "min": 1,
+      "max": 30,
+      "default": 5
+     }
+    ],
+    "table": {
+     "columns": [
+      "100–299 шт",
+      "от 300 шт"
+     ],
+     "rows": [
+      {
+       "label": "Виниловый стикер, за см²",
+       "cells": [
+        "0,25 ₽",
+        "0,2 ₽"
+       ]
+      }
+     ],
+     "note": "Минимальный заказ — 100 стикеров и не меньше 850 ₽ (для маленьких стикеров — больше штук). Цена стикера = площадь (ширина × высота, см²) × цена за см², форма вырубки на цену не влияет."
+    },
+    "defaultSelection": {
+     "options": {
+      "film": "gloss"
+     },
+     "dims": {
+      "w": 5,
+      "h": 5
+     },
+     "qty": 140
+    },
+    "defaultQuote": {
+     "unit": 6.25,
+     "total": 875,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Стикер 5×5 см, глянцевая плёнка",
+       "amount": 6.25,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Площадь стикера 25 см² × 0,25 ₽/см²."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 140,
+      "price": 6.25
+     },
+     {
+      "from": 300,
+      "price": 5
+     }
+    ],
+    "minQtyDefault": 140
+   },
+   {
+    "id": "vinyl-pack",
+    "name": "Стикерпак на виниловой плёнке",
+    "short": "А6 или А5, контурная резка, от 50 шт",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 70,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 50,
+     "max": 200,
+     "default": 50,
+     "individualAbove": true
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Формат листа",
+      "type": "one",
+      "default": "a6",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "10,5 × 14,8 см"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "14,8 × 21 см"
+       }
+      ]
+     },
+     {
+      "id": "film",
+      "label": "Плёнка",
+      "type": "one",
+      "default": "gloss",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "gloss",
+        "label": "Глянцевая",
+        "hint": null
+       },
+       {
+        "id": "matte",
+        "label": "Матовая",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "50–99 шт",
+      "100–200 шт"
+     ],
+     "rows": [
+      {
+       "label": "А6",
+       "cells": [
+        "80 ₽",
+        "70 ₽"
+       ]
+      },
+      {
+       "label": "А5",
+       "cells": [
+        "120 ₽",
+        "105 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "a6",
+      "film": "gloss"
+     },
+     "dims": {},
+     "qty": 50
+    },
+    "defaultQuote": {
+     "unit": 80,
+     "total": 4000,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "А6",
+       "amount": 80,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Лист со стикерами на виниловой плёнке с контурной резкой; цена не зависит от формы вырубки."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 50,
+      "price": 80
+     },
+     {
+      "from": 100,
+      "price": 70
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "cards",
+  "name": "Визитки",
+  "page": "/vizitki",
+  "from": {
+   "price": 2.4,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "business-cards",
+    "name": "Визитки 90×50 мм",
+    "short": "цифровая печать, бумага 300 г, глянец или мат",
+    "image": "/img/showcase/business-cards.webp",
+    "fromPrice": 2.4,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 96,
+     "max": 20000,
+     "default": 96,
+     "presets": [
+      96,
+      200,
+      300
+     ],
+     "freeFrom": 500
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Печать",
+      "type": "one",
+      "default": "s1",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "s1",
+        "label": "Односторонняя",
+        "hint": "4+0"
+       },
+       {
+        "id": "s2",
+        "label": "Двусторонняя",
+        "hint": "4+4"
+       }
+      ]
+     },
+     {
+      "id": "paper",
+      "label": "Бумага 300 г",
+      "type": "one",
+      "default": "gloss",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "gloss",
+        "label": "Глянцевая",
+        "hint": null
+       },
+       {
+        "id": "matte",
+        "label": "Матовая",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "96 шт",
+      "200 шт",
+      "300 шт",
+      "500–999 шт",
+      "1000–5999 шт",
+      "от 6000 шт"
+     ],
+     "rows": [
+      {
+       "label": "Односторонняя",
+       "cells": [
+        "6,2 ₽",
+        "4,9 ₽",
+        "4 ₽",
+        "3,5 ₽",
+        "3,2 ₽",
+        "2,4 ₽"
+       ]
+      },
+      {
+       "label": "Двусторонняя",
+       "cells": [
+        "9,6 ₽",
+        "7,1 ₽",
+        "5,9 ₽",
+        "5 ₽",
+        "4,7 ₽",
+        "3,2 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "s1",
+      "paper": "gloss"
+     },
+     "dims": {},
+     "qty": 96
+    },
+    "defaultQuote": {
+     "unit": 6.2,
+     "total": 595,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Односторонняя",
+       "amount": 6.2,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "До 500 шт визитки печатаются тиражами 96, 200 или 300 шт, от 500 шт — любое количество. Срок — от 1 дня. Глянцевая и матовая бумага — по одной цене."
+     ],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 96,
+      "price": 6.2
+     },
+     {
+      "from": 200,
+      "price": 4.9
+     },
+     {
+      "from": 300,
+      "price": 4
+     },
+     {
+      "from": 500,
+      "price": 3.5
+     },
+     {
+      "from": 1000,
+      "price": 3.2
+     },
+     {
+      "from": 6000,
+      "price": 2.4
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "flyers",
+  "name": "Листовки и полиграфия",
+  "page": "/poligrafiya",
+  "from": {
+   "price": 13,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "flyers",
+    "name": "Листовки и флаеры",
+    "short": "цифровая печать от 50 шт",
+    "image": "/img/showcase/stationery.webp",
+    "fromPrice": 13,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 50,
+     "max": 2000,
+     "default": 100
+    },
+    "options": [
+     {
+      "id": "format",
+      "label": "Формат",
+      "type": "one",
+      "default": "a4",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a3",
+        "label": "А3",
+        "hint": "297×420 мм"
+       },
+       {
+        "id": "a4",
+        "label": "А4",
+        "hint": "210×297 мм"
+       },
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": "148×210 мм"
+       },
+       {
+        "id": "euro",
+        "label": "Еврофлаер",
+        "hint": "1/3 А4"
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": "105×148 мм"
+       }
+      ]
+     },
+     {
+      "id": "paper",
+      "label": "Бумага",
+      "type": "one",
+      "default": "thin",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "thin",
+        "label": "Офсетная 80 г",
+        "hint": "тонкая"
+       },
+       {
+        "id": "thick",
+        "label": "Плотная 115–300 г",
+        "hint": "мелованная"
+       }
+      ]
+     },
+     {
+      "id": "sides",
+      "label": "Печать",
+      "type": "one",
+      "default": "s",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "s",
+        "label": "Односторонняя",
+        "hint": null
+       },
+       {
+        "id": "d",
+        "label": "Двусторонняя",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "50–99 шт",
+      "100–199 шт",
+      "от 200 шт"
+     ],
+     "rows": [
+      {
+       "label": "А3, 80 г, 1 сторона",
+       "cells": [
+        "65 ₽",
+        "56 ₽",
+        "45 ₽"
+       ]
+      },
+      {
+       "label": "А3, 80 г, 2 стороны",
+       "cells": [
+        "110 ₽",
+        "97 ₽",
+        "86 ₽"
+       ]
+      },
+      {
+       "label": "А3, 115–300 г, 1 сторона",
+       "cells": [
+        "120 ₽",
+        "108 ₽",
+        "96 ₽"
+       ]
+      },
+      {
+       "label": "А3, 115–300 г, 2 стороны",
+       "cells": [
+        "195 ₽",
+        "175 ₽",
+        "155 ₽"
+       ]
+      },
+      {
+       "label": "А4, 80 г, 1 сторона",
+       "cells": [
+        "40 ₽",
+        "34 ₽",
+        "30 ₽"
+       ]
+      },
+      {
+       "label": "А4, 80 г, 2 стороны",
+       "cells": [
+        "60 ₽",
+        "54 ₽",
+        "48 ₽"
+       ]
+      },
+      {
+       "label": "А4, 115–300 г, 1 сторона",
+       "cells": [
+        "80 ₽",
+        "70 ₽",
+        "62 ₽"
+       ]
+      },
+      {
+       "label": "А4, 115–300 г, 2 стороны",
+       "cells": [
+        "125 ₽",
+        "113 ₽",
+        "100 ₽"
+       ]
+      },
+      {
+       "label": "А5, 80 г, 1 сторона",
+       "cells": [
+        "25 ₽",
+        "20 ₽",
+        "18 ₽"
+       ]
+      },
+      {
+       "label": "А5, 80 г, 2 стороны",
+       "cells": [
+        "35 ₽",
+        "30 ₽",
+        "27 ₽"
+       ]
+      },
+      {
+       "label": "А5, 115–300 г, 1 сторона",
+       "cells": [
+        "40 ₽",
+        "35 ₽",
+        "31 ₽"
+       ]
+      },
+      {
+       "label": "А5, 115–300 г, 2 стороны",
+       "cells": [
+        "65 ₽",
+        "56 ₽",
+        "50 ₽"
+       ]
+      },
+      {
+       "label": "Еврофлаер, 80 г, 1 сторона",
+       "cells": [
+        "15 ₽",
+        "14 ₽",
+        "13 ₽"
+       ]
+      },
+      {
+       "label": "Еврофлаер, 80 г, 2 стороны",
+       "cells": [
+        "25 ₽",
+        "20 ₽",
+        "18 ₽"
+       ]
+      },
+      {
+       "label": "Еврофлаер, 115–300 г, 1 сторона",
+       "cells": [
+        "25 ₽",
+        "23 ₽",
+        "21 ₽"
+       ]
+      },
+      {
+       "label": "Еврофлаер, 115–300 г, 2 стороны",
+       "cells": [
+        "45 ₽",
+        "38 ₽",
+        "34 ₽"
+       ]
+      },
+      {
+       "label": "А6, 80 г, 1 сторона",
+       "cells": [
+        "25 ₽",
+        "20 ₽",
+        "18 ₽"
+       ]
+      },
+      {
+       "label": "А6, 80 г, 2 стороны",
+       "cells": [
+        "25 ₽",
+        "20 ₽",
+        "18 ₽"
+       ]
+      },
+      {
+       "label": "А6, 115–300 г, 1 сторона",
+       "cells": [
+        "20 ₽",
+        "18 ₽",
+        "16 ₽"
+       ]
+      },
+      {
+       "label": "А6, 115–300 г, 2 стороны",
+       "cells": [
+        "30 ₽",
+        "29 ₽",
+        "25 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "format": "a4",
+      "paper": "thin",
+      "sides": "s"
+     },
+     "dims": {},
+     "qty": 100
+    },
+    "defaultQuote": {
+     "unit": 34,
+     "total": 3400,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Листовка А4",
+       "amount": 34,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 50,
+      "price": 40
+     },
+     {
+      "from": 100,
+      "price": 34
+     },
+     {
+      "from": 200,
+      "price": 30
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "notebook",
+    "name": "Блокнот с вашей обложкой",
+    "short": "40 листов",
+    "image": "/img/showcase/stationery.webp",
+    "fromPrice": 60,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 20,
+     "max": 1000,
+     "default": 20
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Формат",
+      "type": "one",
+      "default": "a5",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a5",
+        "label": "А5",
+        "hint": null
+       },
+       {
+        "id": "a6",
+        "label": "А6",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "20–49 шт",
+      "50–99 шт",
+      "100–199 шт",
+      "200–299 шт",
+      "от 300 шт"
+     ],
+     "rows": [
+      {
+       "label": "А5",
+       "cells": [
+        "150 ₽",
+        "110 ₽",
+        "100 ₽",
+        "95 ₽",
+        "80 ₽"
+       ]
+      },
+      {
+       "label": "А6",
+       "cells": [
+        "85 ₽",
+        "75 ₽",
+        "70 ₽",
+        "65 ₽",
+        "60 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "a5"
+     },
+     "dims": {},
+     "qty": 20
+    },
+    "defaultQuote": {
+     "unit": 150,
+     "total": 3000,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "А5",
+       "amount": 150,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 20,
+      "price": 150
+     },
+     {
+      "from": 50,
+      "price": 110
+     },
+     {
+      "from": 100,
+      "price": 100
+     },
+     {
+      "from": 200,
+      "price": 95
+     },
+     {
+      "from": 300,
+      "price": 80
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "office",
+    "name": "Печать документов",
+    "short": "ч/б и цветная, от 1 листа",
+    "image": null,
+    "fromPrice": 15,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 500,
+     "default": 10
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Формат и цвет",
+      "type": "one",
+      "default": "a4bw",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "a4bw",
+        "label": "А4 ч/б",
+        "hint": null
+       },
+       {
+        "id": "a4c",
+        "label": "А4 цветная",
+        "hint": null
+       },
+       {
+        "id": "a3bw",
+        "label": "А3 ч/б",
+        "hint": null
+       },
+       {
+        "id": "a3c",
+        "label": "А3 цветная",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "от 1 шт"
+     ],
+     "rows": [
+      {
+       "label": "А4 ч/б",
+       "cells": [
+        "15 ₽"
+       ]
+      },
+      {
+       "label": "А4 цветная",
+       "cells": [
+        "25 ₽"
+       ]
+      },
+      {
+       "label": "А3 ч/б",
+       "cells": [
+        "30 ₽"
+       ]
+      },
+      {
+       "label": "А3 цветная",
+       "cells": [
+        "40 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "a4bw"
+     },
+     "dims": {},
+     "qty": 10
+    },
+    "defaultQuote": {
+     "unit": 15,
+     "total": 150,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "А4 ч/б",
+       "amount": 15,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 15
+     }
+    ],
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "calendars",
+  "name": "Календари",
+  "page": "/kalendari",
+  "from": {
+   "price": 1.72,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "cal-quarterly",
+    "name": "Квартальный календарь",
+    "short": "МИДИ, МИНИ и «3 в 1», от 10 шт",
+    "image": "/img/showcase/stationery.webp",
+    "fromPrice": 324,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 10,
+     "max": 5000,
+     "default": 50
+    },
+    "options": [
+     {
+      "id": "model",
+      "label": "Модель",
+      "type": "one",
+      "default": "midi3",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "midi3",
+        "label": "МИДИ, 3 рекламных поля",
+        "hint": "325 мм, 3 блока"
+       },
+       {
+        "id": "midi1",
+        "label": "МИДИ, 1 рекламное поле",
+        "hint": "325 мм, 3 блока"
+       },
+       {
+        "id": "mini3",
+        "label": "МИНИ, 3 рекламных поля",
+        "hint": "297 мм, 3 блока"
+       },
+       {
+        "id": "mini1",
+        "label": "МИНИ, 1 рекламное поле",
+        "hint": "297 мм, 3 блока"
+       },
+       {
+        "id": "trio",
+        "label": "«3 в 1», 1 рекламное поле",
+        "hint": "335 мм, один большой блок"
+       }
+      ]
+     },
+     {
+      "id": "strip",
+      "label": "Металлическая планка",
+      "type": "one",
+      "default": "none",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "none",
+        "label": "Без планки",
+        "hint": null
+       },
+       {
+        "id": "silver",
+        "label": "Серебро",
+        "hint": "+110 ₽/шт"
+       },
+       {
+        "id": "gold",
+        "label": "Золото",
+        "hint": "+130 ₽/шт"
+       }
+      ]
+     },
+     {
+      "id": "fold",
+      "label": "Постер",
+      "type": "many",
+      "default": [],
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "fold",
+        "label": "Подгиб постера",
+        "hint": "+40 ₽/шт, верх плотнее"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "от 10 шт",
+      "от 50 шт",
+      "от 100 шт",
+      "от 200 шт",
+      "от 300 шт",
+      "от 500 шт",
+      "от 1000 шт"
+     ],
+     "rows": [
+      {
+       "label": "МИДИ, 3 рекламных поля",
+       "cells": [
+        "672 ₽",
+        "636 ₽",
+        "588 ₽",
+        "504 ₽",
+        "468 ₽",
+        "444 ₽",
+        "420 ₽"
+       ]
+      },
+      {
+       "label": "МИДИ, 1 рекламное поле",
+       "cells": [
+        "552 ₽",
+        "504 ₽",
+        "468 ₽",
+        "432 ₽",
+        "408 ₽",
+        "384 ₽",
+        "348 ₽"
+       ]
+      },
+      {
+       "label": "МИНИ, 3 рекламных поля",
+       "cells": [
+        "492 ₽",
+        "456 ₽",
+        "444 ₽",
+        "432 ₽",
+        "420 ₽",
+        "408 ₽",
+        "396 ₽"
+       ]
+      },
+      {
+       "label": "МИНИ, 1 рекламное поле",
+       "cells": [
+        "408 ₽",
+        "384 ₽",
+        "372 ₽",
+        "360 ₽",
+        "348 ₽",
+        "336 ₽",
+        "324 ₽"
+       ]
+      },
+      {
+       "label": "«3 в 1», 1 рекламное поле",
+       "cells": [
+        "420 ₽",
+        "384 ₽",
+        "372 ₽",
+        "360 ₽",
+        "—",
+        "—",
+        "—"
+       ]
+      },
+      {
+       "label": "+ металлическая планка: серебро / золото",
+       "cells": [
+        "+110 / +130 ₽",
+        "+110 / +130 ₽",
+        "+110 / +130 ₽",
+        "+110 / +130 ₽",
+        "+110 / +130 ₽",
+        "+110 / +130 ₽",
+        "+110 / +130 ₽"
+       ]
+      },
+      {
+       "label": "+ подгиб постера",
+       "cells": [
+        "+40 ₽",
+        "+40 ₽",
+        "+40 ₽",
+        "+40 ₽",
+        "+40 ₽",
+        "+40 ₽",
+        "+40 ₽"
+       ]
+      }
+     ],
+     "note": "Цена за 1 календарь. «3 в 1» — тиражом до 200 шт, больше — по запросу."
+    },
+    "defaultSelection": {
+     "options": {
+      "model": "midi3",
+      "strip": "none",
+      "fold": []
+     },
+     "dims": {},
+     "qty": 50
+    },
+    "defaultQuote": {
+     "unit": 636,
+     "total": 31800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Календарь МИДИ, 3 рекламных поля",
+       "amount": 636,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 10,
+      "price": 672
+     },
+     {
+      "from": 50,
+      "price": 636
+     },
+     {
+      "from": 100,
+      "price": 588
+     },
+     {
+      "from": 200,
+      "price": 504
+     },
+     {
+      "from": 300,
+      "price": 468
+     },
+     {
+      "from": 500,
+      "price": 444
+     },
+     {
+      "from": 1000,
+      "price": 420
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "cal-wall",
+    "name": "Настенный календарь",
+    "short": "плакат или перекидной",
+    "image": null,
+    "fromPrice": 165,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 1000,
+     "default": 10
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Вид",
+      "type": "one",
+      "default": "poster",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "poster",
+        "label": "Плакат А3",
+        "hint": "1 лист"
+       },
+       {
+        "id": "flip-a4",
+        "label": "Перекидной А4",
+        "hint": "13 листов"
+       },
+       {
+        "id": "flip-a3",
+        "label": "Перекидной А3",
+        "hint": "13 листов"
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–20 шт",
+      "21–50 шт",
+      "51–100 шт",
+      "от 101 шт"
+     ],
+     "rows": [
+      {
+       "label": "Плакат А3",
+       "cells": [
+        "180 ₽",
+        "175 ₽",
+        "170 ₽",
+        "165 ₽"
+       ]
+      },
+      {
+       "label": "Перекидной А4",
+       "cells": [
+        "695 ₽",
+        "540 ₽",
+        "480 ₽",
+        "420 ₽"
+       ]
+      },
+      {
+       "label": "Перекидной А3",
+       "cells": [
+        "1 390 ₽",
+        "1 080 ₽",
+        "960 ₽",
+        "840 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "poster"
+     },
+     "dims": {},
+     "qty": 10
+    },
+    "defaultQuote": {
+     "unit": 180,
+     "total": 1800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Плакат А3",
+       "amount": 180,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 180
+     },
+     {
+      "from": 21,
+      "price": 175
+     },
+     {
+      "from": 51,
+      "price": 170
+     },
+     {
+      "from": 101,
+      "price": 165
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "cal-desk",
+    "name": "Настольный календарь «домик»",
+    "short": "200×95 мм",
+    "image": null,
+    "fromPrice": 45,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 1000,
+     "default": 20
+    },
+    "options": [
+     {
+      "id": "variant",
+      "label": "Вид",
+      "type": "one",
+      "default": "plain",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "plain",
+        "label": "Обычный домик",
+        "hint": null
+       },
+       {
+        "id": "tearoff",
+        "label": "С отрывными месяцами",
+        "hint": null
+       }
+      ]
+     }
+    ],
+    "dims": [],
+    "table": {
+     "columns": [
+      "1–49 шт",
+      "50–99 шт",
+      "от 100 шт"
+     ],
+     "rows": [
+      {
+       "label": "Обычный домик",
+       "cells": [
+        "60 ₽",
+        "55 ₽",
+        "45 ₽"
+       ]
+      },
+      {
+       "label": "С отрывными месяцами",
+       "cells": [
+        "270 ₽",
+        "265 ₽",
+        "240 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "variant": "plain"
+     },
+     "dims": {},
+     "qty": 20
+    },
+    "defaultQuote": {
+     "unit": 60,
+     "total": 1200,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Обычный домик",
+       "amount": 60,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": [
+     {
+      "from": 1,
+      "price": 60
+     },
+     {
+      "from": 50,
+      "price": 55
+     },
+     {
+      "from": 100,
+      "price": 45
+     }
+    ],
+    "minQtyDefault": null
+   },
+   {
+    "id": "cal-pocket",
+    "name": "Карманные календари",
+    "short": "цена за весь тираж",
+    "image": null,
+    "fromPrice": 1.72,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 100,
+     "max": 10000,
+     "default": 100,
+     "presets": [
+      100,
+      200,
+      300,
+      500,
+      1000,
+      10000
+     ]
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена за тираж"
+     ],
+     "rows": [
+      {
+       "label": "100 шт",
+       "cells": [
+        "625 ₽"
+       ]
+      },
+      {
+       "label": "200 шт",
+       "cells": [
+        "1 170 ₽"
+       ]
+      },
+      {
+       "label": "300 шт",
+       "cells": [
+        "1 795 ₽"
+       ]
+      },
+      {
+       "label": "500 шт",
+       "cells": [
+        "2 185 ₽"
+       ]
+      },
+      {
+       "label": "1 000 шт",
+       "cells": [
+        "4 055 ₽"
+       ]
+      },
+      {
+       "label": "10 000 шт",
+       "cells": [
+        "17 160 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 100
+    },
+    "defaultQuote": {
+     "unit": 6.25,
+     "total": 625,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Тираж 100 шт",
+       "amount": 625,
+       "per": "заказ"
+      }
+     ],
+     "notes": [
+      "Карманные календари печатаются тиражами. Цена указана за весь тираж."
+     ],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "wide",
+  "name": "Широкоформатная печать",
+  "page": "/shirokoformatnaya-pechat",
+  "from": {
+   "price": 1050,
+   "unit": "м²"
+  },
+  "products": [
+   {
+    "id": "wide-print",
+    "name": "Наклейки, баннеры, плёнка",
+    "short": "цена за м²",
+    "image": "/img/showcase/stickers-3d.webp",
+    "fromPrice": 1050,
+    "fromUnit": "м²",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [
+     {
+      "id": "material",
+      "label": "Материал",
+      "type": "one",
+      "default": "film",
+      "addable": false,
+      "hideWhen": null,
+      "showWhen": null,
+      "choices": [
+       {
+        "id": "film",
+        "label": "Плёнка с печатью",
+        "hint": "1 050 ₽/м²"
+       },
+       {
+        "id": "film-cut",
+        "label": "Плёнка с печатью и контурной резкой",
+        "hint": "1 350 ₽/м²"
+       },
+       {
+        "id": "film-mount",
+        "label": "Плёнка с резкой на монтажной плёнке",
+        "hint": "2 300 ₽/м²"
+       },
+       {
+        "id": "banner",
+        "label": "Баннер",
+        "hint": "1 300 ₽/м²"
+       },
+       {
+        "id": "onevision",
+        "label": "OneVision (перфорированная плёнка)",
+        "hint": "1 450 ₽/м²"
+       },
+       {
+        "id": "pvc",
+        "label": "Плёнка на ПВХ 3–10 мм",
+        "hint": "от 4 800 ₽/м²"
+       }
+      ]
+     }
+    ],
+    "dims": [
+     {
+      "id": "w",
+      "label": "Ширина",
+      "unit": "см",
+      "min": 10,
+      "max": 500,
+      "default": 100
+     },
+     {
+      "id": "h",
+      "label": "Высота",
+      "unit": "см",
+      "min": 10,
+      "max": 500,
+      "default": 100
+     }
+    ],
+    "table": {
+     "columns": [
+      "Цена за м²"
+     ],
+     "rows": [
+      {
+       "label": "Плёнка с печатью",
+       "cells": [
+        "1 050 ₽"
+       ]
+      },
+      {
+       "label": "Плёнка с печатью и контурной резкой",
+       "cells": [
+        "1 350 ₽"
+       ]
+      },
+      {
+       "label": "Плёнка с резкой на монтажной плёнке",
+       "cells": [
+        "2 300 ₽"
+       ]
+      },
+      {
+       "label": "Баннер",
+       "cells": [
+        "1 300 ₽"
+       ]
+      },
+      {
+       "label": "OneVision (перфорированная плёнка)",
+       "cells": [
+        "1 450 ₽"
+       ]
+      },
+      {
+       "label": "Плёнка на ПВХ 3–10 мм",
+       "cells": [
+        "от 4 800 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {
+      "material": "film"
+     },
+     "dims": {
+      "w": 100,
+      "h": 100
+     },
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1050,
+     "total": 1050,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Плёнка с печатью, 1 м²",
+       "amount": 1050,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "1 050 ₽ за м². Монтаж и сложная резка — по договорённости."
+     ],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   }
+  ]
+ },
+ {
+  "id": "gifts",
+  "name": "Фотоподарки",
+  "page": "/fotopodarki",
+  "from": {
+   "price": 400,
+   "unit": "шт"
+  },
+  "products": [
+   {
+    "id": "puzzle-a3",
+    "name": "Пазл А3",
+    "short": null,
+    "image": null,
+    "fromPrice": 950,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Пазл А3",
+       "cells": [
+        "950 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 950,
+     "total": 950,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Пазл А3",
+       "amount": 950,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "puzzle-a4",
+    "name": "Пазл А4",
+    "short": null,
+    "image": null,
+    "fromPrice": 850,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Пазл А4",
+       "cells": [
+        "850 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 850,
+     "total": 850,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Пазл А4",
+       "amount": 850,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "puzzle-a5",
+    "name": "Пазл А5",
+    "short": null,
+    "image": null,
+    "fromPrice": 650,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Пазл А5",
+       "cells": [
+        "650 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 650,
+     "total": 650,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Пазл А5",
+       "amount": 650,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "puzzle-heart",
+    "name": "Пазл «Сердце»",
+    "short": null,
+    "image": null,
+    "fromPrice": 850,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Пазл «Сердце»",
+       "cells": [
+        "850 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 850,
+     "total": 850,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Пазл «Сердце»",
+       "amount": 850,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "pillow",
+    "name": "Подушка с фото",
+    "short": null,
+    "image": "/img/showcase/pillow.webp",
+    "fromPrice": 1450,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Подушка с фото",
+       "cells": [
+        "1 450 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1450,
+     "total": 1450,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Подушка с фото",
+       "amount": 1450,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "mousepad",
+    "name": "Коврик для мыши",
+    "short": null,
+    "image": null,
+    "fromPrice": 800,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Коврик для мыши",
+       "cells": [
+        "800 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 800,
+     "total": 800,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Коврик для мыши",
+       "amount": 800,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "pennant",
+    "name": "Вымпел",
+    "short": null,
+    "image": null,
+    "fromPrice": 1100,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Вымпел",
+       "cells": [
+        "1 100 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 1100,
+     "total": 1100,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Вымпел",
+       "amount": 1100,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "ball",
+    "name": "Ёлочный шар 70 мм",
+    "short": null,
+    "image": null,
+    "fromPrice": 450,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Ёлочный шар 70 мм",
+       "cells": [
+        "450 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 450,
+     "total": 450,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Ёлочный шар 70 мм",
+       "amount": 450,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "medal",
+    "name": "Медаль",
+    "short": null,
+    "image": null,
+    "fromPrice": 400,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Медаль",
+       "cells": [
+        "400 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 400,
+     "total": 400,
+     "from": false,
+     "breakdown": [
+      {
+       "label": "Медаль",
+       "amount": 400,
+       "per": "шт"
+      }
+     ],
+     "notes": [],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   },
+   {
+    "id": "car-sticker",
+    "name": "Наклейка на авто",
+    "short": null,
+    "image": null,
+    "fromPrice": 700,
+    "fromUnit": "шт",
+    "qty": {
+     "min": 1,
+     "max": 100,
+     "default": 1
+    },
+    "options": [],
+    "dims": [],
+    "table": {
+     "columns": [
+      "Цена"
+     ],
+     "rows": [
+      {
+       "label": "Наклейка на авто",
+       "cells": [
+        "от 700 ₽"
+       ]
+      }
+     ]
+    },
+    "defaultSelection": {
+     "options": {},
+     "dims": {},
+     "qty": 1
+    },
+    "defaultQuote": {
+     "unit": 700,
+     "total": 700,
+     "from": true,
+     "breakdown": [
+      {
+       "label": "Наклейка на авто",
+       "amount": 700,
+       "per": "шт"
+      }
+     ],
+     "notes": [
+      "Итоговая цена зависит от размера и макета — менеджер подтвердит её после просмотра."
+     ],
+     "error": null
+    },
+    "ladderDefault": null,
+    "minQtyDefault": null
+   }
+  ]
+ }
+]
