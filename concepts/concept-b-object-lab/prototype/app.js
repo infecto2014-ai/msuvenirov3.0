@@ -364,7 +364,7 @@
       fmtBox.hidden = obj !== 'tee';
       if (photo) { ev.hidden = false; ev.innerHTML = `<img src="${PHOTO + photo.src}" alt="${esc(photo.t)}" width="120" loading="lazy"><figcaption><b>Работа мастерской</b>${esc(photo.t)}</figcaption>`; }
       else ev.hidden = true;
-      $('#heroCta').href = obj === 'tee' ? PROTO_PAGE + '#calc' : '#';
+      $$('.hero-cta').forEach((c) => { c.href = obj === 'tee' ? PROTO_PAGE + '#calc' : '#'; });
       if (!REDUCED) { $('.tag-price', tag).classList.remove('flash'); void tag.offsetWidth; $('.tag-price', tag).classList.add('flash'); }
     }
     $$('[data-obj]', host).forEach((b) => b.addEventListener('click', () => {
@@ -373,7 +373,7 @@
     $$('[data-fmt]', fmtBox).forEach((b) => b.addEventListener('click', () => {
       fmt = b.dataset.fmt; $$('[data-fmt]', fmtBox).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); draw();
     }));
-    $('#heroCta').addEventListener('click', (e) => { if ($('#heroCta').getAttribute('href') === '#') { e.preventDefault(); toast('В прототипе собрана только страница футболок'); } });
+    $$('.hero-cta').forEach((c) => c.addEventListener('click', (e) => { if (c.getAttribute('href') === '#') { e.preventDefault(); toast('В прототипе собрана только страница футболок'); } }));
     $('.tag-link', tag).addEventListener('click', (e) => { if (e.currentTarget.hasAttribute('data-proto-link')) { e.preventDefault(); toast('В прототипе собрана только страница футболок'); } });
     window.addEventListener('resize', () => { const s = $('svg', svgBox); s && fitText(s, vbW(obj)); });
     draw();
@@ -407,7 +407,8 @@
       const ruler = $('#rkRuler'); const tenCm = 100 * k; const n = Math.floor(row.scrollWidth / tenCm);
       let s = ''; for (let i = 0; i <= n; i++) { const x = i * tenCm; s += `<line x1="${x}" y1="0" x2="${x}" y2="${i % 5 === 0 ? 10 : 6}"/>` + (i % 5 === 0 ? `<text x="${x}" y="24" text-anchor="${i ? 'middle' : 'start'}">${i * 10}${i === Math.floor(n / 5) * 5 ? ' см' : ''}</text>` : ''); }
       ruler.setAttribute('width', row.scrollWidth); ruler.innerHTML = `<line x1="0" y1="0" x2="${n * tenCm}" y2="0"/>` + s;
-      $('#rkScale').textContent = `Все вещи — в одном масштабе: 10 см на экране — ${tenCm.toFixed(0)} px.`;
+      $('#rkScale').textContent = 'Линейка в сантиметрах — одна для всех вещей.';
+      const lx = $('#loupeX'); if (lx) lx.textContent = 'Увеличено в ' + Math.round(1.5 / k) + ' раз';
     }
     layout(); window.addEventListener('resize', layout);
     $$('[data-group]').forEach((b) => b.addEventListener('click', () => {

@@ -423,7 +423,7 @@ fieldset.f-row { border: 0; padding: 0; margin: 0 0 16px; }
 .loupe { flex: none; width: 300px; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: opacity .2s; }
 .loupe-c { position: relative; width: 280px; height: 280px; border-radius: 50%; background: var(--sheet); box-shadow: inset 0 0 0 1.5px var(--ink-2), 0 0 0 8px rgba(28,31,35,.05); overflow: hidden; }
 .loupe-c .tag-x { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); font: 600 13px var(--text); color: var(--action); background: var(--action-tint); border-radius: 999px; padding: 4px 10px; }
-.loupe-c .card { position: absolute; left: 40px; top: 178px; width: 205px; height: 129px; } /* 85,6×54 мм × 2,4 */
+.loupe-c .card { position: absolute; left: 150px; top: 196px; width: 128.4px; height: 81px; } /* 85,6×54 мм × 1,5 px/мм */
 .loupe-item { position: absolute; display: block; text-decoration: none; transition: opacity .2s, transform .15s var(--ease); }
 .loupe-item:hover { transform: translateY(-3px); }
 .loupe-list { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
@@ -585,3 +585,12 @@ fieldset.f-row { border: 0; padding: 0; margin: 0 0 16px; }
 .faq details p { max-width: 44em; color: var(--ink-2); margin: 0 0 20px; }
 .faq-grid { display: grid; grid-template-columns: 4fr 8fr; gap: 40px; }
 @media (max-width: 1023px) { .faq-grid { grid-template-columns: 1fr; gap: 12px; } .faq summary { font-size: 18px; } }
+
+/* сетка страницы изделия: стенд слева на две строки, справа заголовок и пульт */
+.p-head { grid-column: 2; grid-row: 1; padding-top: 12px; }
+.p-head .lead { margin-top: 16px; }
+.pstand { grid-column: 1; grid-row: 1 / span 2; }
+.pult-wrap { grid-column: 2; grid-row: 2; padding-bottom: 40px; }
+.pult { margin-top: 4px; }
+@media (max-width: 1119px) { .p-head, .pstand, .pult-wrap { grid-column: 1; grid-row: auto; } .p-head { padding-bottom: 12px; } }
+@media (max-width: 760px) { .hstand { order: 2; } .p-head .lead { font-size: 16px; line-height: 24px; margin-top: 10px; } .p-facts { display: none; } .pstand-top .note { display: none; } }
