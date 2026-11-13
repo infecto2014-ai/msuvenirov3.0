@@ -18,6 +18,8 @@
 - Этап 1: аудит старого сайта — `docs/PROJECT_AUDIT.md`, `CONTENT_INVENTORY.md`, `FUNCTIONAL_MAP.md`, `SEO_BASELINE.md`, `URL_MAP.md`.
 - Этап 2: сценарии и аналитика — `docs/USER_SCENARIOS.md`, `ANALYTICS_PLAN.md` — сделано.
 - Этап 3: архитектура и SEO — `docs/SITE_MAP.md`, `SEO_KEYWORD_MAP.md`, `PAGE_CONTENT_BRIEFS.md`, `INTERNAL_LINKING_PLAN.md`.
+- Этап 4–5: скилы, стандарты (`ANTI_AI_SLOP.md`, `DESIGN_BRIEF.md`, `QUALITY_CRITERIA.md`), агенты — сделано.
+- Этап 6 (13.11.2026): три концепции — `concepts/README.md` (сравнение) и `concepts/concept-*/CONCEPT.md`; ждут выбора владельца. Прототипы и разработка — только по его заданию.
 - Дальше — по заданиям владельца. Без его задания разработку не начинать. После каждого этапа — остановиться и ждать.
 
 ## Модели и агенты — ОБЯЗАТЕЛЬНО (владелец, 12.11.2026; приоритет над другими заданиями)
