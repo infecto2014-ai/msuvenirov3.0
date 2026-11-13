@@ -17,6 +17,21 @@
 | Скилл ui-ux-pro-max | github.com/nextlevelbuilder/ui-ux-pro-max-skill | `.claude/skills/ui-ux-pro-max/` | MIT | да | сохранён текст лицензии | 06.11.2026 (CLAUDE.md) | — |
 | Скилл Hallmark | github.com/Nutlope/hallmark | `.claude/skills/hallmark/` | MIT | да | сохранён текст лицензии | 09.11.2026 (CLAUDE.md) | — |
 
+### Скилы (установлены 12.11.2026 в `.claude/skills/`)
+
+Лицензии прочитаны по файлам LICENSE в репозиториях 12.11.2026; тексты лицензий лежат в папке каждого скила.
+
+| Скил | Источник (коммит, дата) | Что взято | Лицензия | Коммерч. | Атрибуция | Изменения |
+|---|---|---|---|---|---|---|
+| frontend-design | github.com/anthropics/skills, `skills/frontend-design` (2c5958e, 06.11.2026) | SKILL.md, LICENSE.txt | Apache-2.0 | да | сохранить текст лицензии | нет |
+| impeccable 4.8.2 | github.com/pbakaus/impeccable, `.claude/skills/impeccable` (b4bff16, 11.11.2026) | скил целиком (инструкции, справочные файлы, скрипты), LICENSE, NOTICE.md | Apache-2.0 (часть справочных файлов — по мотивам MIT-проекта ehmo/platform-design-skills, см. NOTICE.md) | да | сохранить LICENSE и NOTICE | нет. Хуки не установлены; служебную программу-движок скил скачивает сам при запуске — не скачивалась |
+| ui-ux-pro-max 2.15.0 | github.com/nextlevelbuilder/ui-ux-pro-max-skill, `.claude/skills/ui-ux-pro-max` (6ae86f6, 10.11.2026) | только основной скил; 6 соседних (banner-design, brand, design, design-system, slides, ui-styling) не взяты | MIT | да | сохранить текст лицензии | нет |
+| web-design-guidelines 1.0.0 | github.com/vercel-labs/agent-skills (1a2c79d, 27.10.2026) + правила из github.com/vercel-labs/web-interface-guidelines (434b7f9) | SKILL.md, снимок правил `guidelines-snapshot.md`, LICENSE | MIT | да | сохранить текст лицензии | в SKILL.md добавлено указание брать правила из локального снимка, а не из сети |
+| seo | github.com/affaan-m/everything-claude-code, `skills/seo` (d2ef268, 06.11.2026) | один файл SKILL.md + LICENSE; остальной набор (агенты, хуки, десятки скилов) не взят | MIT | да | сохранить текст лицензии | нет |
+| ux-writing | github.com/content-designer/ux-writing-skill (98cacde, 26.05.2026) | SKILL.md, references, templates, examples, LICENSE; видео и архив не взяты | MIT | да | сохранить текст лицензии | нет |
+
+Рассмотрено и не установлено: N1arko/redaktura-skills (редактура на русском) — лицензия не определена; скил Hallmark из старого репозитория — в список владельца не входил, по назначению пересекается с impeccable.
+
 Изображения текущего сайта (не сторонние ресурсы, но учитываются по правилу о трёх видах фото):
 - реальные фото работ и мастерской — `public/img/portfolio*` и др., от владельца;
 - сгенерированные визуализации — первый экран (`hero-kaliningrad-*`), «Изделия и цены» (`public/img/products/*`, Gemini через AITUNNEL) — это демонстрационные изображения, не портфолио; в v3 при показе рядом с реальными работами обозначать честно;

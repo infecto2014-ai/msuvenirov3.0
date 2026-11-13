@@ -57,5 +57,5 @@ Opus   ──(нужно менять общую стратегию ИЛИ пе�
 
 - Claude Code 2.1.322, облачная среда claude.ai, провайдер Anthropic API (`firstParty`, `api.anthropic.com`).
 - Алиасы `fable`, `opus`, `sonnet` в инструменте Agent → `claude-fable-5-2`, `claude-opus-5-5`, `claude-sonnet-5-5` (проверено вызовами).
-- Полные ID в frontmatter агентов работают: headless-прогон вызвал `project-director`, `frontend-engineer`, `content-auditor`; по биллингу (`modelUsage`) — ровно `claude-fable-5-2`, `claude-opus-5-5`, `claude-sonnet-5-5`.
+- Полные ID в frontmatter агентов работают: headless-прогон вызвал `project-director`, `frontend-engineer`, `content-auditor` (так агенты назывались при проверке 12.11.2026; текущий состав — `AGENT_ROUTING.md`); по биллингу (`modelUsage`) — ровно `claude-fable-5-2`, `claude-opus-5-5`, `claude-sonnet-5-5`.
 - Новые файлы в `.claude/agents/` подхватываются только при старте новой сессии.
