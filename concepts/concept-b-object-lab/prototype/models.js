@@ -59,8 +59,7 @@
       <path class="tee-shade" d="M -304,294 Q -276,268 -257,252 Q -246,215 -238,190 Q -300,232 -352,236 Z"/>
       <path class="tee-fold" d="M 244,272 C 204,298 166,316 128,328"/>
       <path class="tee-fold" d="M -244,272 C -204,298 -166,316 -128,328"/>
-      <path class="tee-fold" d="M 60,628 C 120,656 180,670 240,676" style="stroke-width:7;opacity:.55"/>
-      <path class="tee-fold" d="M -200,590 C -140,626 -80,646 -10,654" style="stroke-width:6;opacity:.4"/>
+
 `;
 
   function teeFront() {
@@ -149,7 +148,7 @@
   /* ---------- Простые модели для «Раскладки» (в мм, стоят на горизонте y = h) ---------- */
   const fill = 'class="m-fill"', edge = 'class="m-edge"', sh = 'class="m-sh"';
   const MODELS = {
-    tee: { w: 790, h: 732, ox: 395, oy: 0, svg: () => `<g transform="translate(395,6)"><path ${fill} d="${BODY}"/><path ${sh} d="M -80,9 C -56,22 -30,27 0,27 C 30,27 56,22 80,9 C 77,50 46,80 0,82 C -46,80 -77,50 -80,9 Z"/><path ${sh} d="${SLEEVE_R}" opacity=".35"/><path ${edge} d="${BODY}"/><path ${edge} d="M -92,2 C -90,62 -50,99 0,99 C 50,99 90,62 92,2"/></g>` },
+    tee: { w: 790, h: 732, ox: 395, oy: 0, svg: () => `<g transform="translate(395,6)"><path ${fill} d="${BODY}"/><path ${sh} d="M -80,9 C -56,22 -30,27 0,27 C 30,27 56,22 80,9 C 77,50 46,80 0,82 C -46,80 -77,50 -80,9 Z"/><path ${edge} d="${BODY}"/><path ${edge} d="M -92,2 C -90,62 -50,99 0,99 C 50,99 90,62 92,2"/></g>` },
     hoodie: { w: 760, h: 800, svg: () => `<g transform="translate(380,0)">
         <path ${fill} d="M -120,120 C -150,40 -110,0 0,0 C 110,0 150,40 120,120 L 250,170 C 300,200 330,260 352,420 L 372,700 L 300,712 L 270,440 L 268,760 Q 0,780 -268,760 L -270,440 L -300,712 L -372,700 L -352,420 C -330,260 -300,200 -250,170 Z"/>
         <path ${sh} d="M -92,124 C -110,50 -80,22 0,22 C 80,22 110,50 92,124 C 60,150 -60,150 -92,124 Z"/>

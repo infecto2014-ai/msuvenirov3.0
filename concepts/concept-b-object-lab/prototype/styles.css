@@ -92,12 +92,12 @@ p { margin: 0 0 12px; }
 /* ---------- Шапка ---------- */
 .hdr { position: sticky; top: 0; z-index: 40; background: var(--stand); transition: box-shadow .2s, transform .25s var(--ease); }
 .hdr.scrolled { box-shadow: 0 1px 0 var(--line); }
-.hdr-in { display: flex; align-items: center; gap: 28px; height: 72px; }
+.hdr-in { display: flex; align-items: center; gap: 20px; height: 72px; }
 .logo { display: block; color: var(--ink); flex: none; }
 .logo img { height: 40px; width: auto; }
 .nav { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; flex: 1; min-width: 0; }
 .nav > li { position: relative; }
-.nav a.top, .nav button.top { display: inline-flex; align-items: center; gap: 4px; height: 44px; padding: 0 10px; border: 0; background: none;
+.nav a.top, .nav button.top { white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; height: 44px; padding: 0 10px; border: 0; background: none;
   color: var(--ink); text-decoration: none; font: 500 15px/1 var(--text); border-radius: 999px; }
 .nav a.top:hover, .nav button.top:hover, .nav .open > button.top { background: rgba(28,31,35,.06); }
 .nav .caret { width: 14px; height: 14px; transition: transform .2s; }
@@ -594,3 +594,46 @@ fieldset.f-row { border: 0; padding: 0; margin: 0 0 16px; }
 .pult { margin-top: 4px; }
 @media (max-width: 1119px) { .p-head, .pstand, .pult-wrap { grid-column: 1; grid-row: auto; } .p-head { padding-bottom: 12px; } }
 @media (max-width: 760px) { .hstand { order: 2; } .p-head .lead { font-size: 16px; line-height: 24px; margin-top: 10px; } .p-facts { display: none; } .pstand-top .note { display: none; } }
+
+.nav a.top, .nav button.top { padding: 0 9px; }
+@media (max-width: 760px) { .m-hide { display: none; } .hsvg { height: clamp(170px, 22svh, 220px); } .htabs .pill { min-height: 48px; } .rk-groups { max-width: 100%; } }
+/* ценник на странице изделия: слева цена, справа кнопки */
+.ptag { width: 470px; display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 0 16px; align-items: start; }
+.ptag > .price-xl, .ptag > .per, .ptag > .tag-break, .ptag > .tag-next { grid-column: 1; }
+.ptag .tag-btns { grid-column: 2; grid-row: 1 / span 4; grid-template-columns: 1fr; margin-top: 0; align-self: center; }
+@media (min-width: 1120px) { .pstand { top: 80px; height: calc(100vh - 96px); } }
+.pstand .evid { max-width: 240px; }
+@media (max-width: 1119px) { .ptag { width: auto; } }
+@media (max-width: 760px) {
+  .tsvg { height: clamp(210px, 30svh, 280px); }
+  .ptag { grid-template-columns: 1fr 1fr; gap: 0 8px; }
+  .ptag > .price-xl, .ptag > .per { grid-column: 1 / -1; }
+  .ptag .tag-btns { grid-column: 1 / -1; grid-row: auto; grid-template-columns: 1fr 1fr; margin-top: 10px; order: 0; }
+  .ptag > .tag-break, .ptag > .tag-next { grid-column: 1 / -1; }
+  .ptag > .tag-break { order: 5; } .ptag > .tag-next { order: 4; }
+}
+
+/* лупа парит над мелкими вещами (компьютер) */
+.loupe-c .tag-x { white-space: nowrap; }
+.rk-name { font-size: 15px; }
+@media (min-width: 1120px) {
+  .rk { padding-top: 190px; }
+  .loupe { position: absolute; top: 22px; right: 32px; width: auto; flex-direction: row-reverse; align-items: center; gap: 20px; }
+  .loupe-c { zoom: .8; }
+  .loupe-side { display: flex; flex-direction: column; gap: 8px; width: 190px; }
+  .loupe-list { grid-template-columns: 1fr; }
+  .loupe-cap { text-align: left; }
+  .rk-caption { position: absolute; top: 28px; left: 32px; max-width: 360px; }
+}
+.rk-caption { font-size: 14px; color: var(--ink-2); margin: 0 0 12px; }
+
+@media (max-width: 760px) {
+  .rk { padding: 18px var(--pad); }
+  .rk-scroll { margin: 0 calc(-1 * var(--pad)); padding: 0 var(--pad) 8px; }
+  .rk-groups { padding: 0; }
+  .loupe { padding: 0; }
+  .tasks a > span:nth-child(2), .tasks button > span:nth-child(2) { display: none; }
+}
+
+[hidden] { display: none !important; }
+@media (max-width: 760px) { .toast { bottom: auto; top: 64px; transform: translate(-50%, -200%); } .toast.on { transform: translate(-50%, 0); } }

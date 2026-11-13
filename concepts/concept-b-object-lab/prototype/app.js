@@ -222,8 +222,8 @@
         <p class="muted" style="margin-top:16px">Что дальше:</p>
         <ol><li>Мастер посмотрит заявку и свяжется с вами: ${esc(via === 'Звонок' ? 'позвонит' : 'напишет в ' + via)}.</li>
         <li>Согласуем макет до печати — без согласования не печатаем.</li>
-        <li>Заберёте заказ в ТЦ «Экватор», 2 этаж. Работаем ежедневно, 10:00–20:00.</li></ol>
-        <p class="small muted">Если нужно быстрее — позвоните: <a href="tel:+79521142350">+7 952 114-23-50</a>.</p>
+        <li>Заберёте заказ в ТЦ «Экватор», 2 этаж. Работаем ежедневно, <span class="nb">10:00–20:00</span>.</li></ol>
+        <p class="small muted">Если нужно быстрее — позвоните: <a class="nb" href="tel:+79521142350">+7 952 114-23-50</a>.</p>
         <button class="btn btn-main" type="button" data-close-form2>Готово</button>`;
       $('#orderForm').hidden = true; done.hidden = false;
       $$('[data-close-form2]', done).forEach((b) => b.addEventListener('click', () => dl.close()));
@@ -264,9 +264,9 @@
     for (let mm = 0, i = 0; x0 + mm <= x1 + 0.01; mm += 10, i++) {
       const big = i % every === 0, mid = i % 5 === 0;
       s += `<line x1="${x0 + mm}" y1="${y}" x2="${x0 + mm}" y2="${y + (big ? tick * 1.6 : mid ? tick : tick * 0.55)}"/>`;
-      if (big) s += `<text x="${x0 + mm}" y="${y + tick * 1.6 + (opt.fsu || 20)}" text-anchor="middle">${i}${x0 + mm + 10 * every > x1 ? ' см' : ''}</text>`;
+      if (big) s += `<text x="${x0 + mm}" y="${y + tick * 1.6 + (opt.fsu || 20)}" text-anchor="middle">${i}</text>`;
     }
-    return s + '</g>';
+    return s + `<text x="${x1 + tick * 1.4}" y="${y + tick * 1.6 + (opt.fsu || 20)}" text-anchor="start">см</text></g>`;
   }
   // Полный стенд: state = {view, color, own, prints:[{place, fmt}], active, qty, file}
   function teeStandSVG(st, opts = {}) {
@@ -317,8 +317,9 @@
     const r = teeStandSVG(st, { noLabel: true, noRuler: true, ghosts: false });
     return `<svg class="stand-svg ${r.cls}" style="${r.style}" viewBox="-420 -30 840 780" aria-hidden="true" focusable="false">${r.inner}</svg>`;
   }
-  function fitText(svg, vbW) {
-    const k = svg.getBoundingClientRect().width / vbW || 0.6;
+  function fitText(svg) {
+    const vb = svg.viewBox.baseVal; const r = svg.getBoundingClientRect();
+    const k = Math.min(r.width / vb.width, r.height / vb.height) || 0.6;
     svg.style.setProperty('--fs', (13.5 / k).toFixed(1) + 'px');
     svg.style.setProperty('--fs2', (15 / k).toFixed(1) + 'px');
     return k;
@@ -385,11 +386,11 @@
     const items = $$('.rk-item', row);
     items.forEach((a) => { const key = a.dataset.model; $('.rk-pic', a).innerHTML = modelSVG(key, { col: a.dataset.col, pad: 0 }); });
     $$('.loupe [data-model]').forEach((el) => { el.innerHTML = modelSVG(el.dataset.model, { col: el.dataset.col, pad: 0 }); });
-    const MIN = 96, GAP = 20;
+    const MIN = 100, GAP = 20;
     function layout() {
       const narrow = window.innerWidth <= 760;
       const W = row.clientWidth - (narrow ? 0 : 0);
-      let k = narrow ? 0.26 : 0.4;
+      let k = narrow ? 0.2 : 0.4;
       if (!narrow) {
         for (let it = 0; it < 30; it++) { // подбираем масштаб, чтобы ряд занял ширину
           const sum = items.reduce((s, a) => s + Math.max(+a.dataset.w * k, MIN), 0) + GAP * (items.length - 1);
@@ -408,7 +409,7 @@
       let s = ''; for (let i = 0; i <= n; i++) { const x = i * tenCm; s += `<line x1="${x}" y1="0" x2="${x}" y2="${i % 5 === 0 ? 10 : 6}"/>` + (i % 5 === 0 ? `<text x="${x}" y="24" text-anchor="${i ? 'middle' : 'start'}">${i * 10}${i === Math.floor(n / 5) * 5 ? ' см' : ''}</text>` : ''); }
       ruler.setAttribute('width', row.scrollWidth); ruler.innerHTML = `<line x1="0" y1="0" x2="${n * tenCm}" y2="0"/>` + s;
       $('#rkScale').textContent = 'Линейка в сантиметрах — одна для всех вещей.';
-      const lx = $('#loupeX'); if (lx) lx.textContent = 'Увеличено в ' + Math.round(1.5 / k) + ' раз';
+      const lx = $('#loupeX'); const b56 = $('.loupe-item[data-model="badge56"]'); if (lx && b56) { const z = b56.getBoundingClientRect().width / 56; const n = Math.round(z / k); lx.textContent = 'Увеличено в ' + n + ' ' + plural(n, 'раз', 'раза', 'раз'); }
     }
     layout(); window.addEventListener('resize', layout);
     $$('[data-group]').forEach((b) => b.addEventListener('click', () => {
@@ -485,8 +486,8 @@
       $('#addPrint').hidden = st.prints.length >= 4;
       $$('.print-row', box).forEach((row) => {
         const i = +row.dataset.i;
-        $$('[data-fmt]', row).forEach((b) => b.addEventListener('click', () => { st.prints[i].fmt = b.dataset.fmt; st.active = i; ensureView(i); update(); }));
-        $('.place-sel', row).addEventListener('change', (e) => { st.prints[i].place = e.target.value; st.active = i; ensureView(i); update(); });
+        $$('[data-fmt]', row).forEach((b) => b.addEventListener('click', () => { st.prints[i].fmt = b.dataset.fmt; st.active = i; ensureView(i); renderPrints(); update(); const nb = $(`.print-row[data-i="${i}"] [data-fmt="${b.dataset.fmt}"]`); nb && nb.focus(); }));
+        $('.place-sel', row).addEventListener('change', (e) => { st.prints[i].place = e.target.value; st.active = i; ensureView(i); renderPrints(); update(); });
         row.addEventListener('focusin', () => { if (st.active !== i) { st.active = i; $$('.print-row', box).forEach((r) => r.classList.toggle('act', +r.dataset.i === i)); ensureView(i, true); } });
         const rm = $('[data-rm]', row); rm && rm.addEventListener('click', () => { st.prints.splice(i, 1); st.active = Math.min(st.active, st.prints.length - 1); renderPrints(); update(); $('#addPrint').focus(); });
       });
