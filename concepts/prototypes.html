@@ -1,0 +1,85 @@
+<title>Прототипы MSUVENIROV</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Раскладка: одна колонка текста, три строки-концепции с образцами цвета; служебная страница-оглавление. */
+:root {
+  --bg: #f4f4f1; --panel: #ffffff; --fg: #1d2126; --muted: #5b626b; --line: #d5d8d6; --link: #1f3db8;
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #16181b; --panel: #1f2226; --fg: #eceeed; --muted: #a3aab1; --line: #353a40; --link: #9db0ff; color-scheme: dark }
+}
+:root[data-theme="dark"] { --bg: #16181b; --panel: #1f2226; --fg: #eceeed; --muted: #a3aab1; --line: #353a40; --link: #9db0ff; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 17px; line-height: 1.55 }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 40px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 28px }
+h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.01em }
+p { margin: 0; max-width: 65ch }
+.lead { color: var(--muted) }
+.list { display: flex; flex-direction: column; gap: 16px; list-style: none; padding: 0; margin: 0 }
+.item { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px }
+.head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; justify-content: space-between }
+h2 { font-size: 22px; margin: 0; line-height: 1.2 }
+.sw { display: flex; gap: 6px }
+.sw span { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line) }
+.links { display: flex; flex-wrap: wrap; gap: 10px }
+.links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid var(--fg); color: var(--fg); text-decoration: none; font-weight: 600 }
+.links a:first-child { background: var(--fg); color: var(--bg) }
+.links a:focus-visible { outline: 3px solid var(--link); outline-offset: 2px }
+.note { color: var(--muted); font-size: 15px }
+.how { border-top: 1px solid var(--line); padding-top: 20px; display: flex; flex-direction: column; gap: 8px }
+.how h2 { font-size: 18px }
+.how li { margin-left: 1.1em }
+ul.plain { margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px }
+</style>
+
+<div class="wrap">
+  <h1>Три прототипа нового сайта «Мастерской сувениров»</h1>
+  <p class="lead">В каждом — главная страница и страница «Печать на футболках» с работающим калькулятором, сметой и формой заявки. Цены настоящие, из прайса. Заявка никуда не отправляется: это прототипы для выбора направления.</p>
+
+  <ul class="list">
+    <li class="item">
+      <div class="head">
+        <h2>A — «Издание»</h2>
+        <div class="sw" aria-hidden="true"><span style="background:#ffffff"></span><span style="background:#1b2230"></span><span style="background:#f0ae35"></span><span style="background:#7a3345"></span></div>
+      </div>
+      <p>Сайт свёрстан как печатное издание. Цена стоит в строке, как номер страницы в оглавлении. Калькулятор — бланк с вопросами, итог собирается готовой фразой.</p>
+      <div class="links">
+        <a href="concept-a-editorial/proto/index.html">Главная</a>
+        <a href="concept-a-editorial/proto/futbolki.html">Футболки и калькулятор</a>
+      </div>
+    </li>
+    <li class="item">
+      <div class="head">
+        <h2>B — «Стенд примерки»</h2>
+        <div class="sw" aria-hidden="true"><span style="background:#e6e7e3"></span><span style="background:#1c1f23"></span><span style="background:#1f3db8"></span><span style="background:#ead9a6"></span></div>
+      </div>
+      <p>Вещь можно примерить до заказа: цвет, размер принта, перед и спина, количество — футболка и цена меняются на глазах. Можно вставить свою картинку.</p>
+      <div class="links">
+        <a href="concept-b-object-lab/proto/index.html">Главная</a>
+        <a href="concept-b-object-lab/proto/futbolki.html">Футболки и калькулятор</a>
+      </div>
+    </li>
+    <li class="item">
+      <div class="head">
+        <h2>C — «Формула изделия»</h2>
+        <div class="sw" aria-hidden="true"><span style="background:#d6d0c4"></span><span style="background:#213a31"></span><span style="background:#ffffff"></span><span style="background:#a6401b"></span></div>
+      </div>
+      <p>Каждая вещь разложена на основу, печать и тираж и сложена в цену. Каталог — прейскурант со спецификациями, калькулятор — сборка по шагам с линейкой тиража.</p>
+      <div class="links">
+        <a href="concept-c-workshop/proto/index.html">Главная</a>
+        <a href="concept-c-workshop/proto/futbolki.html">Футболки и калькулятор</a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="how">
+    <h2>Как смотреть</h2>
+    <ul class="plain">
+      <li>Откройте каждый прототип и на компьютере, и на телефоне — вёрстка разная.</li>
+      <li>На странице футболок поменяйте цвет, размер принта и количество, добавьте второй принт, нажмите «В смету» и «Заказать».</li>
+      <li>Ссылки на страницы, которых в прототипе нет, никуда не ведут. Чтобы вернуться сюда, используйте кнопку «Назад».</li>
+      <li>Звонок и мессенджеры из прототипа могут не открываться — это ограничение просмотра, не сайта.</li>
+    </ul>
+    <p class="note">Прототипы показывают направление, а не готовый сайт: нет остальных страниц, фотографии — только те, что есть сейчас.</p>
+  </div>
+</div>
