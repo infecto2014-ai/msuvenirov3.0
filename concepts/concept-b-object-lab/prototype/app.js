@@ -23,9 +23,11 @@
     return `<svg${cls}${style} viewBox="${-pad} ${-pad} ${md.w + pad * 2} ${md.h + pad * 2}" aria-hidden="true" focusable="false">${md.svg()}</svg>`;
   }
   function fromText(cat, prod) {
-    const p = P.findProduct(cat, prod); if (!p) return '';
-    const unit = p.fromUnit && p.fromUnit !== 'шт' ? ` за ${p.fromUnit}` : '';
-    return 'от ' + rub(p.fromPrice) + unit;
+    let price, u;
+    if (prod === "*") { const f = P.categoryFrom(cat); if (!f) return ""; price = f.price; u = f.unit; }
+    else { const p = P.findProduct(cat, prod); if (!p) return ""; price = p.fromPrice; u = p.fromUnit; }
+    const unit = u && u !== "шт" ? ` за ${u}` : "";
+    return "от " + rub(price) + unit;
   }
   // Цены «от» и силуэты в разметке: data-from="cat/prod", data-sil="model"
   function hydrateStatic(root = document) {
@@ -152,6 +154,18 @@
       $('[data-del]', row).addEventListener('click', () => { save(memItems.filter((x) => x.id !== id)); renderSmeta(); updateChips(); toast('Позиция убрана из сметы'); });
     });
   }
+
+  /* Ловушка фокуса для выезжающих панелей (Tab / Shift+Tab по кругу) */
+  function trapTab(e, panel) {
+    if (e.key !== 'Tab' || !panel) return;
+    const f = Array.from(panel.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])')).filter((x) => x.offsetParent !== null || x === document.activeElement);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (!panel.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  document.addEventListener('keydown', (e) => { const d = $('.drawer.on'); if (d) trapTab(e, d); const m = $('.mnav.on'); if (m) trapTab(e, m); });
   let smetaReturn;
   function openSmeta() {
     buildDrawer(); renderSmeta(); smetaReturn = document.activeElement;
@@ -530,7 +544,7 @@
         per.textContent = `Больше ${MAX} шт — цену рассчитаем индивидуально. Укажите количество в заявке.`;
         $('#bOrder').textContent = 'Запросить расчёт';
         sticky.innerHTML = `<b>больше ${MAX} шт</b><span>посчитаем отдельно</span>`;
-        $('#tNext').hidden = true;
+        $('#tNext').hidden = false; $('#tNext').textContent = (q.notes && q.notes[0]) || 'Больше 50 шт считаем индивидуально — пришлите заявку';
       } else {
         tot.classList.remove('tag-over');
         tot.textContent = rub(q.total);

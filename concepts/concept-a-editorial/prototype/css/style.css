@@ -590,3 +590,17 @@ dialog::backdrop { background: rgba(27,34,48,.45); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 .vt-title { view-transition-name: vt-title; }
+
+/* Зоны нажатия не меньше 44 px на телефоне (исправления после проверки) */
+@media (max-width: 760px) {
+  .logo { min-height: 44px; align-items: center; }
+  .footer nav a { padding: 11px 0; }
+  .legal a, .colo-col a, .hero-facts a, .aside a, .f-small a { padding-block: 14px; }
+  .ratings a.btn-text { min-height: 44px; }
+  .opts.compact .opt span { min-height: 44px; }
+  .ladder button { min-height: 44px; }
+  .est-item .qty button { width: 44px; height: 44px; }
+  .est-item .qty input { height: 44px; }
+  .seg span { min-height: 44px; }
+  .hint button { display: inline-flex; align-items: center; min-height: 44px; margin-block: -12px; vertical-align: middle; }
+}

@@ -100,7 +100,7 @@
     ] },
     { g: 'Полиграфия', cap: 'Визитки, календари, баннеры и плёнка.', items: [
       { c: 'cards', p: 'business-cards', name: 'Визитки', ic: 'cards', what: '90×50 мм, с одной или двух сторон', from: 'Бумага 300 г, глянец или мат', how: 'Цифровая печать; тиражи 96, 200, 300 и от 500' },
-      { c: 'calendars', p: 'cal-quarterly', name: 'Календари', ic: 'cal', what: 'Квартальные, настенные, «домики»', from: 'Квартальные МИДИ, МИНИ и «3 в 1»', how: 'Цифровая печать, курсор в комплекте' },
+      { c: 'calendars', cat: true, name: 'Календари', ic: 'cal', what: 'Квартальные, настенные, «домики»', from: 'Квартальные МИДИ, МИНИ и «3 в 1»', how: 'Цифровая печать, курсор в комплекте' },
       { c: 'wide', p: 'wide-print', name: 'Широкоформатная печать', ic: 'wide', what: 'Баннеры, плёнка, перфоплёнка', from: 'Цена за квадратный метр', how: 'Только печать, без монтажа' }
     ] }
   ];
@@ -152,7 +152,7 @@
   }
 
   /* ---------- Указатель цен и меню ---------- */
-  var INDEX = [['Футболки', 'textile', 'tshirt-unisex', 'futbolki.html'], ['Худи', 'textile', 'hoodie'], ['Кружки', 'mugs', 'mug'], ['Значки', 'badges', 'badge-roll'], ['Бейсболки', 'textile', 'cap'], ['Шопперы', 'textile', 'shopper'], ['3D-стикеры', 'stickers', 'sticker-3d'], ['Брелоки', 'keychains', 'keychain-acrylic'], ['Магниты', 'magnets', 'photo-magnet'], ['Визитки', 'cards', 'business-cards'], ['Календари', 'calendars', 'cal-quarterly'], ['Фотоподарки', 'gifts', null]];
+  var INDEX = [['Футболки', 'textile', 'tshirt-unisex', 'futbolki.html'], ['Худи', 'textile', 'hoodie'], ['Кружки', 'mugs', 'mug'], ['Значки', 'badges', 'badge-roll'], ['Бейсболки', 'textile', 'cap'], ['Шопперы', 'textile', 'shopper'], ['3D-стикеры', 'stickers', 'sticker-3d'], ['Брелоки', 'keychains', 'keychain-acrylic'], ['Магниты', 'magnets', null], ['Визитки', 'cards', 'business-cards'], ['Календари', 'calendars', null], ['Фотоподарки', 'gifts', null]];
   function fromOf(c, p) { if (!p) { var cf = P.categoryFrom(c); return { v: cf.price, u: cf.unit }; } var x = P.findProduct(c, p); return { v: x.fromPrice, u: x.fromUnit || 'шт' }; }
   function renderIndex() {
     var host = $('#index-list'); if (!host) return;
@@ -161,14 +161,14 @@
     if (more) more.addEventListener('click', function () { $('.index').classList.add('all'); more.remove(); });
   }
   var MENU = [
-    ['Одежда', [['Печать на одежде', 'textile', null, '#'], ['Футболки', 'textile', 'tshirt-unisex', 'futbolki.html', 1], ['Худи', 'textile', 'hoodie', '#', 1], ['Шопперы', 'textile', 'shopper', '#', 1], ['Бейсболки', 'textile', 'cap', '#', 1], ['Спецодежда', 'textile', 'own-item', '#', 1], ['Спортивная форма', 'textile', 'tshirt-sub', '#', 1], ['На вашей вещи', 'textile', 'own-item', '#', 1], ['Сублимационная печать', 'textile', 'sub-print', '#'], ['DTF и сублимация без нанесения', 'transfers', null, '#']]],
+    ['Одежда', [['Печать на одежде', 'textile', null, '#'], ['Футболки', 'textile', 'tshirt-unisex', 'futbolki.html', 1], ['Худи', 'textile', 'hoodie', '#', 1], ['Шопперы', 'textile', 'shopper', '#', 1], ['Бейсболки', 'textile', 'cap', '#', 1], ['Спецодежда', 'textile', 'own-item', '#', 1], ['Спортивная форма', null, null, '#', 1, 'по прайсу печати'], ['На вашей вещи', 'textile', 'own-item', '#', 1], ['Сублимационная печать', 'textile', 'sub-print', '#'], ['DTF и сублимация без нанесения', 'transfers', null, '#']]],
     ['Подарки и сувениры', [['Кружки', 'mugs', null, '#'], ['Значки', 'badges', null, '#'], ['Брелоки', 'keychains', null, '#'], ['Магниты', 'magnets', null, '#'], ['Стикеры', 'stickers', null, '#'], ['Фотоподарки', 'gifts', null, '#']]],
     ['Полиграфия', [['Полиграфия', 'flyers', null, '#'], ['Визитки', 'cards', null, '#'], ['Календари', 'calendars', null, '#'], ['Широкоформатная печать', 'wide', null, '#']]],
     ['По задаче', [['Подарки к празднику', null, null, '#'], ['Для класса и команды', null, null, '#'], ['Печать на вашей вещи', null, null, '#'], ['Для компаний', null, null, '#'], ['Все услуги', null, null, '#'], ['Все цены и калькулятор', null, null, '#']]]
   ];
   function menuItem(m) {
     var pr = m[1] ? fromOf(m[1], m[2]) : null;
-    return '<li' + (m[4] ? ' class="sub"' : '') + '><a href="' + m[3] + '"><span class="nm">' + m[0] + '</span>' + (pr ? '<span class="pr">от ' + rub(pr.v) + (pr.u !== 'шт' ? '/' + pr.u : '') + '</span>' : '') + '</a></li>';
+    return '<li' + (m[4] ? ' class="sub"' : '') + '><a href="' + m[3] + '"><span class="nm">' + m[0] + '</span>' + (pr ? '<span class="pr">от ' + rub(pr.v) + (pr.u !== 'шт' ? '/' + pr.u : '') + '</span>' : (m[5] ? '<span class="pr">' + m[5] + '</span>' : '')) + '</a></li>';
   }
   function renderMenus() {
     var mega = $('#mega');
@@ -267,6 +267,16 @@
     $$('input[data-i]', b).forEach(function (x) { x.addEventListener('change', function () { var it = est[+x.dataset.i]; var p = P.findProduct(it.c, it.p); it.qty = Math.max(p.qty.min, parseInt(x.value, 10) || p.qty.min); save(); renderEstimate(); }); });
     $$('[data-del]', b).forEach(function (x) { x.addEventListener('click', function () { est.splice(+x.dataset.del, 1); save(); renderEstimate(); }); });
   }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var d = $('.drawer.open'); if (!d) return;
+    var f = $$('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary', d).filter(function (x) { return x.offsetParent !== null || x === document.activeElement; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (!d.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+    else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   var lastFocus = null;
   function openDrawer(id) { lastFocus = document.activeElement; var d = document.getElementById(id); d.classList.add('open'); $('.scrim').classList.add('open'); d.setAttribute('aria-hidden', 'false'); var f = $('.x', d); f && f.focus(); if (id === 'estimate') renderEstimate(); }
   function closeDrawers() { $$('.drawer.open').forEach(function (d) { d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); }); $('.scrim').classList.remove('open'); lastFocus && lastFocus.focus && lastFocus.focus(); }

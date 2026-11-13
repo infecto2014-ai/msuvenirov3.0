@@ -637,3 +637,15 @@ fieldset.f-row { border: 0; padding: 0; margin: 0 0 16px; }
 
 [hidden] { display: none !important; }
 @media (max-width: 760px) { .toast { bottom: auto; top: 64px; transform: translate(-50%, -200%); } .toast.on { transform: translate(-50%, 0); } }
+
+/* Зоны нажатия не меньше 44 px на телефоне (исправления после проверки) */
+@media (max-width: 760px) {
+  .logo { display: inline-flex; align-items: center; min-height: 44px; }
+  .foot li a { min-height: 44px; }
+  .foot-nap a, .foot-legal a, .tag-link { display: inline-flex; align-items: center; min-height: 44px; }
+  .crumbs a { min-height: 44px; }
+  .crumbs { align-items: center; padding-top: 0; }
+  .crumbs li { display: flex; align-items: center; }
+  .tag-break summary { min-height: 44px; }
+  .place-sel { min-height: 44px; }
+}

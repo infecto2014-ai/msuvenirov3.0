@@ -612,3 +612,18 @@ dialog.order::backdrop{background:rgba(20,18,15,.5)}
 .mlist .pr{color:var(--ink2);white-space:nowrap}
 .mlist.top a{font:600 22px/26px var(--ec);min-height:52px}
 .p-spec .nw{display:inline;font-size:inherit;color:inherit}
+
+/* Зоны нажатия не меньше 44 px на телефоне (исправления после проверки) */
+@media (max-width:760px){
+  .logo{display:inline-flex;align-items:center;min-height:44px}
+  .foot li{padding:0}
+  .foot li a{display:inline-flex;align-items:center;min-height:44px;padding:0}
+  .foot .tel-big{display:inline-flex;align-items:center;min-height:44px}
+  .legal a,.crumbs a,.r-name a{padding-block:15px}
+  .where a{padding-block:11px}
+  .hint button{display:inline-flex;align-items:center;min-height:44px;margin-block:-12px;vertical-align:middle}
+  .toast button{min-height:44px}
+  .seg span,.mk .seg span{min-height:44px}
+  .seg input{margin:0}
+  .index a{padding:11px 0}
+}
