@@ -1,0 +1,337 @@
+{
+ "portfolio": [
+  {
+   "src": "/portfolio/portfolio-20.webp",
+   "title": "Корпоративная партия футболок",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-10.webp",
+   "title": "Брендированные маски для компании «За Родину»",
+   "tech": "DTF-печать",
+   "tags": [
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-29.webp",
+   "title": "Сувенирные магниты-календари на 2025 год",
+   "tech": "Сублимация",
+   "tags": [
+    "magnity",
+    "kalendari",
+    "poligrafiya",
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-23.webp",
+   "title": "Персонализированная футболка «Dmitry»",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-1.webp",
+   "title": "Фанатский мерч по вселенной Harry Potter",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-11.webp",
+   "title": "Комплект футболок для фанатов BLACKPINK",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-18.webp",
+   "title": "Подарочные бокалы с нанесением",
+   "tech": "УФ-печать",
+   "tags": [
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-25.webp",
+   "title": "Кружки с надписью «Дедушка всегда прав»",
+   "tech": "Сублимация",
+   "tags": [
+    "kruzhki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-3.webp",
+   "title": "Ретро-принт в стиле Punch-Out!!",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-5.webp",
+   "title": "Худи с иллюстрацией в стиле манга",
+   "tech": "DTF-печать",
+   "tags": [
+    "hudi",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-24.webp",
+   "title": "Акриловые брелоки с полиграфической вставкой",
+   "tech": "Цифровая печать",
+   "tags": [
+    "breloki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-2.webp",
+   "title": "Сувенирная кружка «Kaliningrad»",
+   "tech": "Сублимация",
+   "tags": [
+    "kruzhki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-12.webp",
+   "title": "Фанатский мерч Stray Kids",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-7.webp",
+   "title": "Эко-шоппер с видами Калининграда",
+   "tech": "Сублимация",
+   "tags": [
+    "shoppery"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-21.webp",
+   "title": "Футболка с фотоколлажем на заказ",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-4.webp",
+   "title": "Детская футболка с любимым персонажем",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-17.webp",
+   "title": "Зонт с индивидуальным принтом",
+   "tech": "DTF-печать",
+   "tags": [
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-30.webp",
+   "title": "Кружки с детскими рисунками",
+   "tech": "Сублимация",
+   "tags": [
+    "kruzhki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-6.webp",
+   "title": "Новогодний ёлочный шар с фотопечатью",
+   "tech": "Сублимация",
+   "tags": [
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-22.webp",
+   "title": "Футболка с детскими фотографиями",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-8.webp",
+   "title": "Комплект: футболка и кепка с принтом",
+   "tech": "Термотрансферная плёнка",
+   "tags": [
+    "futbolki",
+    "kepki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-13.webp",
+   "title": "Мягкая игрушка с именным принтом",
+   "tech": "DTF-печать",
+   "tags": [
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-26.webp",
+   "title": "Корпоративный вымпел с символикой организации",
+   "tech": "Сублимация",
+   "tags": [
+    "korporativ",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-14.webp",
+   "title": "Кофейный набор с индивидуальным дизайном",
+   "tech": "Сублимация",
+   "tags": [
+    "kruzhki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-27.webp",
+   "title": "Футболка с дизайном ITZY",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-15.webp",
+   "title": "Парные футболки с авторским артом кота",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-19.webp",
+   "title": "Кружки с зеркальным серебряным покрытием",
+   "tech": "Сублимация",
+   "tags": [
+    "kruzhki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-9.webp",
+   "title": "Футболка с авторским принтом",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-16.webp",
+   "title": "Наградная медаль на заказ",
+   "tech": "УФ-печать",
+   "tags": [
+    "sport",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/portfolio-28.webp",
+   "title": "Футболка с портретом Иммануила Канта",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki"
+   ]
+  },
+  {
+   "src": "/portfolio/kpop-tshirt.webp",
+   "title": "K-pop футболка с авторским дизайном",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  },
+  {
+   "src": "/portfolio/sport-jersey.webp",
+   "title": "Брендирование спортивной формы",
+   "tech": "DTF-печать",
+   "tags": [
+    "sport",
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/corporate-polo.webp",
+   "title": "Корпоративное поло для ресторана",
+   "tech": "DTF-печать",
+   "tags": [
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/wedding-tshirts.webp",
+   "title": "Парные свадебные футболки",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "svadba",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/branded-caps.webp",
+   "title": "Брендированные кепки для бизнеса",
+   "tech": "DTF-печать",
+   "tags": [
+    "kepki",
+    "korporativ"
+   ]
+  },
+  {
+   "src": "/portfolio/shopper-bags.webp",
+   "title": "Дизайнерские шопперы с авторским принтом",
+   "tech": "DTF-печать",
+   "tags": [
+    "shoppery"
+   ]
+  },
+  {
+   "src": "/portfolio/dtf-bestdad.webp",
+   "title": "Футболка «Best Dad» с семейным фотоколлажем",
+   "tech": "DTF-печать",
+   "tags": [
+    "futbolki",
+    "podarki"
+   ]
+  },
+  {
+   "src": "/portfolio/sublimation-anime.webp",
+   "title": "Футболки с аниме-принтами на всю поверхность",
+   "tech": "Сублимация",
+   "tags": [
+    "futbolki",
+    "fandom"
+   ]
+  }
+ ]
+}
