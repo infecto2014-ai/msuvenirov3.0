@@ -51,12 +51,17 @@ export function initWorksSlider(root: HTMLElement): void {
   const update = () => {
     const page = currentPage();
     dots.forEach((d, i) => d.setAttribute('aria-current', String(i === page)));
-    prev.disabled = track.scrollLeft <= 4;
-    next.disabled = track.scrollLeft >= maxScroll() - 4;
+    // aria-disabled, not disabled: a disabled button that has focus drops it to <body> and keyboard users lose their place
+    prev.setAttribute('aria-disabled', String(track.scrollLeft <= 4));
+    next.setAttribute('aria-disabled', String(track.scrollLeft >= maxScroll() - 4));
   };
 
-  prev.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: behavior() }));
-  next.addEventListener('click', () => track.scrollBy({ left: track.clientWidth, behavior: behavior() }));
+  prev.addEventListener('click', () => {
+    if (prev.getAttribute('aria-disabled') !== 'true') track.scrollBy({ left: -track.clientWidth, behavior: behavior() });
+  });
+  next.addEventListener('click', () => {
+    if (next.getAttribute('aria-disabled') !== 'true') track.scrollBy({ left: track.clientWidth, behavior: behavior() });
+  });
 
   let raf = 0;
   track.addEventListener(

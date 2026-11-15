@@ -225,13 +225,17 @@ const catReady = 'src' in resolvePic('cat-peek');
   .wk-arrow[hidden] {
     display: none;
   }
-  .wk-arrow:hover:not(:disabled) {
+  .wk-arrow:hover:not([aria-disabled='true']) {
     background: var(--blue);
     color: var(--white);
   }
-  .wk-arrow:disabled {
+  /* at the end of the strip the arrow fades out, but stays focusable so the keyboard focus is not lost */
+  .wk-arrow[aria-disabled='true'] {
     opacity: 0;
     pointer-events: none;
+  }
+  .wk-arrow[aria-disabled='true']:focus-visible {
+    opacity: 0.5;
   }
   .wk-prev {
     left: -28px;
