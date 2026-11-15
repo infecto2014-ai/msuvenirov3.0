@@ -42,7 +42,7 @@
 - Astro 5.16.x (строго `~5.16.16`: на сервере Node ≥ 18.20.8, не обновлять до 6+ без проверки сервера), статика, `build.format: 'file'` (`/price` → `price.html`), `trailingSlash: 'never'`. Preact — только для окна заявки (`src/components/islands/OrderDialog.tsx`). Шрифт Onest — локально (`@fontsource-variable/onest`), значки Lucide вставлены как SVG (`src/components/ui/Icon.astro`).
 - `npm run dev` — локально (порт 4321); `npm run build` — проверка типов + сборка в `dist/`; `npm test` — тесты (цены, адрес, данные главной, смета, картинки); `npm run check:links` — после сборки: все ссылки и файлы на месте, старого адреса нет.
 - `node scripts/shots.mjs <папка>` (после `npm run build`) — снимки главной на 1440, 1024, 768 и 360 px, ошибки консоли и горизонтальная прокрутка; `--no-js` — то же без JavaScript. Playwright берётся из окружения.
-- Тестовая копия — GitHub Pages репозитория (`.github/workflows/preview.yml`, ссылки получают префикс через `scripts/preview-rewrite.mjs`, закрыта от индексации). Форма там не отправляет — функции Supabase не развёрнуты, окно честно об этом говорит.
+- Тестовая копия — GitHub Pages репозитория (`.github/workflows/preview.yml`, ссылки получают префикс через `scripts/preview-rewrite.mjs`, закрыта от индексации). Форма там не отправляет — функции Supabase не развёрнуты; окно показывает ошибку и предлагает позвонить или написать в Telegram.
 
 ## Источники правды
 - Цены и правила расчёта — только `src/data/pricing.ts` (перенесён с действующего сайта вместе с тестами). Руками цены в тексты не писать: каталог главной берёт «от N ₽ / шт» через `categoryFrom`.

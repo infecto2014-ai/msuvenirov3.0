@@ -64,13 +64,13 @@ try {
     page.on('requestfailed', (r) => errors.push(`не загрузилось: ${r.url()}`));
     await page.goto(BASE + '/', { waitUntil: 'networkidle' });
     // lazy pictures: scroll through the page so every one of them loads before the shot
-    await page.evaluate(async () => {
-      for (let y = 0; y < document.body.scrollHeight; y += 600) {
-        window.scrollTo(0, y);
-        await new Promise((r) => setTimeout(r, 40));
-      }
-      window.scrollTo(0, 0);
-    });
+    // (with the mouse wheel: in a page without JavaScript timers inside evaluate() never fire)
+    const height = await page.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y < height; y += 600) {
+      await page.mouse.wheel(0, 600);
+      await page.waitForTimeout(40);
+    }
+    await page.mouse.wheel(0, -height - 1000);
     await page.waitForLoadState('networkidle');
 
     const overflow = await page.evaluate(() => {
