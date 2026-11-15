@@ -1,0 +1,245 @@
+---
+// «Отзывы клиентов»: platform ratings as text with links (site.ratings; never AggregateRating markup),
+// six real reviews from reviews.ts (stars only when the review data has its rating — never invented), a link to all reviews.
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { homeReviews } from '@/data/home';
+import { site } from '@/data/site';
+
+const score = (n: number) => n.toFixed(1).replace('.', ',');
+---
+
+<section class="section reviews" aria-labelledby="reviews-title">
+  <div class="wrap">
+    <SectionHead id="reviews-title" title="Отзывы" accent="клиентов">
+      <a slot="action" class="rv-all" href="/otzyvy">
+        Все отзывы <Icon name="arrow-right" size={20} />
+      </a>
+    </SectionHead>
+
+    <ul class="rv-ratings" role="list" aria-label="Оценки на площадках">
+      {
+        site.ratings.map((r) => (
+          <li>
+            <a class="rv-rating" href={r.href} target="_blank" rel="noopener">
+              <span class="rv-score">
+                <Icon name="star" size={20} class="rv-star" />
+                {score(r.rating)}
+              </span>
+              <span class="rv-place">
+                <strong>{r.platform}</strong>
+                <span class="muted">
+                  {r.count} {r.unit}
+                </span>
+              </span>
+              <Icon name="arrow-right" size={18} class="rv-go" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ul class="rv-list" role="list">
+      {
+        homeReviews.map((r) => {
+          return (
+            <li class="rv-card">
+              {r.rating ? (
+                <p class="rv-stars">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Icon name="star" size={18} class:list={['rv-star', { 'rv-star-off': i >= (r.rating ?? 0) }]} />
+                  ))}
+                  <span class="visually-hidden">Оценка {r.rating} из 5</span>
+                </p>
+              ) : null}
+              <blockquote class="rv-text">
+                <p>{r.text}</p>
+              </blockquote>
+              <p class="rv-who">
+                <span class="rv-avatar" aria-hidden="true">
+                  {r.name.charAt(0)}
+                </span>
+                <span class="rv-meta">
+                  <strong>{r.name}</strong>
+                  <span class="muted">{[r.source, r.date].filter(Boolean).join(' · ')}</span>
+                </span>
+              </p>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .rv-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+    transition: color var(--t-fast) ease;
+  }
+  .rv-all :global(.icon) {
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .rv-all:hover {
+    color: var(--blue-hover);
+  }
+  .rv-all:hover :global(.icon) {
+    transform: translateX(3px);
+  }
+
+  .rv-ratings {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-4);
+    margin-bottom: var(--s-6);
+  }
+  .rv-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 72px;
+    padding: var(--s-3) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--sky-2);
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+      border-color var(--t-fast) ease,
+      background-color var(--t-fast) ease;
+  }
+  .rv-rating:hover {
+    border-color: var(--blue);
+    background: var(--sky);
+  }
+  .rv-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .rv-place {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+    font-size: var(--fs-sm);
+  }
+  .rv-place strong {
+    font-size: var(--fs-base);
+  }
+  .rv-ratings :global(.rv-go) {
+    flex: none;
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .rv-rating:hover :global(.rv-go) {
+    transform: translateX(3px);
+  }
+  .reviews :global(.rv-star) {
+    flex: none;
+    color: var(--blue);
+    fill: currentColor;
+  }
+  .reviews :global(.rv-star-off) {
+    color: var(--line);
+  }
+
+  .rv-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-5);
+  }
+  .rv-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .rv-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .rv-text {
+    margin: 0;
+    flex: 1;
+  }
+  .rv-text p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    overflow: hidden;
+  }
+  .rv-who {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+  .rv-avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue-hover);
+    font-weight: 800;
+  }
+  .rv-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+    font-size: var(--fs-sm);
+  }
+  .rv-meta strong {
+    font-size: var(--fs-base);
+  }
+
+  @media (max-width: 1100px) {
+    .rv-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .rv-ratings {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-3);
+    }
+    .rv-rating {
+      min-height: 60px;
+    }
+  }
+  @media (max-width: 560px) {
+    .rv-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-4);
+    }
+    .rv-card {
+      padding: var(--s-4);
+    }
+    .rv-score {
+      font-size: 1.25rem;
+    }
+    .rv-rating {
+      padding-inline: var(--s-4);
+    }
+  }
+</style>

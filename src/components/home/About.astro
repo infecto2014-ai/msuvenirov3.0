@@ -1,0 +1,200 @@
+---
+// SEO text «Печать на заказ в Калининграде» (words and links as on 2.0, HomeSeo.astro): intro on the left,
+// four cards on the right. ≤ 560px — only the first card is open, the rest are behind «Читать полностью» (<details>).
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+
+const items: { icon: IconName; h: string; html: string }[] = [
+  {
+    icon: 'shirt',
+    h: 'Печать на футболках и худи',
+    html: `Печатаем на <a href="/pechat-na-futbolkah">футболках</a>, <a href="/pechat-na-hudi">худи</a>, свитшотах, поло и <a href="/pechat-na-shopperah">шопперах</a> от одной штуки. Основная технология — DTF: яркий принт на ткани любого цвета, который выдерживает больше 50 стирок. Можно принести свою вещь или выбрать нашу — белые и чёрные футболки всегда в наличии.`,
+  },
+  {
+    icon: 'coffee',
+    h: 'Печать на кружках и фотоподарки',
+    html: `Делаем <a href="/pechat-na-kruzhkah">кружки с фото</a> и надписью: белые, цветные, хамелеон. Из фотографий получаются <a href="/fotopodarki">подушки, пазлы, ёлочные шары</a> и <a href="/magnity">магниты</a> — подарок, который можно забрать в тот же день или к нужной дате.`,
+  },
+  {
+    icon: 'building',
+    h: 'Мерч и сувениры с логотипом для компаний',
+    html: `Для компаний Калининграда делаем корпоративный мерч: футболки и поло с логотипом, <a href="/pechat-na-kepkah">бейсболки</a>, <a href="/znachki">значки</a>, <a href="/breloki">брелоки</a>, подарки сотрудникам и партнёрам. Работаем по счёту без НДС, перед тиражом согласуем макет и показываем образец. Подробнее — в разделе <a href="/korporativnym-klientam">для компаний</a>.`,
+  },
+  {
+    icon: 'file-text',
+    h: 'Полиграфия и широкоформатная печать',
+    html: `Печатаем <a href="/vizitki">визитки</a>, <a href="/poligrafiya">листовки и блокноты</a>, <a href="/kalendari">календари</a> — квартальные, настенные и карманные. Для вывесок и витрин — <a href="/shirokoformatnaya-pechat">широкоформатная печать</a> на плёнке и баннере. Нет макета — поможем его сделать.`,
+  },
+];
+const [first, ...rest] = items;
+---
+
+<section class="section about" aria-labelledby="about-title">
+  <div class="wrap ab-layout">
+    <div class="ab-intro">
+      <SectionHead id="about-title" eyebrow="О мастерской" title="Печать на заказ" accent="в Калининграде" />
+      <p class="ab-lead">Своя мастерская в ТЦ «Экватор»: печатаем от одной штуки до тиража для компании.</p>
+    </div>
+
+    <div class="ab-list">
+      <article class="ab-card">
+        <span class="ab-ic"><Icon name={first.icon} size={24} /></span>
+        <div>
+          <h3>{first.h}</h3>
+          <p set:html={first.html} />
+        </div>
+      </article>
+      <details class="ab-more" data-about-more>
+        <summary class="ab-toggle">
+          Читать полностью <Icon name="chevron-down" size={18} />
+        </summary>
+        <div class="ab-rest">
+          {
+            rest.map((it) => (
+              <article class="ab-card">
+                <span class="ab-ic">
+                  <Icon name={it.icon} size={24} />
+                </span>
+                <div>
+                  <h3>{it.h}</h3>
+                  <p set:html={it.html} />
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Wider than a phone the text is never folded. Browsers that cannot show the closed <details> content with CSS
+  // (no ::details-content) get it opened here; on phones it stays folded behind «Читать полностью».
+  const more = document.querySelector<HTMLDetailsElement>('[data-about-more]');
+  const wide = window.matchMedia('(min-width: 561px)');
+  const supported = CSS.supports('selector(::details-content)');
+  const sync = () => {
+    if (more && !supported && wide.matches) more.open = true;
+  };
+  sync();
+  wide.addEventListener('change', sync);
+</script>
+
+<style>
+  .ab-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s-7);
+    align-items: start;
+  }
+  .ab-intro {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+  }
+  .ab-intro :global(.sh) {
+    margin-bottom: var(--s-5);
+  }
+  .ab-lead {
+    color: var(--muted);
+    font-size: var(--fs-lg);
+    max-width: 26rem;
+  }
+  .ab-list,
+  .ab-rest {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .ab-card {
+    display: flex;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .ab-ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .ab-card h3 {
+    margin-bottom: var(--s-2);
+  }
+  .ab-card p {
+    color: var(--muted);
+  }
+  .ab-card p :global(a) {
+    color: var(--blue-hover);
+    font-weight: 600;
+    text-decoration-color: rgba(14, 67, 214, 0.35);
+    /* bigger tap zone without moving the text */
+    padding-block: 4px;
+  }
+  .ab-card p :global(a:hover) {
+    text-decoration-color: currentColor;
+  }
+
+  .ab-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    width: 100%;
+    min-height: 48px;
+    border: 2px solid var(--blue);
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    font-weight: 600;
+  }
+  .ab-toggle :global(.icon) {
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .ab-more[open] .ab-toggle {
+    display: none;
+  }
+  /* wider than a phone: the <details> is just a wrapper — no toggle, content always shown */
+  @media (min-width: 561px) {
+    .ab-toggle {
+      display: none;
+    }
+    .ab-more::details-content {
+      content-visibility: visible;
+      display: contents;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ab-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-5);
+    }
+    .ab-intro {
+      position: static;
+    }
+  }
+  @media (max-width: 560px) {
+    .ab-card {
+      flex-direction: column;
+      gap: var(--s-3);
+      padding: var(--s-4);
+    }
+    .ab-ic {
+      width: 44px;
+      height: 44px;
+    }
+    .ab-lead {
+      font-size: var(--fs-base);
+    }
+    .ab-card p {
+      font-size: var(--fs-sm);
+    }
+  }
+</style>

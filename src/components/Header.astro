@@ -1,0 +1,727 @@
+---
+// Site header: logo · «Каталог» (service groups) + main links · phone, «Смета», «Заявка».
+// ≤ 900px: logo, «Смета», «Меню» (full-screen sheet). Panels are <details>: they work without JS;
+// the small script below only adds Esc / click-outside closing and the scroll shadow.
+import { mainNav, serviceNav, site, type NavLink } from '@/data/site';
+import Logo from './Logo.astro';
+import Icon, { type IconName } from './ui/Icon.astro';
+import Button from './ui/Button.astro';
+
+const current = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const isExternal = (l: NavLink) => /^https?:/.test(l.href);
+const isCurrent = (l: NavLink) => l.href === current;
+const groupIcon: Record<string, IconName> = {
+  Одежда: 'shirt',
+  'Подарки и сувениры': 'gift',
+  Полиграфия: 'file-text',
+};
+const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener' } : {});
+---
+
+<header class="hdr" data-header>
+  <div class="hdr-in">
+    <a class="hdr-logo" href="/" aria-label="Мастерская сувениров — на главную">
+      <Logo size={44} />
+    </a>
+
+    <nav class="hdr-nav" aria-label="Главное меню">
+      <ul class="hdr-links" role="list">
+        <li>
+          <details class="cat" data-dismiss>
+            <summary class="hdr-link cat-btn">
+              Каталог <Icon name="chevron-down" size={18} class="cat-chev" />
+            </summary>
+            <div class="cat-panel">
+              <div class="cat-groups">
+                {
+                  serviceNav.map((g) => (
+                    <section class="cat-group" aria-label={g.group}>
+                      <p class="cat-title">
+                        <span class="cat-ic">
+                          <Icon name={groupIcon[g.group] ?? 'gift'} size={20} />
+                        </span>
+                        {g.group}
+                      </p>
+                      <ul role="list" class="cat-list">
+                        {g.links.map((l) => (
+                          <li>
+                            <a href={l.href} aria-current={isCurrent(l) ? 'page' : undefined}>
+                              {l.label}
+                            </a>
+                            {l.children && (
+                              <ul role="list" class="cat-sub">
+                                {l.children.map((c) => (
+                                  <li>
+                                    <a href={c.href} aria-current={isCurrent(c) ? 'page' : undefined}>
+                                      {c.label}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))
+                }
+              </div>
+              <div class="cat-foot">
+                <p class="cat-note">Печатаем от 1 штуки. Не нашли изделие — спросите, подскажем.</p>
+                <a class="cat-all" href="/uslugi">
+                  Все услуги <Icon name="arrow-right" size={20} />
+                </a>
+              </div>
+            </div>
+          </details>
+        </li>
+        {
+          mainNav.map((l) => (
+            <li>
+              <a class="hdr-link" href={l.href} aria-current={isCurrent(l) ? 'page' : undefined} {...ext(l)}>
+                {l.label}
+                {isExternal(l) && <span class="visually-hidden"> (откроется в новой вкладке)</span>}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hdr-actions">
+      <a class="hdr-phone" href={site.phoneHref}>
+        <span class="hdr-phone-ic"><Icon name="phone" size={18} /></span>
+        <span class="hdr-phone-num">{site.phone}</span>
+        <span class="visually-hidden hdr-phone-sr">Позвонить</span>
+      </a>
+      <button class="hdr-est" type="button" data-estimate-open aria-label="Смета">
+        <Icon name="clipboard-list" size={22} />
+        <span class="hdr-est-count" data-estimate-count aria-hidden="true" hidden>0</span>
+      </button>
+      <Button class="btn-sm hdr-order" data-order>Заявка</Button>
+
+      <details class="mnav" data-dismiss>
+        <summary class="mnav-btn" aria-label="Меню">
+          <Icon name="menu" size={24} class="mnav-open" />
+          <Icon name="x" size={24} class="mnav-close" />
+        </summary>
+        <div class="mnav-sheet">
+          <nav aria-label="Меню сайта">
+            <p class="mnav-title">Каталог</p>
+            <ul role="list" class="mnav-groups">
+              {
+                serviceNav.map((g) => (
+                  <li>
+                    <details class="mnav-group">
+                      <summary>
+                        <span class="cat-ic">
+                          <Icon name={groupIcon[g.group] ?? 'gift'} size={20} />
+                        </span>
+                        {g.group}
+                        <Icon name="chevron-down" size={20} class="mnav-chev" />
+                      </summary>
+                      <ul role="list" class="mnav-sub">
+                        {g.links.map((l) => (
+                          <li>
+                            <a href={l.href}>{l.label}</a>
+                            {l.children && (
+                              <ul role="list" class="mnav-sub2">
+                                {l.children.map((c) => (
+                                  <li>
+                                    <a href={c.href}>{c.label}</a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  </li>
+                ))
+              }
+              <li>
+                <a class="mnav-all" href="/uslugi">
+                  Все услуги <Icon name="arrow-right" size={20} />
+                </a>
+              </li>
+            </ul>
+            <ul role="list" class="mnav-main">
+              {
+                mainNav.map((l) => (
+                  <li>
+                    <a href={l.href} aria-current={isCurrent(l) ? 'page' : undefined} {...ext(l)}>
+                      {l.label}
+                      {isExternal(l) && <span class="visually-hidden"> (откроется в новой вкладке)</span>}
+                      <Icon name="chevron-right" size={20} />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+          <div class="mnav-contact">
+            <a class="mnav-phone" href={site.phoneHref}>
+              <Icon name="phone" size={20} />
+              {site.phone}
+            </a>
+            <p class="mnav-hours">{site.hours} · {site.address.place}</p>
+            <Button class="btn-block" data-order arrow>Оставить заявку</Button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var header = document.querySelector('[data-header]');
+    if (!header) return;
+    var panels = Array.prototype.slice.call(header.querySelectorAll('details[data-dismiss]'));
+    function closeAll(except) {
+      panels.forEach(function (d) {
+        if (d !== except) d.open = false;
+      });
+    }
+    panels.forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (d.open) closeAll(d);
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var open = panels.filter(function (d) { return d.open; });
+      if (!open.length) return;
+      open.forEach(function (d) {
+        d.open = false;
+        var s = d.querySelector('summary');
+        if (s && d.contains(document.activeElement)) s.focus();
+      });
+    });
+    document.addEventListener('click', function (e) {
+      panels.forEach(function (d) {
+        if (d.open && !d.contains(e.target)) d.open = false;
+      });
+    });
+    // close the mobile sheet when a link inside it leads to an anchor on this page
+    header.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.mnav-sheet a[href^="#"], .cat-panel a[href^="#"]');
+      if (a) closeAll(null);
+    });
+    var scrolled = false;
+    function onScroll() {
+      var s = window.scrollY > 4;
+      if (s !== scrolled) {
+        scrolled = s;
+        header.toggleAttribute('data-scrolled', s);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition:
+      box-shadow var(--t) ease,
+      border-color var(--t) ease;
+  }
+  /* frosted background on a layer of its own: backdrop-filter on .hdr itself would trap the fixed mobile sheet */
+  .hdr::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    backdrop-filter: saturate(1.4) blur(14px);
+  }
+  .hdr[data-scrolled] {
+    box-shadow: var(--shadow-header);
+    border-bottom-color: rgba(220, 230, 247, 0.7);
+  }
+  .hdr-in {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+    height: var(--header-h);
+    max-width: calc(var(--wrap-wide) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .hdr-logo {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    flex: none;
+    border-radius: 8px;
+    transition: opacity var(--t-fast) ease;
+  }
+  .hdr-logo:hover {
+    opacity: 0.8;
+  }
+
+  /* desktop menu */
+  .hdr-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .hdr-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin: 0;
+  }
+  .hdr-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .hdr-link:hover,
+  .cat[open] > .hdr-link {
+    background: var(--sky);
+    color: var(--blue-hover);
+  }
+  .hdr-link[aria-current='page'] {
+    color: var(--blue-hover);
+    font-weight: 600;
+  }
+  .cat {
+    position: relative;
+  }
+  .cat :global(.cat-chev) {
+    transition: transform var(--t) var(--ease);
+  }
+  .cat[open] :global(.cat-chev) {
+    transform: rotate(180deg);
+  }
+  .cat-panel {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: -12px;
+    width: min(820px, calc(100vw - 2 * var(--gutter)));
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-pop);
+  }
+  .cat-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+  .cat-group {
+    padding: var(--s-4);
+    border-radius: var(--radius-md);
+    background: var(--sky-2);
+  }
+  .cat-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--s-3);
+    font-weight: 700;
+  }
+  .cat-ic {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--blue);
+    box-shadow: 0 2px 8px rgba(21, 87, 255, 0.12);
+  }
+  .cat-list,
+  .cat-sub {
+    margin: 0;
+  }
+  .cat-list a {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 4px 10px;
+    margin-inline: -10px;
+    border-radius: 10px;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition:
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .cat-list a:hover {
+    background: var(--white);
+    color: var(--blue-hover);
+  }
+  .cat-list a[aria-current='page'] {
+    color: var(--blue-hover);
+    font-weight: 600;
+  }
+  .cat-sub {
+    margin: 2px 0 6px 2px;
+    padding-left: 12px;
+    border-left: 2px solid var(--line);
+  }
+  .cat-sub a {
+    min-height: 32px;
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .cat-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-4);
+    padding: var(--s-2) var(--s-2) 0 var(--s-4);
+  }
+  .cat-note {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .cat-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    background: var(--sky);
+    color: var(--blue-hover);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--t-fast) ease;
+  }
+  .cat-all:hover {
+    background: #dce9ff;
+  }
+
+  /* actions */
+  .hdr-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex: none;
+    margin-left: auto;
+  }
+  .hdr-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding-right: 4px;
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: var(--radius-pill);
+    transition: color var(--t-fast) ease;
+  }
+  .hdr-phone:hover {
+    color: var(--blue-hover);
+  }
+  .hdr-phone-ic {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .hdr-est {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink);
+    transition:
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .hdr-est:hover {
+    background: var(--sky);
+    color: var(--blue-hover);
+  }
+  .hdr-est-count {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border: 2px solid var(--white);
+    border-radius: var(--radius-pill);
+    background: var(--blue);
+    color: var(--white);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* mobile menu (≤ 900px) */
+  .mnav {
+    display: none;
+  }
+  .mnav-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--ink);
+  }
+  .mnav-btn :global(.mnav-close),
+  .mnav[open] .mnav-btn :global(.mnav-open) {
+    display: none;
+  }
+  .mnav[open] .mnav-btn :global(.mnav-close) {
+    display: block;
+  }
+  .mnav-sheet {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: 49;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--s-4) var(--gutter) calc(var(--s-6) + env(safe-area-inset-bottom));
+    background: var(--white);
+    border-top: 1px solid var(--line);
+  }
+  .mnav-title {
+    margin: var(--s-2) 0 var(--s-3);
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .mnav-groups,
+  .mnav-main,
+  .mnav-sub,
+  .mnav-sub2 {
+    margin: 0;
+  }
+  .mnav-groups {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .mnav-group {
+    border-radius: var(--radius-md);
+    background: var(--sky-2);
+    border: 1px solid var(--line);
+  }
+  .mnav-group > summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 6px 14px 6px 10px;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+  }
+  .mnav-group :global(.mnav-chev) {
+    margin-left: auto;
+    color: var(--muted);
+    transition: transform var(--t) var(--ease);
+  }
+  .mnav-group[open] :global(.mnav-chev) {
+    transform: rotate(180deg);
+  }
+  .mnav-sub {
+    padding: 0 var(--s-4) var(--s-3) 58px;
+  }
+  .mnav-sub a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mnav-sub2 {
+    padding-left: 12px;
+    border-left: 2px solid var(--line);
+  }
+  .mnav-sub2 a {
+    color: var(--muted);
+  }
+  .mnav-all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: var(--radius-md);
+    background: var(--sky);
+    color: var(--blue-hover);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .mnav-main {
+    margin-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+  .mnav-main a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .mnav-main a :global(svg) {
+    color: var(--muted);
+  }
+  .mnav-main a[aria-current='page'] {
+    color: var(--blue-hover);
+  }
+  .mnav-contact {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    padding: var(--s-5);
+    border-radius: var(--radius-card);
+    background: var(--sky);
+  }
+  .mnav-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: var(--ink);
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .mnav-phone :global(svg) {
+    color: var(--blue);
+  }
+  .mnav-hours {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  /* narrower desktops: keep everything on one line */
+  @media (max-width: 1360px) {
+    .hdr-link {
+      padding: 0 10px;
+    }
+    .hdr-phone-num {
+      display: none;
+    }
+    .hdr-phone {
+      padding-right: 0;
+    }
+    .hdr-phone-ic {
+      width: 44px;
+      height: 44px;
+    }
+  }
+  @media (max-width: 1180px) {
+    .hdr-in {
+      gap: var(--s-3);
+    }
+    .hdr-link {
+      padding: 0 8px;
+      font-size: var(--fs-sm);
+    }
+    .hdr-logo :global(svg) {
+      height: 36px;
+    }
+    /* the catalog panel spans the header width instead of hanging off the right edge */
+    .cat {
+      position: static;
+    }
+    .cat-panel {
+      left: var(--gutter);
+      right: var(--gutter);
+      top: calc(100% - 2px);
+      width: auto;
+    }
+    /* the phone stays in the footer and the contacts; here there is no room for it */
+    .hdr-phone {
+      display: none;
+    }
+    .hdr-actions {
+      gap: var(--s-2);
+    }
+  }
+  @media (max-width: 1024px) {
+    .hdr-in {
+      gap: var(--s-2);
+    }
+    .hdr-links {
+      gap: 0;
+    }
+    .hdr-link {
+      padding: 0 5px;
+    }
+    .hdr-logo :global(svg) {
+      height: 32px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hdr-nav,
+    .hdr-phone,
+    .hdr-actions :global(.hdr-order) {
+      display: none;
+    }
+    .mnav {
+      display: block;
+    }
+    .hdr-logo :global(svg) {
+      height: 38px;
+    }
+    .hdr-in {
+      gap: var(--s-2);
+    }
+  }
+  @media (max-width: 560px) {
+    .hdr-logo :global(svg) {
+      height: 34px;
+    }
+  }
+
+  /* lock page scroll under the open mobile sheet */
+  :global(html:has(.mnav[open])) {
+    overflow: hidden;
+  }
+  @media (min-width: 901px) {
+    :global(html:has(.mnav[open])) {
+      overflow: visible;
+    }
+  }
+</style>

@@ -1,0 +1,263 @@
+---
+// «Конструктор» banner: light-blue plate with a soft wave; text and button on the left, the T-shirt on the right
+// with an editor-like decor drawn in code (dashed frame with handles, tools, colour dots, cursor). ≤ 900px — stacked.
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Pic from '@/components/ui/Pic.astro';
+import { site } from '@/data/site';
+---
+
+<section class="section cb-sec" aria-labelledby="cb-title">
+  <div class="wrap">
+    <div class="cb">
+      <svg class="cb-wave" viewBox="0 0 1240 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 300C220 250 420 330 640 300s420-150 600-120V400H0Z" fill="#fff" fill-opacity=".55" />
+        <path d="M520 400c80-90 240-150 420-140 120 7 220 40 300 20V400Z" fill="#fff" fill-opacity=".5" />
+      </svg>
+
+      <div class="cb-text">
+        <p class="cb-label">Конструктор</p>
+        <h2 id="cb-title" class="cb-title">
+          Создайте свой <span class="cb-accent">уникальный сувенир</span>
+        </h2>
+        <p class="cb-lead">Загрузите фото, добавьте надпись и посмотрите макет на изделии</p>
+        <Button href={site.constructorUrl} arrow target="_blank" rel="noopener">Перейти в конструктор</Button>
+      </div>
+
+      <div class="cb-visual">
+        <Pic
+          name="constructor-tee"
+          alt="Белая футболка с макетом принта в конструкторе"
+          w={1400}
+          h={1000}
+          fit="contain"
+          label="constructor-tee"
+          class="cb-pic"
+        />
+        <div class="cb-decor" aria-hidden="true">
+          <span class="cb-frame">
+            <span class="cb-h cb-h1"></span>
+            <span class="cb-h cb-h2"></span>
+            <span class="cb-h cb-h3"></span>
+            <span class="cb-h cb-h4"></span>
+            <svg class="cb-cursor" viewBox="0 0 24 24" focusable="false"><path d="M4 2.5 20 12l-7 1.6-3.4 6.9Z" /></svg>
+          </span>
+          <span class="cb-tools">
+            <Icon name="type" size={22} />
+            <Icon name="image" size={22} />
+            <Icon name="layers" size={22} />
+          </span>
+          <span class="cb-colors">
+            <span class="cb-dot" style="--c: #ffffff"></span>
+            <span class="cb-dot" style="--c: #b8c2d4"></span>
+            <span class="cb-dot" style="--c: var(--blue)"></span>
+            <span class="cb-dot" style="--c: var(--ink)"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cb-sec {
+    padding-top: 0;
+  }
+  .cb {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    gap: var(--s-6);
+    padding: var(--s-6) var(--s-7);
+    border-radius: var(--radius-panel);
+    background:
+      radial-gradient(30rem 20rem at 70% 30%, rgba(21, 87, 255, 0.12), transparent 70%),
+      var(--sky);
+  }
+  .cb-wave {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: -1;
+    width: 100%;
+    height: 70%;
+  }
+  .cb-label {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cb-label::before {
+    content: '';
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--blue);
+  }
+  .cb-accent {
+    color: var(--blue);
+  }
+  .cb-lead {
+    margin: var(--s-4) 0 var(--s-6);
+    max-width: 26rem;
+    color: var(--muted);
+    font-size: var(--fs-lg);
+  }
+
+  .cb-visual {
+    position: relative;
+    max-width: 560px;
+    width: 100%;
+    justify-self: center;
+  }
+  .cb-visual :global(.cb-pic.pic-ph) {
+    border-radius: var(--radius-card);
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  .cb-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  /* print area on the chest, in the picture's proportions */
+  .cb-frame {
+    position: absolute;
+    left: 34%;
+    top: 30%;
+    width: 30%;
+    height: 38%;
+    border: 2px dashed var(--blue);
+    border-radius: 4px;
+  }
+  .cb-h {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--blue);
+    border-radius: 50%;
+    background: var(--white);
+  }
+  .cb-h1 {
+    left: -7px;
+    top: -7px;
+  }
+  .cb-h2 {
+    right: -7px;
+    top: -7px;
+  }
+  .cb-h3 {
+    left: -7px;
+    bottom: -7px;
+  }
+  .cb-h4 {
+    right: -7px;
+    bottom: -7px;
+  }
+  .cb-cursor {
+    position: absolute;
+    right: -26px;
+    bottom: -30px;
+    width: 30px;
+    height: 30px;
+    fill: var(--ink);
+    stroke: var(--white);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .cb-tools {
+    position: absolute;
+    right: 2%;
+    top: 12%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    padding: var(--s-3) 10px;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: var(--shadow-card);
+  }
+  .cb-colors {
+    position: absolute;
+    right: 0;
+    bottom: 8%;
+    display: flex;
+    gap: var(--s-2);
+    padding: var(--s-2) 10px;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .cb-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: inset 0 0 0 1px rgba(11, 26, 63, 0.14);
+  }
+
+  @media (max-width: 1100px) {
+    .cb {
+      padding: var(--s-6);
+      gap: var(--s-5);
+    }
+  }
+  @media (max-width: 900px) {
+    .cb {
+      grid-template-columns: minmax(0, 1fr);
+      padding: var(--s-6) var(--s-5) var(--s-5);
+    }
+    .cb-wave {
+      height: 45%;
+    }
+  }
+  @media (max-width: 560px) {
+    .cb {
+      padding: var(--s-5) var(--s-4) var(--s-4);
+      border-radius: var(--radius-card);
+    }
+    .cb-label {
+      font-size: var(--fs-xs);
+    }
+    .cb-lead {
+      font-size: var(--fs-base);
+      margin-bottom: var(--s-5);
+    }
+    .cb-text :global(.btn) {
+      width: 100%;
+    }
+    .cb-tools {
+      gap: var(--s-2);
+      padding: var(--s-2) 6px;
+    }
+    .cb-tools :global(.icon) {
+      width: 18px;
+      height: 18px;
+    }
+    .cb-dot {
+      width: 18px;
+      height: 18px;
+    }
+    .cb-colors {
+      gap: 6px;
+      padding: 6px 8px;
+    }
+    .cb-h {
+      width: 10px;
+      height: 10px;
+    }
+    .cb-cursor {
+      width: 22px;
+      height: 22px;
+      right: -18px;
+      bottom: -22px;
+    }
+  }
+</style>

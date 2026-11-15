@@ -1,0 +1,10 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StubNotice from '@/components/StubNotice.astro';
+---
+
+<BaseLayout title="Страница не найдена — Мастерская сувениров" description="Такой страницы нет. Перейдите на главную или оставьте заявку." path="/404" noindex>
+  <StubNotice title="Страница не найдена" eyebrow="Ошибка 404">
+    Возможно, адрес изменился или в нём опечатка. Загляните на главную или оставьте заявку — поможем.
+  </StubNotice>
+</BaseLayout>

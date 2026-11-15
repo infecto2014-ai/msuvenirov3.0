@@ -1,0 +1,104 @@
+---
+// Pill button. With `href` — a link, without — <button type="button"> (e.g. «Заявка» with data-order).
+// Extra modifiers through `class`: `btn-sm` (44px high, header), `btn-block` (full width).
+import type { HTMLAttributes } from 'astro/types';
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
+  href?: string;
+  variant?: 'primary' | 'ghost';
+  /** arrow at the end (moves a little on hover) */
+  arrow?: boolean;
+  /** icon before the text */
+  icon?: IconName;
+  class?: string;
+}
+
+const { href, variant = 'primary', arrow = false, icon, class: cls, type: _type, ...rest } = Astro.props;
+const classes = ['btn', `btn-${variant}`, cls];
+---
+
+{
+  href ? (
+    <a class:list={classes} href={href} {...rest}>
+      {icon && <Icon name={icon} size={20} class="btn-ic" />}
+      <span class="btn-label"><slot /></span>
+      {arrow && <Icon name="arrow-right" size={20} class="btn-arrow" />}
+    </a>
+  ) : (
+    <button class:list={classes} type="button" {...(rest as Record<string, unknown>)}>
+      {icon && <Icon name={icon} size={20} class="btn-ic" />}
+      <span class="btn-label"><slot /></span>
+      {arrow && <Icon name="arrow-right" size={20} class="btn-arrow" />}
+    </button>
+  )
+}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 26px;
+    border: 2px solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-base);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--t-fast) ease,
+      border-color var(--t-fast) ease,
+      color var(--t-fast) ease,
+      box-shadow var(--t) var(--ease),
+      transform var(--t) var(--ease);
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: var(--white);
+    box-shadow: var(--shadow-btn);
+  }
+  .btn-primary:hover {
+    background: var(--blue-hover);
+    box-shadow: 0 10px 26px rgba(21, 87, 255, 0.34);
+  }
+  .btn-ghost {
+    background: var(--white);
+    border-color: var(--blue);
+    color: var(--ink);
+  }
+  .btn-ghost:hover {
+    background: var(--sky);
+    border-color: var(--blue-hover);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn :global(.btn-ic) {
+    flex: none;
+  }
+  .btn-ghost :global(.btn-ic) {
+    color: var(--blue);
+  }
+  .btn :global(.btn-arrow) {
+    flex: none;
+    transition: transform var(--t) var(--ease);
+  }
+  .btn:hover :global(.btn-arrow) {
+    transform: translateX(3px);
+  }
+  .btn-sm {
+    min-height: 44px;
+    padding: 0 20px;
+    gap: 8px;
+    font-size: var(--fs-sm);
+  }
+  .btn-block {
+    width: 100%;
+  }
+</style>

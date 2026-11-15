@@ -1,0 +1,113 @@
+---
+// Section heading: «Наши» dark + «работы» blue with a hand-drawn squiggle under it; optional eyebrow pill,
+// lead line, and an `action` slot on the right (e.g. «Все услуги →»).
+interface Props {
+  title: string;
+  accent?: string;
+  lead?: string;
+  eyebrow?: string;
+  /** id of the <h2> — for aria-labelledby of the section and anchors */
+  id?: string;
+}
+const { title, accent, lead, eyebrow, id } = Astro.props;
+const hasAction = Astro.slots.has('action');
+---
+
+<div class:list={['sh', { 'sh-has-action': hasAction }]}>
+  <div class="sh-text">
+    {eyebrow && <p class="sh-eyebrow">{eyebrow}</p>}
+    <h2 id={id} class="sh-title">
+      {title}
+      {
+        accent && (
+          <>
+            {' '}
+            <span class="sh-accent">
+              {accent}
+              <svg class="sh-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
+              </svg>
+            </span>
+          </>
+        )
+      }
+    </h2>
+    {lead && <p class="sh-lead">{lead}</p>}
+  </div>
+  {
+    hasAction && (
+      <div class="sh-action">
+        <slot name="action" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .sh {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--s-5) var(--s-6);
+    margin-bottom: var(--s-6);
+  }
+  .sh-text {
+    max-width: 46rem;
+  }
+  .sh-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    margin-bottom: var(--s-4);
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--sky);
+    color: var(--blue-hover);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .sh-accent {
+    position: relative;
+    display: inline-block;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  .sh-squiggle {
+    position: absolute;
+    left: 8%;
+    bottom: -0.42em;
+    width: 104%;
+    height: 0.5em;
+    overflow: visible;
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .sh-lead {
+    margin-top: var(--s-5);
+    color: var(--muted);
+    font-size: var(--fs-lg);
+    max-width: 38rem;
+  }
+  .sh-action {
+    flex: none;
+  }
+  @media (max-width: 900px) {
+    .sh-has-action {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  @media (max-width: 560px) {
+    .sh {
+      margin-bottom: var(--s-5);
+    }
+    .sh-lead {
+      margin-top: var(--s-4);
+      font-size: var(--fs-base);
+    }
+  }
+</style>

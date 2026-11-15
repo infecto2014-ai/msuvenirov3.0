@@ -1,0 +1,128 @@
+---
+// «Нам доверяют»: the clients' logos (as on 2.0) in one grey row, in colour on hover.
+// White logos are darkened by a filter; the ice-cream museum has its own dark-caption file; round/square ones are larger.
+interface Client {
+  src: string;
+  alt: string;
+  white?: boolean;
+  square?: boolean;
+}
+const clients: Client[] = [
+  { src: '/img/clients/client-1.webp', alt: 'Россети', white: true },
+  { src: '/img/clients/client-6.webp', alt: 'БФУ имени И. Канта', white: true },
+  { src: '/img/clients/client-2.webp', alt: 'Арле Парк' },
+  { src: '/img/clients/client-4.webp', alt: 'Папаша Беппе', square: true },
+  { src: '/img/clients/client-5.webp', alt: 'Бойцовский клуб «Неудержимые»', square: true },
+  { src: '/img/clients/client-7.webp', alt: 'Systech', white: true },
+  { src: '/img/clients/client-8-dark.webp', alt: 'Музей мороженого', square: true },
+];
+---
+
+<section class="clients" aria-labelledby="clients-title">
+  <div class="wrap cl-in">
+    <h2 id="clients-title" class="cl-label">Нам доверяют</h2>
+    <ul class="cl-list" role="list">
+      {
+        clients.map((c) => (
+          <li class:list={['cl-item', { 'is-white': c.white, 'is-square': c.square }]}>
+            <img src={c.src} alt={c.alt} title={c.alt} width="140" height="70" loading="lazy" decoding="async" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .clients {
+    padding-block: 0 var(--s-8);
+  }
+  .cl-in {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+  }
+  .cl-label {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cl-label::before {
+    content: '';
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--blue);
+  }
+  .cl-list {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4) var(--s-6);
+  }
+  .cl-item img {
+    height: 36px;
+    width: auto;
+    max-width: 130px;
+    object-fit: contain;
+    filter: grayscale(1) contrast(0.9);
+    opacity: 0.6;
+    transition:
+      opacity var(--t-fast) ease,
+      filter var(--t-fast) ease;
+  }
+  .cl-item.is-square img {
+    height: 54px;
+  }
+  .cl-item.is-white img {
+    filter: brightness(0);
+    opacity: 0.5;
+  }
+  @media (hover: hover) {
+    .cl-item:hover img {
+      filter: none;
+      opacity: 1;
+    }
+    .cl-item.is-white:hover img {
+      filter: brightness(0);
+      opacity: 0.85;
+    }
+  }
+  @media (max-width: 900px) {
+    .clients {
+      padding-bottom: var(--s-7);
+    }
+    .cl-in {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-4);
+    }
+    .cl-list {
+      width: 100%;
+      gap: var(--s-4) var(--s-5);
+    }
+  }
+  @media (max-width: 560px) {
+    .cl-label {
+      font-size: var(--fs-xs);
+    }
+    .cl-list {
+      justify-content: flex-start;
+      gap: var(--s-4) var(--s-5);
+    }
+    .cl-item img {
+      height: 28px;
+      max-width: 104px;
+    }
+    .cl-item.is-square img {
+      height: 44px;
+    }
+  }
+</style>

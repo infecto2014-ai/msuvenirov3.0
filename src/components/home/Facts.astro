@@ -1,0 +1,143 @@
+---
+// White strip with four facts on the edge between the first screen and the catalog. ≤ 900px — 2×2.
+import Icon from '@/components/ui/Icon.astro';
+import { facts } from '@/data/home';
+---
+
+<section class="facts-sec" aria-label="Мастерская в цифрах">
+  <div class="wrap">
+    <ul class="facts" role="list">
+      {
+        facts.map((f) => (
+          <li class="fact">
+            <span class="fact-ic">
+              <Icon name={f.icon} size={24} />
+            </span>
+            <span class="fact-text">
+              <strong class="fact-value">{f.value}</strong>
+              <span class="fact-label">{f.label}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .facts-sec {
+    position: relative;
+    z-index: 2;
+    margin-top: calc(-1 * (var(--s-9) - var(--s-4)));
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: var(--s-5) var(--s-4);
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .fact {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-2) var(--s-5);
+  }
+  .fact + .fact {
+    border-left: 1px solid var(--line);
+  }
+  .fact-ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .fact-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .fact-value {
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .fact-label {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 1100px) {
+    .fact {
+      padding-inline: var(--s-4);
+      gap: var(--s-3);
+    }
+    .fact-ic {
+      width: 44px;
+      height: 44px;
+    }
+    .fact-value {
+      font-size: 1.125rem;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .facts-sec {
+      margin-top: calc(-1 * var(--s-8) + var(--s-2));
+    }
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: var(--s-2) var(--s-4);
+    }
+    .fact {
+      padding: var(--s-4) var(--s-3);
+    }
+    .fact + .fact {
+      border-left: 0;
+    }
+    .fact:nth-child(even) {
+      border-left: 1px solid var(--line);
+    }
+    .fact:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .facts {
+      padding: var(--s-1) var(--s-3);
+      border-radius: var(--radius-card);
+    }
+    .fact {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-2);
+      padding: var(--s-4) var(--s-2);
+    }
+    .fact:nth-child(even) {
+      padding-left: var(--s-4);
+    }
+    .fact-ic {
+      width: 40px;
+      height: 40px;
+    }
+    .fact-value {
+      font-size: 1.0625rem;
+    }
+    .fact-label {
+      font-size: var(--fs-xs);
+    }
+  }
+</style>

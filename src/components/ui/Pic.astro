@@ -1,0 +1,75 @@
+---
+// A picture slot: the owner's photo from public/img/v3/<name>.(webp|png|jpg), else `fallback`,
+// else a labelled placeholder of the right proportions (photos are not ready yet).
+import { resolvePic } from '@/lib/pic';
+
+interface Props {
+  name: string;
+  alt: string;
+  w: number;
+  h: number;
+  fit?: 'cover' | 'contain';
+  /** placeholder caption; defaults to `name` */
+  label?: string;
+  /** a file in public/, e.g. '/img/products/mugs-640.webp' */
+  fallback?: string;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+const { name, alt, w, h, fit = 'cover', label, fallback, loading = 'lazy', class: cls } = Astro.props;
+const pic = resolvePic(name, fallback);
+---
+
+{
+  'src' in pic ? (
+    <img
+      class:list={['pic', cls]}
+      src={pic.src}
+      alt={alt}
+      width={w}
+      height={h}
+      loading={loading}
+      decoding="async"
+      style={`aspect-ratio: ${w} / ${h}; object-fit: ${fit};`}
+    />
+  ) : (
+    <div class:list={['pic', 'pic-ph', cls]} style={`aspect-ratio: ${w} / ${h};`} role="img" aria-label={alt}>
+      <span class="pic-ph-label">{label ?? name}</span>
+      <span class="pic-ph-size">
+        {w}×{h}
+      </span>
+    </div>
+  )
+}
+
+<style>
+  .pic {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pic-ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--s-4);
+    border: 2px dashed #a9c1ef;
+    border-radius: inherit;
+    background:
+      repeating-linear-gradient(135deg, rgba(21, 87, 255, 0.04) 0 12px, transparent 12px 24px),
+      var(--sky);
+    color: var(--muted);
+    text-align: center;
+  }
+  .pic-ph-label {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .pic-ph-size {
+    font-size: var(--fs-xs);
+    font-variant-numeric: tabular-nums;
+  }
+</style>
