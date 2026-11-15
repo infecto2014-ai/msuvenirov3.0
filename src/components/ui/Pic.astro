@@ -14,12 +14,14 @@ interface Props {
   /** a file in public/, e.g. '/img/products/mugs-640.webp' */
   fallback?: string;
   loading?: 'lazy' | 'eager';
+  /** hint for the one big picture above the fold */
+  fetchpriority?: 'high' | 'low' | 'auto';
   /** media query where this copy is not shown (display:none): there the browser gets an empty stand-in
       and does not download the file, e.g. the desktop hero on phones */
   hiddenMedia?: string;
   class?: string;
 }
-const { name, alt, w, h, fit = 'cover', label, fallback, loading = 'lazy', hiddenMedia, class: cls } = Astro.props;
+const { name, alt, w, h, fit = 'cover', label, fallback, loading = 'lazy', fetchpriority, hiddenMedia, class: cls } = Astro.props;
 const pic = resolvePic(name, fallback);
 // 1×1 transparent GIF: the source chosen under `hiddenMedia`, so nothing is fetched there
 const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -36,6 +38,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
         width={w}
         height={h}
         loading={loading}
+        fetchpriority={fetchpriority}
         decoding="async"
         style={`aspect-ratio: ${w} / ${h}; object-fit: ${fit};`}
       />
@@ -48,6 +51,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
       width={w}
       height={h}
       loading={loading}
+        fetchpriority={fetchpriority}
       decoding="async"
       style={`aspect-ratio: ${w} / ${h}; object-fit: ${fit};`}
     />

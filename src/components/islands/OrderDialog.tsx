@@ -17,6 +17,7 @@ import { ACCEPT, MAX_FILES, phoneDigits, sendOrder, validateFiles, type ContactM
 import { formatPhone } from '@/lib/phone';
 import { reachGoal } from '@/lib/metrika';
 import { findProduct, rub } from '@/data/pricing';
+import { site } from '@/data/site';
 import './OrderDialog.css';
 
 const methods: { id: ContactMethod; label: string }[] = [
@@ -207,7 +208,7 @@ export default function OrderDialog() {
                 <Tick />
               </div>
               <h2 id="order-title">Заявка отправлена</h2>
-              <p>Менеджер свяжется с вами в рабочее время — ежедневно с 10:00 до 20:00. Если срочно — позвоните: <a href="tel:+79521142350">+7 (952) 114-23-50</a>.</p>
+              <p>Менеджер свяжется с вами в рабочее время ({site.hours.toLowerCase()}). Если срочно — позвоните: <a href={site.phoneHref}>{site.phone}</a>.</p>
               <button type="button" class="order-btn" onClick={close}>
                 Хорошо
               </button>

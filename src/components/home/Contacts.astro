@@ -45,15 +45,15 @@ const address = `${site.address.city}, ${site.address.street}`;
         </li>
       </ul>
       <div class="ct-actions">
-        <Button href={site.social.telegram} icon="send" target="_blank" rel="noopener">Telegram</Button>
-        <Button href={site.social.max} variant="ghost" target="_blank" rel="noopener">MAX</Button>
+        <Button href={site.social.telegram} icon="send" target="_blank" rel="noopener">Telegram <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
+        <Button href={site.social.max} variant="ghost" target="_blank" rel="noopener">MAX <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
       </div>
       <a class="ct-maps" href={site.yandexMapsOrg} target="_blank" rel="noopener">
-        Открыть на Яндекс Картах <Icon name="arrow-right" size={18} />
+        Открыть на Яндекс Картах <span class="visually-hidden">(откроется в новой вкладке)</span> <Icon name="arrow-right" size={18} />
       </a>
     </div>
 
-    <a class="ct-map" href={site.yandexMapsOrg} target="_blank" rel="noopener" aria-label={`${address}, ${site.address.place} — открыть на Яндекс Картах`}>
+    <a class="ct-map" href={site.yandexMapsOrg} target="_blank" rel="noopener" aria-label={`${address}, ${site.address.place} — открыть на Яндекс Картах (откроется в новой вкладке)`}>
       <span class="ct-map-grid" aria-hidden="true"></span>
       <span class="ct-pin" aria-hidden="true">
         <Icon name="map-pin" size={34} />

@@ -1,5 +1,6 @@
 // Client-side estimate ("смета"): several calculator lines sent as one order.
 // Stored in localStorage; every change is broadcast with a window event.
+import { ESTIMATE_EVENT, ESTIMATE_KEY } from './estimate-count';
 import { findProduct, type Product, type QtyConfig, type Selection } from '@/data/pricing';
 
 export interface EstimateItem {
@@ -17,8 +18,8 @@ export interface EstimateItem {
   note?: string;
 }
 
-const KEY = 'msuvenirov:estimate:v1';
-export const ESTIMATE_EVENT = 'estimate:change';
+const KEY = ESTIMATE_KEY;
+export { ESTIMATE_EVENT };
 export const ORDER_OPEN_EVENT = 'order:open';
 
 const read = (): EstimateItem[] => {

@@ -1,6 +1,6 @@
 // Sends an order to the `send-telegram` edge function (multipart/form-data).
 // Contract: supabase/functions/send-telegram/index.ts
-import type { EstimateItem } from './estimate';
+import { estimateTotal, type EstimateItem } from './estimate';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-public';
 
 export type ContactMethod = 'phone' | 'telegram' | 'max' | 'whatsapp' | 'vk';
@@ -59,7 +59,7 @@ export async function sendOrder(p: OrderPayload): Promise<{ ok: true } | { ok: f
         })),
       ),
     );
-    fd.append('estimate_total', String(p.items.reduce((a, i) => a + i.total, 0)));
+    fd.append('estimate_total', String(estimateTotal(p.items)));
   }
   fd.append('page', location.pathname.slice(0, 200));
   fd.append('website', p.website);

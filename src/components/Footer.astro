@@ -1,7 +1,6 @@
 ---
 // Site footer: logo + contacts, three service groups, info links, legal details of the IP.
 import { flatLinks, infoNav, serviceNav, site } from '@/data/site';
-import Logo from './Logo.astro';
 import Icon from './ui/Icon.astro';
 
 const year = new Date().getFullYear();
@@ -17,7 +16,7 @@ const socials = [
     <div class="ftr-grid">
       <div class="ftr-brand">
         <a class="ftr-logo" href="/" aria-label="Мастерская сувениров — на главную">
-          <Logo size={48} />
+          <img src="/img/logo.svg" alt="" width="181" height="48" />
         </a>
         <p class="ftr-about">Мастерская печати в Калининграде с {site.founded} года: одежда, кружки, значки, полиграфия — от 1 штуки.</p>
         <ul role="list" class="ftr-contacts">
@@ -120,6 +119,11 @@ const socials = [
     min-height: 44px;
     align-items: center;
     border-radius: 8px;
+  }
+  .ftr-logo img {
+    display: block;
+    width: auto;
+    height: 48px;
   }
   .ftr-about {
     margin: var(--s-4) 0 var(--s-5);
