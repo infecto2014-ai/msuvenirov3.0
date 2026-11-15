@@ -1,15 +1,18 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/home/Hero.astro';
+import Facts from '@/components/home/Facts.astro';
+import Catalog from '@/components/home/Catalog.astro';
+import ConstructorBanner from '@/components/home/ConstructorBanner.astro';
 ---
 
 <BaseLayout
   title="Печать на футболках, кружках и сувенирах в Калининграде — Мастерская сувениров"
-  description="Печать на одежде, кружках, значках, визитках и календарях в Калининграде от 1 шт. Срочно без наценки. ТЦ «Экватор», с 2019 года."
+  description="Мастерская печати в ТЦ «Экватор»: футболки, кружки, значки, стикеры, полиграфия с вашим дизайном — от 1 штуки. Рассчитайте цену и оставьте заявку."
   path="/"
 >
-  <section class="section">
-    <div class="wrap">
-      <h1>Мастерская сувениров</h1>
-    </div>
-  </section>
+  <Hero />
+  <Facts />
+  <Catalog />
+  <ConstructorBanner />
 </BaseLayout>

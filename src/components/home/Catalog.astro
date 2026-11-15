@@ -1,0 +1,198 @@
+---
+// «Каталог изделий»: six cards, each card is one link. Prices «от» — from pricing.ts via catalogFrom().
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Pic from '@/components/ui/Pic.astro';
+import { catalog, catalogFrom } from '@/data/home';
+import { rub } from '@/data/pricing';
+---
+
+<section id="catalog" class="section catalog" aria-labelledby="catalog-title">
+  <div class="wrap">
+    <SectionHead id="catalog-title" title="Каталог" accent="изделий">
+      <a slot="action" class="cat-all" href="/uslugi">
+        Все услуги <Icon name="arrow-right" size={20} />
+      </a>
+    </SectionHead>
+
+    <ul class="cards" role="list">
+      {
+        catalog.map((card) => (
+          <li>
+            <a class="card" href={card.href}>
+              <span class="card-media">
+                <Pic name={card.pic} alt="" w={1000} h={1000} fallback={card.fallback} label={card.pic} class="card-pic" />
+                <span class="card-ic">
+                  <Icon name={card.icon} size={20} />
+                </span>
+              </span>
+              <span class="card-body">
+                <span class="card-title">{card.title}</span>
+                <span class="card-text">{card.text}</span>
+                <span class="card-foot">
+                  <span class="card-price">от {rub(catalogFrom(card))}</span>
+                  <span class="card-go">
+                    <Icon name="arrow-right" size={18} />
+                  </span>
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .catalog {
+    padding-top: var(--s-8);
+  }
+  .cat-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+    transition: color var(--t-fast) ease;
+  }
+  .cat-all :global(.icon) {
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .cat-all:hover {
+    color: var(--blue-hover);
+  }
+  .cat-all:hover :global(.icon) {
+    transform: translateX(3px);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .cards > li {
+    display: flex;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--s-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(21, 87, 255, 0.05);
+    transition:
+      box-shadow var(--t) var(--ease),
+      transform var(--t) var(--ease),
+      border-color var(--t-fast) ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: #c4d6f5;
+    box-shadow: var(--shadow-card), 0 18px 40px rgba(21, 87, 255, 0.1);
+  }
+  .card-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: calc(var(--radius-card) - var(--s-2));
+    background: var(--sky-2);
+  }
+  .card-media :global(.card-pic) {
+    border-radius: inherit;
+  }
+  .card-ic {
+    position: absolute;
+    top: var(--s-2);
+    left: var(--s-2);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--blue);
+    box-shadow: 0 2px 8px rgba(11, 26, 63, 0.08);
+  }
+  .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--s-1);
+    padding: var(--s-3) var(--s-2) var(--s-2);
+  }
+  .card-title {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .card-text {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    line-height: 1.4;
+  }
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    margin-top: auto;
+    padding-top: var(--s-3);
+  }
+  .card-price {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .card-go {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--blue);
+    border-radius: 50%;
+    color: var(--blue);
+    transition:
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .card:hover .card-go {
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  @media (max-width: 1100px) {
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--s-5) var(--s-4);
+    }
+  }
+  @media (max-width: 900px) {
+    .catalog {
+      padding-top: var(--s-7);
+    }
+  }
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-3);
+    }
+    .card-title {
+      font-size: var(--fs-base);
+    }
+    .card-text {
+      font-size: var(--fs-xs);
+    }
+    .card-ic {
+      width: 32px;
+      height: 32px;
+    }
+  }
+</style>
