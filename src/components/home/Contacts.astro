@@ -18,7 +18,7 @@ const address = `${site.address.city}, ${site.address.street}`;
           <span class="ct-ic"><Icon name="map-pin" size={22} /></span>
           <span>
             <span class="ct-k">Адрес</span>
-            <span>{address},</span>
+            <span>{site.address.city}, <span class="ct-nowrap">{site.address.street},</span></span>
             <span class="ct-nowrap">{site.address.place}</span>
           </span>
         </li>
@@ -26,7 +26,7 @@ const address = `${site.address.city}, ${site.address.street}`;
           <span class="ct-ic"><Icon name="clock" size={22} /></span>
           <span>
             <span class="ct-k">Часы работы</span>
-            {site.hours}, без выходных
+            {site.hours}, без&nbsp;выходных
           </span>
         </li>
         <li>

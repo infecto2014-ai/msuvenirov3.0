@@ -97,12 +97,16 @@ import { steps } from '@/data/home';
       grid-template-columns: minmax(0, 1fr);
       gap: var(--s-4);
     }
+    /* a column: each step draws the line down to the next icon, so it never runs past the last one */
     .steps::before {
-      top: calc(var(--dot) / 2);
-      bottom: calc(var(--dot) / 2);
+      content: none;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      top: var(--dot);
+      bottom: calc(-1 * var(--s-4));
       left: calc(var(--dot) / 2 - 1px);
-      right: auto;
-      border-top: 0;
       border-left: 2px dashed #a9c1ef;
     }
     .step {

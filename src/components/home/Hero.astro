@@ -15,7 +15,7 @@ const decor = `
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-media">
-    <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" label="hero — сцена с котом" class="hero-pic" />
+    <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" hiddenMedia="(max-width: 900px)" label="hero — сцена с котом" class="hero-pic" />
     <div class="hero-decor" set:html={decor} />
   </div>
 
@@ -23,7 +23,7 @@ const decor = `
     <div class="hero-text">
       <p class="hero-label">Печать и сувениры в Калининграде</p>
       <h1 id="hero-title" class="hero-title">
-        Печатаем на футболках, кружках и сувенирах&nbsp;—{' '}
+        Печатаем на футболках, кружках и&nbsp;сувенирах&nbsp;—{' '}
         <span class="accent">
           от 1 штуки
           <svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -39,7 +39,7 @@ const decor = `
     </div>
 
     <div class="hero-mobile">
-      <Pic name="hero-mobile" alt={alt} w={1200} h={1200} label="hero-mobile" class="hero-mpic" />
+      <Pic name="hero-mobile" alt={alt} w={1200} h={1200} loading="eager" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-mpic" />
       <div class="hero-decor" set:html={decor} />
     </div>
   </div>
@@ -79,10 +79,17 @@ const decor = `
     bottom: 0;
     height: min(100%, calc(2 * (100vw - var(--text-edge)) * 1400 / 2400));
     aspect-ratio: 2400 / 1400;
-    /* the left and bottom edges melt into the background (the hero's own background fades out at the bottom) */
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(0deg, transparent 0, #000 16%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(0deg, transparent 0, #000 16%);
+    /* the left, bottom and top edges melt into the background (the hero's own background fades out at the bottom;
+       on narrower screens the picture starts below the hero's top edge) */
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0, #000 22%),
+      linear-gradient(0deg, transparent 0, #000 16%),
+      linear-gradient(180deg, transparent 0, #000 5%);
+    -webkit-mask-composite: source-in, source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 0, #000 22%),
+      linear-gradient(0deg, transparent 0, #000 16%),
+      linear-gradient(180deg, transparent 0, #000 5%);
     mask-composite: intersect;
   }
   .hero-media :global(.hero-pic) {
@@ -161,27 +168,39 @@ const decor = `
     pointer-events: none;
     color: var(--blue);
   }
+  /* positions in the picture's own proportions (hero.webp): rays left of the left ear, the crown right of the
+     right ear — both on the empty background, never on the cat's face */
   .hero-decor :global(.hd-rays) {
     position: absolute;
-    left: 53%;
-    top: 30%;
+    left: 40%;
+    top: 13%;
     width: 7%;
   }
   .hero-decor :global(.hd-crown) {
     position: absolute;
-    left: 78%;
-    top: 10%;
+    left: 81%;
+    top: 5%;
     width: 8%;
-    transform: rotate(8deg);
+    transform: rotate(12deg);
   }
 
   .hero-mobile {
     display: none;
   }
 
+  /* narrower desktops: the picture's empty left part lies under the title, so the rays move above the head,
+     between the ears */
+  @media (max-width: 1180px) {
+    .hero-media .hero-decor :global(.hd-rays) {
+      left: 57%;
+      top: 5%;
+      width: 6%;
+    }
+  }
   @media (max-width: 1100px) {
     .hero {
-      --text-max: 30rem;
+      /* both buttons still fit on one line at 1024 */
+      --text-max: 31rem;
     }
   }
 
@@ -209,17 +228,22 @@ const decor = `
       margin-inline: auto;
       border-radius: var(--radius-panel);
     }
+    /* the laptop and the table run to the picture's edge: soften the right and bottom edges, no hard cut */
     .hero-mobile :global(.hero-mpic) {
-      border-radius: var(--radius-panel);
+      -webkit-mask-image: linear-gradient(270deg, transparent 0, #000 14%), linear-gradient(0deg, transparent 0, #000 10%);
+      -webkit-mask-composite: source-in;
+      mask-image: linear-gradient(270deg, transparent 0, #000 14%), linear-gradient(0deg, transparent 0, #000 10%);
+      mask-composite: intersect;
     }
+    /* hero-mobile.webp: rays above-left of the left ear, the crown right of the right ear */
     .hero-mobile .hero-decor :global(.hd-rays) {
-      left: 10%;
-      top: 22%;
+      left: 3%;
+      top: 5%;
       width: 12%;
     }
     .hero-mobile .hero-decor :global(.hd-crown) {
-      left: 72%;
-      top: 6%;
+      left: 73%;
+      top: 5%;
       width: 14%;
     }
   }

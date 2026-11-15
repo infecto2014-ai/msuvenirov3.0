@@ -74,11 +74,33 @@ export default function OrderDialog() {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [drag, setDrag] = useState(false);
   const startedAt = useRef(Date.now());
+  // where focus goes after closing: the opener, or the «Меню» button when the opener was inside the closed mobile sheet
+  const returnTo = useRef<HTMLElement | null>(null);
+  // bumped by a submit with errors; the effect below focuses the first invalid field after it is rendered
+  const [invalidTry, setInvalidTry] = useState(0);
+  useEffect(() => {
+    if (invalidTry) dialog.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+  }, [invalidTry]);
+  useEffect(() => {
+    const dlg = dialog.current;
+    if (!dlg) return;
+    const onClose = () => {
+      const el = returnTo.current;
+      returnTo.current = null;
+      // the browser returns focus to the opener itself; only a hidden opener needs help
+      if (el && el.isConnected && el.getClientRects().length) el.focus();
+    };
+    dlg.addEventListener('close', onClose);
+    return () => dlg.removeEventListener('close', onClose);
+  }, []);
 
   useEffect(() => {
     setItems(getEstimate());
     const onChange = (e: Event) => setItems([...(e as CustomEvent<EstimateItem[]>).detail]);
-    const onOpen = () => {
+    const onOpen = (opener?: Element | null) => {
+      const from = (opener ?? document.activeElement) as HTMLElement | null;
+      const sheet = from?.closest('details.mnav');
+      returnTo.current = sheet ? sheet.querySelector<HTMLElement>('summary') : from;
       setItems(getEstimate());
       if (status.kind === 'done') setStatus({ kind: 'idle' });
       startedAt.current = Date.now();
@@ -94,9 +116,10 @@ export default function OrderDialog() {
     };
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('[data-estimate-open]')) {
+      const est = target.closest('[data-estimate-open]');
+      if (est) {
         e.preventDefault();
-        onOpen();
+        onOpen(est);
         return;
       }
       const el = target.closest<HTMLElement>('[data-order]');
@@ -104,18 +127,19 @@ export default function OrderDialog() {
         e.preventDefault();
         // buttons like «Заказать» on a popular item pass what is ordered: data-order="Футболка с принтом А4, 1 шт"
         const what = el.dataset.order?.trim();
-        // a bare `data-order` attribute is rendered by Astro as "true" — that is not an item
+        // plain «Заявка» buttons use data-order=""; a bare `data-order` would be rendered by Astro as "true" — not an item
         if (what && what !== 'true') setComment((c) => (c.includes(what) ? c : c ? `${c}\n${what}` : what));
-        onOpen();
+        onOpen(el);
       }
     };
     window.addEventListener(ESTIMATE_EVENT, onChange);
-    window.addEventListener(ORDER_OPEN_EVENT, onOpen);
+    const onOpenEvent = () => onOpen();
+    window.addEventListener(ORDER_OPEN_EVENT, onOpenEvent);
     document.addEventListener('click', onClick);
-    if (location.hash === '#zakaz') onOpen();
+    if (location.hash === '#zakaz') onOpen(null);
     return () => {
       window.removeEventListener(ESTIMATE_EVENT, onChange);
-      window.removeEventListener(ORDER_OPEN_EVENT, onOpen);
+      window.removeEventListener(ORDER_OPEN_EVENT, onOpenEvent);
       document.removeEventListener('click', onClick);
     };
   }, [status.kind]);
@@ -143,8 +167,8 @@ export default function OrderDialog() {
     setTouched(true);
     if (!nameOk || !phoneOk) {
       reachGoal('form_validation_error');
-      // move focus to the first field with an error, so it is seen and announced
-      setTimeout(() => dialog.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus(), 0);
+      // move focus to the first field with an error (after the render that marks it), so it is seen and announced
+      setInvalidTry((n) => n + 1);
       return;
     }
     setStatus({ kind: 'sending' });
@@ -291,7 +315,7 @@ export default function OrderDialog() {
                   {touched && !phoneOk && (
                     <span class="order-err" id="order-phone-err" role="alert">
                       <Warn />
-                      Проверьте номер: нужно 11 цифр
+                      Проверьте номер: нужно 11 цифр
                     </span>
                   )}
                 </label>
@@ -347,7 +371,7 @@ export default function OrderDialog() {
                     <span>
                       <b>Прикрепить макет</b> или перетащите файлы сюда
                     </span>
-                    <small>PNG, JPG, PDF, AI, CDR, PSD, ZIP — до 10 файлов, до 20 МБ каждый</small>
+                    <small>PNG, JPG, PDF, AI, CDR, PSD, ZIP — до 10 файлов, до 20 МБ каждый</small>
                   </span>
                 </label>
                 {files.length > 0 && (

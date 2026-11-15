@@ -20,7 +20,7 @@ const { title, eyebrow } = Astro.props;
         <p class="stub-lead"><slot /></p>
         <div class="stub-actions">
           <Button href="/" variant="ghost" icon="chevron-left">На главную</Button>
-          <Button data-order arrow>Заявка</Button>
+          <Button data-order="" arrow>Заявка</Button>
         </div>
       </div>
       <aside class="stub-card" aria-label="Связаться с мастерской">
@@ -36,7 +36,7 @@ const { title, eyebrow } = Astro.props;
           </li>
           <li>
             <span class="stub-ic"><Icon name="map-pin" size={20} /></span>
-            <span>{site.address.street}, {site.address.place}</span>
+            <span>{site.address.street}, <span class="stub-nowrap">{site.address.place}</span></span>
           </li>
         </ul>
       </aside>
@@ -115,6 +115,9 @@ const { title, eyebrow } = Astro.props;
   }
   .stub-card a:hover {
     color: var(--blue-hover);
+  }
+  .stub-nowrap {
+    white-space: nowrap;
   }
   .stub-ic {
     display: inline-grid;

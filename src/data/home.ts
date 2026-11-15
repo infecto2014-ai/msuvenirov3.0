@@ -95,7 +95,7 @@ export const facts: { icon: IconName; value: string; label: string }[] = [
   { icon: 'check-square', value: '10 000+', label: 'заказов выполнено' },
   { icon: 'award', value: '10+ лет', label: 'опыта в печати' },
   { icon: 'factory', value: 'С 2019 года', label: 'своя мастерская' },
-  { icon: 'clock', value: '10:00–20:00', label: 'ежедневно, без выходных' },
+  { icon: 'clock', value: '10:00–20:00', label: 'ежедневно, без выходных' },
 ];
 
 // ——— lower half of the home page ———
@@ -144,7 +144,7 @@ export const homeWorks: PortfolioItem[] = (() => {
 })();
 
 export const why: { icon: IconName; title: string; text: string }[] = [
-  { icon: 'factory', title: 'Своё производство', text: 'Печатаем сами, в мастерской в ТЦ «Экватор»' },
+  { icon: 'factory', title: 'Своё производство', text: 'Печатаем сами, в мастерской в ТЦ «Экватор»' },
   { icon: 'hash-1', title: 'От 1 штуки', text: 'Одна футболка или тираж — цена понятна заранее' },
   { icon: 'wand', title: 'Поможем с макетом', text: 'Простой макет подготовим бесплатно' },
   { icon: 'shield-check', title: 'Отвечаем за результат', text: 'Брак по нашей вине переделаем бесплатно' },
@@ -165,12 +165,12 @@ export const steps: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'check-square',
     title: 'Согласуем и оплатите',
-    text: 'Покажем, как будет выглядеть изделие. Частным лицам — предоплата 50%, компаниям — счёт без НДС.',
+    text: 'Покажем, как будет выглядеть изделие. Частным лицам — предоплата 50%, компаниям — счёт без НДС.',
   },
   {
     icon: 'shopping-bag',
     title: 'Заберите заказ',
-    text: 'В ТЦ «Экватор» на Челнокова, 9, 2 этаж. За срочность не доплачиваете — сделаем к нужной дате.',
+    text: 'В ТЦ «Экватор» на Челнокова, 9, 2 этаж. За срочность не доплачиваете — сделаем к нужной дате.',
   },
 ];
 
