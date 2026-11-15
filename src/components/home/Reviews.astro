@@ -246,6 +246,9 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
     .rv-card:nth-child(even) {
       --tilt: -0.8deg;
     }
+    .rv-card:nth-child(n):hover {
+      --tilt: 0deg;
+    }
     .rv-ratings {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--s-3);

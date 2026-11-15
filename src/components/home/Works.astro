@@ -99,11 +99,27 @@ const catReady = 'src' in resolvePic('cat-peek');
     right: calc(100% + var(--s-4));
     /* lifted off the cards: the picture's blank bottom strip, the card offset, the tilt (the low corner drops
        about cw * 0.087) and 24px of air between the hoodie edge and the cards */
-    bottom: calc(-1 * (var(--s-6) + var(--s-2)) - var(--cw) * 58 / 1399 + var(--cw) * 0.09 + 24px);
+    bottom: calc(-1 * (var(--s-6) + var(--s-2)) - var(--cw) * 58 / 1399 + var(--cw) * 0.09 + 28px);
     width: var(--cw);
     transform: rotate(-10deg);
     transform-origin: 50% 100%;
     pointer-events: none;
+  }
+  /* a soft white ledge in front of the picture's bottom: it hides the flat cut of the hoodie hem and the paws rest on it;
+     it rotates together with the cat as one group */
+  .wk-cat:not(.wk-cat-ph)::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    left: -5%;
+    right: -3%;
+    bottom: calc(var(--cw) * -0.012);
+    height: calc(var(--cw) * 0.085);
+    border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%;
+    background: linear-gradient(180deg, #fff 0%, #f6f9ff 100%);
+    box-shadow:
+      0 8px 18px rgba(21, 87, 255, 0.09),
+      0 1px 0 rgba(255, 255, 255, 0.9) inset;
   }
   .wk-cat-ph {
     bottom: 0;
