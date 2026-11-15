@@ -89,16 +89,15 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     </nav>
 
     <div class="hdr-actions">
-      <a class="hdr-phone" href={site.phoneHref}>
+      <a class="hdr-phone" href={site.phoneHref} aria-label={`Позвонить: ${site.phone}`}>
         <span class="hdr-phone-ic"><Icon name="phone" size={18} /></span>
-        <span class="hdr-phone-num">{site.phone}</span>
-        <span class="visually-hidden hdr-phone-sr">Позвонить</span>
+        <span class="hdr-phone-num" aria-hidden="true">{site.phone}</span>
       </a>
       <button class="hdr-est" type="button" data-estimate-open aria-label="Смета">
         <Icon name="clipboard-list" size={22} />
         <span class="hdr-est-count" data-estimate-count aria-hidden="true" hidden>0</span>
       </button>
-      <Button class="btn-sm hdr-order" data-order>Заявка</Button>
+      <Button class="btn-sm hdr-order" data-order="">Заявка</Button>
 
       <details class="mnav" data-dismiss>
         <summary class="mnav-btn" aria-label="Меню">
@@ -166,7 +165,7 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
               {site.phone}
             </a>
             <p class="mnav-hours">{site.hours} · {site.address.place}</p>
-            <Button class="btn-block" data-order arrow>Оставить заявку</Button>
+            <Button class="btn-block" data-order="" arrow>Оставить заявку</Button>
           </div>
         </div>
       </details>
@@ -250,9 +249,10 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--s-5);
+    gap: var(--s-4);
     height: var(--header-h);
-    max-width: calc(var(--wrap-wide) + 2 * var(--gutter));
+    /* the same column as .wrap: the logo starts where the page content starts */
+    max-width: calc(var(--wrap) + 2 * var(--gutter));
     margin-inline: auto;
     padding-inline: var(--gutter);
   }
@@ -285,7 +285,7 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     align-items: center;
     gap: 4px;
     min-height: 44px;
-    padding: 0 12px;
+    padding: 0 10px;
     border-radius: var(--radius-pill);
     color: var(--ink);
     font-size: 0.9375rem;
@@ -471,10 +471,11 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     background: var(--sky);
     color: var(--blue-hover);
   }
+  /* the badge sits on the button's top-right corner, clear of the clipboard icon */
   .hdr-est-count {
     position: absolute;
-    top: 2px;
-    right: 0;
+    top: -2px;
+    right: -6px;
     min-width: 20px;
     height: 20px;
     padding: 0 5px;
@@ -635,9 +636,6 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
 
   /* narrower desktops: keep everything on one line */
   @media (max-width: 1360px) {
-    .hdr-link {
-      padding: 0 10px;
-    }
     .hdr-phone-num {
       display: none;
     }
@@ -670,10 +668,6 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
       top: calc(100% - 2px);
       width: auto;
     }
-    /* the phone stays in the footer and the contacts; here there is no room for it */
-    .hdr-phone {
-      display: none;
-    }
     .hdr-actions {
       gap: var(--s-2);
     }
@@ -686,10 +680,18 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
       gap: 0;
     }
     .hdr-link {
-      padding: 0 5px;
+      justify-content: center;
+      min-width: 44px;
+      padding: 0 4px;
     }
     .hdr-logo :global(svg) {
-      height: 32px;
+      height: 28px;
+    }
+    .hdr-actions {
+      gap: var(--s-1);
+    }
+    .hdr-actions :global(.hdr-order) {
+      padding-inline: 14px;
     }
   }
 
