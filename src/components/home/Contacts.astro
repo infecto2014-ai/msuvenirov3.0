@@ -1,0 +1,252 @@
+---
+// «Контакты» (#contacts): address, hours, phone, e-mail, Telegram / MAX and the Yandex Maps link on the left;
+// on the right a light-blue «map» plate drawn in CSS — the whole plate is a link to the map (no iframe).
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { site } from '@/data/site';
+
+const address = `${site.address.city}, ${site.address.street}`;
+---
+
+<section id="contacts" class="section contacts" aria-labelledby="contacts-title">
+  <div class="wrap ct-layout">
+    <div class="ct-info">
+      <SectionHead id="contacts-title" title="Приходите" accent="в мастерскую" />
+      <ul class="ct-list" role="list">
+        <li>
+          <span class="ct-ic"><Icon name="map-pin" size={22} /></span>
+          <span>
+            <span class="ct-k">Адрес</span>
+            <span>{address},</span>
+            <span class="ct-nowrap">{site.address.place}</span>
+          </span>
+        </li>
+        <li>
+          <span class="ct-ic"><Icon name="clock" size={22} /></span>
+          <span>
+            <span class="ct-k">Часы работы</span>
+            {site.hours}, без выходных
+          </span>
+        </li>
+        <li>
+          <span class="ct-ic"><Icon name="phone" size={22} /></span>
+          <span>
+            <span class="ct-k">Телефон</span>
+            <a class="ct-link ct-phone" href={site.phoneHref}>{site.phone}</a>
+          </span>
+        </li>
+        <li>
+          <span class="ct-ic"><Icon name="mail" size={22} /></span>
+          <span>
+            <span class="ct-k">Почта</span>
+            <a class="ct-link" href={`mailto:${site.email}`}>{site.email}</a>
+          </span>
+        </li>
+      </ul>
+      <div class="ct-actions">
+        <Button href={site.social.telegram} icon="send" target="_blank" rel="noopener">Telegram</Button>
+        <Button href={site.social.max} variant="ghost" target="_blank" rel="noopener">MAX</Button>
+      </div>
+      <a class="ct-maps" href={site.yandexMapsOrg} target="_blank" rel="noopener">
+        Открыть на Яндекс Картах <Icon name="arrow-right" size={18} />
+      </a>
+    </div>
+
+    <a class="ct-map" href={site.yandexMapsOrg} target="_blank" rel="noopener" aria-label={`${address}, ${site.address.place} — открыть на Яндекс Картах`}>
+      <span class="ct-map-grid" aria-hidden="true"></span>
+      <span class="ct-pin" aria-hidden="true">
+        <Icon name="map-pin" size={34} />
+      </span>
+      <span class="ct-card">
+        <strong>{site.address.place}</strong>
+        <span>{address}</span>
+        <span class="ct-card-go">Построить маршрут <Icon name="arrow-right" size={16} /></span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .ct-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--s-7);
+    align-items: stretch;
+  }
+  .ct-list {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .ct-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-4);
+  }
+  .ct-list li > span:last-child {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .ct-ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .ct-nowrap {
+    white-space: nowrap;
+  }
+  .ct-k {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+  }
+  .ct-link {
+    align-self: flex-start;
+    padding-block: 4px;
+    text-decoration-color: rgba(11, 26, 63, 0.3);
+    overflow-wrap: anywhere;
+  }
+  .ct-link:hover {
+    color: var(--blue-hover);
+  }
+  .ct-phone {
+    font-size: var(--fs-lg);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ct-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+  .ct-maps {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    margin-top: var(--s-3);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--t-fast) ease;
+  }
+  .ct-maps :global(.icon) {
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .ct-maps:hover {
+    color: var(--blue-hover);
+  }
+  .ct-maps:hover :global(.icon) {
+    transform: translateX(3px);
+  }
+
+  /* the «map»: light-blue plate with a street grid and a river drawn by gradients */
+  .ct-map {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    min-height: 420px;
+    padding: var(--s-5);
+    border-radius: var(--radius-panel);
+    background:
+      radial-gradient(14rem 14rem at 50% 42%, rgba(21, 87, 255, 0.16), transparent 70%),
+      var(--sky);
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--t) var(--ease);
+  }
+  .ct-map:hover {
+    box-shadow: var(--shadow-card), 0 18px 40px rgba(21, 87, 255, 0.12);
+  }
+  .ct-map-grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(115deg, transparent 46%, rgba(255, 255, 255, 0.95) 46%, rgba(255, 255, 255, 0.95) 49%, transparent 49%),
+      linear-gradient(20deg, transparent 58%, rgba(255, 255, 255, 0.9) 58%, rgba(255, 255, 255, 0.9) 60%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent 0 62px, rgba(255, 255, 255, 0.75) 62px 66px),
+      repeating-linear-gradient(90deg, transparent 0 78px, rgba(255, 255, 255, 0.75) 78px 82px);
+  }
+  .ct-pin {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--white);
+    box-shadow:
+      0 0 0 12px rgba(21, 87, 255, 0.16),
+      var(--shadow-btn);
+    transform: translate(-50%, -50%);
+  }
+  .ct-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+    line-height: 1.4;
+  }
+  .ct-card strong {
+    font-size: var(--fs-lg);
+  }
+  .ct-card > span {
+    color: var(--muted);
+  }
+  .ct-card .ct-card-go {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    margin-top: var(--s-2);
+    color: var(--blue-hover);
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .ct-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-6);
+    }
+    .ct-map {
+      min-height: 320px;
+    }
+  }
+  @media (max-width: 560px) {
+    .ct-map {
+      min-height: 320px;
+      padding: var(--s-4);
+      border-radius: var(--radius-card);
+    }
+    .ct-card {
+      padding: var(--s-4);
+    }
+    .ct-pin {
+      top: 32%;
+    }
+    .ct-actions :global(.btn) {
+      flex: 1 1 0;
+    }
+  }
+</style>

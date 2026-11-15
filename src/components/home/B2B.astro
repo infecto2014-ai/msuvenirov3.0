@@ -1,0 +1,138 @@
+---
+// «Нужны сувениры для компании?»: a light-blue plate — the cat with a thumbs-up on the left, text, request button.
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Pic from '@/components/ui/Pic.astro';
+---
+
+<section class="section b2b-sec" aria-labelledby="b2b-title">
+  <div class="wrap">
+    <div class="b2b">
+      <svg class="b2b-wave" viewBox="0 0 1240 300" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 220C200 170 420 260 660 220s400-120 580-90V300H0Z" fill="#fff" fill-opacity=".55" />
+      </svg>
+      <div class="b2b-cat">
+        <Pic name="cat-like" alt="" w={1000} h={1000} fit="contain" label="cat-like" />
+      </div>
+      <div class="b2b-text">
+        <h2 id="b2b-title" class="b2b-title">Нужны сувениры для компании?</h2>
+        <p class="b2b-lead">Счёт без НДС, договор, закрывающие документы. Подготовим коммерческое предложение.</p>
+      </div>
+      <div class="b2b-actions">
+        <Button data-order="Заявка от компании" arrow>Оставить заявку</Button>
+        <a class="b2b-link" href="/korporativnym-klientam">
+          Условия для компаний <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .b2b {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-6);
+    padding: var(--s-5) var(--s-7) var(--s-5) var(--s-6);
+    border-radius: var(--radius-panel);
+    background:
+      radial-gradient(30rem 18rem at 60% 0, rgba(21, 87, 255, 0.12), transparent 70%),
+      var(--sky);
+    box-shadow: var(--shadow-card);
+  }
+  .b2b-wave {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: -1;
+    width: 100%;
+    height: 60%;
+  }
+  .b2b-cat :global(.pic-ph) {
+    border-radius: var(--radius-card);
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  .b2b-title {
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  }
+  .b2b-lead {
+    margin-top: var(--s-3);
+    max-width: 32rem;
+    color: var(--muted);
+    font-size: var(--fs-lg);
+  }
+  .b2b-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .b2b-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--t-fast) ease;
+  }
+  .b2b-link :global(.icon) {
+    color: var(--blue);
+    transition: transform var(--t) var(--ease);
+  }
+  .b2b-link:hover {
+    color: var(--blue-hover);
+  }
+  .b2b-link:hover :global(.icon) {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 1100px) {
+    .b2b {
+      grid-template-columns: 180px minmax(0, 1fr);
+      padding: var(--s-5) var(--s-6);
+    }
+    .b2b-actions {
+      grid-column: 2;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--s-2) var(--s-5);
+    }
+  }
+  @media (max-width: 900px) {
+    .b2b {
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: var(--s-4) var(--s-5);
+    }
+    .b2b-actions {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .b2b {
+      grid-template-columns: minmax(0, 1fr);
+      padding: var(--s-5) var(--s-4);
+      border-radius: var(--radius-card);
+    }
+    .b2b-cat {
+      width: 132px;
+    }
+    .b2b-lead {
+      font-size: var(--fs-base);
+    }
+    .b2b-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .b2b-actions :global(.btn) {
+      width: 100%;
+    }
+    .b2b-link {
+      justify-content: center;
+    }
+  }
+</style>

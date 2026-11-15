@@ -1,0 +1,297 @@
+---
+// «Наши работы»: heading with the peeking cat over the strip, a strip of real work photos that scrolls by itself
+// (finger, wheel, keyboard) and, with JS, round arrow buttons at the sides and page dots (works-slider.ts).
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+import Pic from '@/components/ui/Pic.astro';
+import { homeWorks, workLabel } from '@/data/home';
+import { resolvePic } from '@/lib/pic';
+
+const labelIcon: Record<string, IconName> = {
+  Футболки: 'shirt',
+  Худи: 'shirt',
+  'Спортивная форма': 'shirt',
+  Шопперы: 'shopping-bag',
+  Бейсболки: 'shirt',
+  Кружки: 'coffee',
+  Значки: 'badge',
+  Брелоки: 'badge',
+  Магниты: 'image',
+  Стикеры: 'sticker',
+  Полиграфия: 'file-text',
+  Календари: 'calendar',
+  'Для компаний': 'building',
+  Подарки: 'gift',
+  Свадьба: 'gift',
+};
+// the owner's cat picture has not arrived yet: then a compact placeholder that never covers the cards
+const catReady = 'src' in resolvePic('cat-peek');
+---
+
+<section class="section works" aria-labelledby="works-title" data-works>
+  <div class="wrap">
+    <div class="wk-head">
+      <SectionHead id="works-title" eyebrow="Портфолио" title="Наши" accent="работы" lead="Настоящие заказы наших клиентов">
+        <Button slot="action" href="/portfolio" variant="ghost" arrow>Смотреть всё портфолио</Button>
+      </SectionHead>
+      <div class:list={['wk-cat', { 'wk-cat-ph': !catReady }]}>
+        <Pic name="cat-peek" alt="" w={1400} h={900} fit="contain" label="cat-peek" />
+      </div>
+    </div>
+
+    <div class="wk-stage">
+      <ul class="wk-track" role="list" tabindex="0" aria-label="Работы мастерской, лента листается" data-works-track>
+        {
+          homeWorks.map((w) => {
+            const label = workLabel(w.tags);
+            return (
+              <li class="wk-item">
+                <figure class="wk-card">
+                  <img src={w.src} alt={w.title} width="400" height="500" loading="lazy" decoding="async" />
+                  <figcaption class="wk-label">
+                    <Icon name={labelIcon[label] ?? 'image'} size={18} />
+                    {label}
+                  </figcaption>
+                </figure>
+              </li>
+            );
+          })
+        }
+      </ul>
+      <button class="wk-arrow wk-prev" type="button" aria-label="Предыдущие работы" data-works-prev hidden>
+        <Icon name="chevron-left" size={24} />
+      </button>
+      <button class="wk-arrow wk-next" type="button" aria-label="Следующие работы" data-works-next hidden>
+        <Icon name="chevron-right" size={24} />
+      </button>
+    </div>
+    <div class="wk-dots" data-works-dots hidden></div>
+  </div>
+</section>
+
+<script>
+  import { initWorksSlider } from '@/scripts/works-slider';
+  document.querySelectorAll<HTMLElement>('[data-works]').forEach(initWorksSlider);
+</script>
+
+<style>
+  .wk-head {
+    position: relative;
+  }
+  .wk-head :global(.sh) {
+    position: relative;
+    z-index: 1;
+  }
+  /* the cat peeks over the strip between the heading and the button; its paws rest on the cards */
+  .wk-cat {
+    position: absolute;
+    z-index: 2;
+    left: 47%;
+    bottom: calc(-1 * var(--s-6) - 18px);
+    width: clamp(200px, 22vw, 300px);
+    pointer-events: none;
+  }
+  .wk-cat-ph {
+    bottom: 0;
+    width: clamp(150px, 15vw, 210px);
+    opacity: 0.7;
+  }
+  .wk-cat-ph :global(.pic-ph) {
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    border-bottom: 0;
+  }
+
+  .wk-stage {
+    position: relative;
+  }
+  .wk-track {
+    --per: 4;
+    display: flex;
+    gap: var(--s-4);
+    margin: 0;
+    padding: var(--s-2) 0 var(--s-5);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: #b9cdf2 transparent;
+  }
+  .wk-track:focus-visible {
+    outline-offset: -3px;
+    border-radius: var(--radius-card);
+  }
+  /* with the buttons and dots working, the bare scrollbar is not needed */
+  .works:global(.is-js) .wk-track {
+    scrollbar-width: none;
+  }
+  .works:global(.is-js) .wk-track::-webkit-scrollbar {
+    display: none;
+  }
+  .wk-item {
+    flex: 0 0 calc((100% - (var(--per) - 1) * var(--s-4)) / var(--per));
+    scroll-snap-align: start;
+  }
+  .wk-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-card);
+    background: var(--sky);
+    box-shadow: var(--shadow-card);
+  }
+  .wk-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease);
+  }
+  .wk-card:hover img {
+    transform: scale(1.04);
+  }
+  .wk-label {
+    position: absolute;
+    left: var(--s-3);
+    bottom: var(--s-3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    max-width: calc(100% - 2 * var(--s-3));
+    min-height: 40px;
+    padding: 6px 16px 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    color: var(--ink);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(11, 26, 63, 0.12);
+  }
+  .wk-label :global(.icon) {
+    flex: none;
+    color: var(--blue);
+  }
+
+  .wk-arrow {
+    position: absolute;
+    top: calc(50% - var(--s-2));
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--blue);
+    box-shadow: var(--shadow-pop);
+    transform: translateY(-50%);
+    transition:
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease,
+      opacity var(--t-fast) ease;
+  }
+  .wk-arrow[hidden] {
+    display: none;
+  }
+  .wk-arrow:hover:not(:disabled) {
+    background: var(--blue);
+    color: var(--white);
+  }
+  .wk-arrow:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .wk-prev {
+    left: -28px;
+  }
+  .wk-next {
+    right: -28px;
+  }
+
+  .wk-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-1);
+    margin-top: var(--s-2);
+  }
+  .wk-dots[hidden] {
+    display: none;
+  }
+  .wk-dots :global(.wk-dot) {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .wk-dots :global(.wk-dot)::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-pill);
+    background: #c9d8f3;
+    transition:
+      background-color var(--t-fast) ease,
+      width var(--t) var(--ease);
+  }
+  .wk-dots :global(.wk-dot[aria-current='true'])::before {
+    width: 28px;
+    background: var(--blue);
+  }
+  .wk-dots :global(.wk-dot:hover)::before {
+    background: var(--blue-hover);
+  }
+
+  @media (max-width: 1320px) {
+    .wk-prev {
+      left: -12px;
+    }
+    .wk-next {
+      right: -12px;
+    }
+  }
+  @media (max-width: 1100px) {
+    .wk-track {
+      --per: 3;
+    }
+  }
+  @media (max-width: 900px) {
+    .wk-cat {
+      display: none;
+    }
+    .wk-track {
+      --per: 2;
+    }
+    .wk-arrow {
+      width: 48px;
+      height: 48px;
+    }
+    .wk-prev {
+      left: -4px;
+    }
+    .wk-next {
+      right: -4px;
+    }
+  }
+  @media (max-width: 560px) {
+    /* one and a bit of the next card: the strip shows it scrolls */
+    .wk-track {
+      --per: 1.25;
+      gap: var(--s-3);
+    }
+    .wk-item {
+      flex-basis: calc((100% - var(--s-3)) / var(--per));
+    }
+    .wk-head :global(.btn) {
+      width: 100%;
+    }
+    .wk-head :global(.sh-action) {
+      width: 100%;
+    }
+  }
+</style>
