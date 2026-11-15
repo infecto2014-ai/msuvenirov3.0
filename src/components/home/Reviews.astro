@@ -23,7 +23,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
           <li>
             <a class="rv-rating" href={r.href} target="_blank" rel="noopener">
               <span class="rv-score">
-                <Icon name="star" size={20} class="rv-star" />
+                <Icon name="star" size={26} class="rv-star" />
                 {score(r.rating)}
               </span>
               <span class="rv-place">
@@ -123,7 +123,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
   }
@@ -159,8 +159,10 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--s-5);
+    padding-bottom: 12px;
   }
   .rv-card {
+    transition: transform var(--t) var(--ease);
     display: flex;
     flex-direction: column;
     gap: var(--s-4);
@@ -169,6 +171,19 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
     border-radius: var(--radius-card);
     background: var(--white);
     box-shadow: var(--shadow-card);
+    transform: translateY(var(--dy, 0)) rotate(var(--tilt, 0deg));
+  }
+  /* a little scatter: tilts go round the six cards, every second card sits lower */
+  .rv-card:nth-child(6n + 1) { --tilt: -1.5deg; }
+  .rv-card:nth-child(6n + 2) { --tilt: 1deg; --dy: 12px; }
+  .rv-card:nth-child(6n + 3) { --tilt: -0.5deg; }
+  .rv-card:nth-child(6n + 4) { --tilt: 1.5deg; --dy: 12px; }
+  .rv-card:nth-child(6n + 5) { --tilt: -1deg; }
+  .rv-card:nth-child(6n + 6) { --tilt: 0.5deg; --dy: 12px; }
+  @media (hover: hover) {
+    .rv-card:hover {
+      --tilt: 0deg;
+    }
   }
   .rv-stars {
     display: flex;
@@ -218,7 +233,19 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .rv-card {
+      transition: none;
+    }
+  }
   @media (max-width: 900px) {
+    .rv-card:nth-child(n) {
+      --dy: 0px;
+      --tilt: 0.8deg;
+    }
+    .rv-card:nth-child(even) {
+      --tilt: -0.8deg;
+    }
     .rv-ratings {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--s-3);
@@ -236,7 +263,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
       padding: var(--s-4);
     }
     .rv-score {
-      font-size: 1.25rem;
+      font-size: 2rem;
     }
     .rv-rating {
       padding-inline: var(--s-4);

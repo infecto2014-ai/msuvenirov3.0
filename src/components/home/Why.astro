@@ -28,13 +28,18 @@ import { why } from '@/data/home';
   .why {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--s-6);
+    gap: var(--s-5);
   }
   .why-item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--s-2);
+    padding: var(--s-6) var(--s-4);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+    text-align: center;
   }
   .why-ic {
     display: grid;
@@ -52,16 +57,20 @@ import { why } from '@/data/home';
   .why-text {
     color: var(--muted);
     max-width: 17rem;
+    text-wrap: balance;
   }
   @media (max-width: 900px) {
     .why {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--s-6) var(--s-5);
+      gap: var(--s-4);
     }
   }
   @media (max-width: 560px) {
     .why {
-      gap: var(--s-5) var(--s-4);
+      gap: var(--s-3);
+    }
+    .why-item {
+      padding: var(--s-5) var(--s-3);
     }
     .why-ic {
       width: 52px;
