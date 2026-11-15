@@ -6,6 +6,7 @@ import '@/styles/base.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import MobileBar from '@/components/MobileBar.astro';
+import OrderDialog from '@/components/islands/OrderDialog';
 import { localBusiness, website } from '@/lib/schema';
 import { site } from '@/data/site';
 
@@ -61,6 +62,11 @@ const ld = [localBusiness(), website(), ...schema];
     </main>
     <Footer />
     <MobileBar />
+    <OrderDialog client:idle />
+
+    <script>
+      import '@/scripts/estimate-badge';
+    </script>
 
     <script is:inline define:vars={{ metrikaId: site.metrikaId }}>
       // Analytics loads after the page is interactive and idle, so it never slows down the first paint.

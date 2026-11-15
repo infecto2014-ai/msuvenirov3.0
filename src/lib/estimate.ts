@@ -25,7 +25,9 @@ const read = (): EstimateItem[] => {
   try {
     const raw = localStorage.getItem(KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed.slice(0, 30) : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((i): i is EstimateItem => !!i && typeof i === 'object' && typeof i.id === 'string').slice(0, 30)
+      : [];
   } catch {
     return [];
   }
