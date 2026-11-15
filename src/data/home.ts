@@ -80,9 +80,11 @@ export const catalog: CatalogCard[] = [
   },
 ];
 
-/** lowest «от» price of the card's categories */
-export function catalogFrom(card: CatalogCard): number {
-  return Math.min(...card.categories.map((id) => categoryFrom(id).price));
+/** «от» price and its unit (шт, см² …) of the cheapest of the card's categories */
+export function catalogFrom(card: CatalogCard): { price: number; unit: string } {
+  return card.categories
+    .map((id) => categoryFrom(id))
+    .reduce((min, f) => (f.price < min.price ? f : min));
 }
 
 export const facts: { icon: IconName; value: string; label: string }[] = [

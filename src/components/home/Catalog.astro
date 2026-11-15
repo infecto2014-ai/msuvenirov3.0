@@ -30,7 +30,10 @@ import { rub } from '@/data/pricing';
                 <span class="card-title">{card.title}</span>
                 <span class="card-text">{card.text}</span>
                 <span class="card-foot">
-                  <span class="card-price">от {rub(catalogFrom(card))}</span>
+                  <span class="card-price">
+                    от&nbsp;{rub(catalogFrom(card).price)}
+                    <span class="card-unit">/&nbsp;{catalogFrom(card).unit}</span>
+                  </span>
                   <span class="card-go">
                     <Icon name="arrow-right" size={18} />
                   </span>
@@ -150,6 +153,11 @@ import { rub } from '@/data/pricing';
     font-weight: 700;
     white-space: nowrap;
   }
+  .card-unit {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
   .card-go {
     flex: none;
     display: grid;
@@ -168,6 +176,27 @@ import { rub } from '@/data/pricing';
     color: var(--white);
   }
 
+  /* six narrow columns on small laptops: keep «от 1,72 ₽ / шт» and the arrow on one line */
+  @media (min-width: 1101px) and (max-width: 1320px) {
+    .card-price {
+      font-size: 0.9375rem;
+    }
+    .card-unit {
+      font-size: var(--fs-xs);
+    }
+    .card-foot {
+      gap: var(--s-1);
+    }
+    .card-go {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  @media (min-width: 1101px) and (max-width: 1180px) {
+    .card-go {
+      display: none;
+    }
+  }
   @media (max-width: 1100px) {
     .cards {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -193,6 +222,10 @@ import { rub } from '@/data/pricing';
     .card-ic {
       width: 32px;
       height: 32px;
+    }
+    /* two narrow columns: the price with its unit needs the whole line; the whole card is the link anyway */
+    .card-go {
+      display: none;
     }
   }
 </style>

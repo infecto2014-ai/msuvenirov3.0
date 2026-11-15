@@ -1,7 +1,8 @@
 ---
 // Home first screen: label, h1 with the blue accent, subtitle, two buttons.
 // Desktop: the 2400×1400 scene sits on the right like a background (its empty light left part goes under the text).
-// ≤ 900px: a square picture under the text instead. Rays and the crown near the cat are decorative SVG.
+// ≤ 900px: a square picture under the text instead. Only one copy is displayed at any width (the other is
+// display:none), so assistive tech gets exactly one picture with the alt. Rays and the crown near the cat are decorative SVG.
 import Button from '@/components/ui/Button.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
@@ -13,7 +14,7 @@ const decor = `
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-media" aria-hidden="true">
+  <div class="hero-media">
     <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" label="hero — сцена с котом" class="hero-pic" />
     <div class="hero-decor" set:html={decor} />
   </div>
