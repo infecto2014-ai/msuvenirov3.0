@@ -90,7 +90,7 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
 
     <div class="hdr-actions">
       <a class="hdr-phone" href={site.phoneHref} aria-label={`Позвонить: ${site.phone}`}>
-        <span class="hdr-phone-ic"><Icon name="phone" size={18} /></span>
+        <Icon name="phone" size={20} class="hdr-phone-ic" />
         <span class="hdr-phone-num" aria-hidden="true">{site.phone}</span>
       </a>
       <button class="hdr-est" type="button" data-estimate-open aria-label="Смета">
@@ -443,14 +443,13 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
   .hdr-phone:hover {
     color: var(--blue-hover);
   }
-  .hdr-phone-ic {
-    display: inline-grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--sky);
+  /* a small handset in the line, no background of its own: number and icon are one link */
+  .hdr-phone :global(.hdr-phone-ic) {
+    flex: none;
     color: var(--blue);
+  }
+  .hdr-phone {
+    gap: 8px;
   }
   .hdr-est {
     position: relative;
@@ -639,12 +638,14 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     .hdr-phone-num {
       display: none;
     }
+    /* number hidden: one handset link, 44px tap area, no circle behind it */
     .hdr-phone {
+      justify-content: center;
+      min-width: 44px;
       padding-right: 0;
     }
-    .hdr-phone-ic {
-      width: 44px;
-      height: 44px;
+    .hdr-phone:hover :global(.hdr-phone-ic) {
+      color: var(--blue-hover);
     }
   }
   @media (max-width: 1180px) {

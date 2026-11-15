@@ -1,27 +1,23 @@
 ---
-// Home first screen: label, h1 with the blue accent, subtitle, two buttons.
-// Desktop: the 2400×1400 scene sits on the right like a background (its empty light left part goes under the text).
+// Home first screen: h1 with the blue accent, subtitle, two buttons.
+// Desktop: the 2400×1400 scene follows the content width (its right edge sits at the .wrap column, not the window),
+// so the cat stays next to the text on wide monitors; its empty light left part goes under the text.
 // ≤ 900px: a square picture under the text instead. Only one copy is displayed at any width (the other is
-// display:none), so assistive tech gets exactly one picture with the alt. Rays and the crown near the cat are decorative SVG.
+// display:none), so assistive tech gets exactly one picture with the alt.
 import Button from '@/components/ui/Button.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
 
 const alt = 'Кот в худи с логотипом мастерской рядом с кружкой и ноутбуком';
-const decor = `
-<svg class="hd-rays" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M40 6 33 22"/><path d="M58 22 41 31"/><path d="M8 18l20 12"/></svg>
-<svg class="hd-crown" viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 40 4 10l16 14L32 4l12 20 16-14-2 30Z"/><path d="M8 44h48"/></svg>`;
 ---
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-media">
     <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" hiddenMedia="(max-width: 900px)" label="hero — сцена с котом" class="hero-pic" />
-    <div class="hero-decor" set:html={decor} />
   </div>
 
   <div class="wrap hero-in">
     <div class="hero-text">
-      <p class="hero-label">Печать и сувениры в Калининграде</p>
       <h1 id="hero-title" class="hero-title">
         Печатаем на футболках, кружках и&nbsp;сувенирах&nbsp;—{' '}
         <span class="accent">
@@ -40,8 +36,7 @@ const decor = `
 
     <div class="hero-mobile">
       <Pic name="hero-mobile" alt={alt} w={1200} h={1200} loading="eager" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-mpic" />
-      <div class="hero-decor" set:html={decor} />
-    </div>
+      </div>
   </div>
 </section>
 
@@ -75,19 +70,21 @@ const decor = `
   .hero-media {
     position: absolute;
     z-index: 0;
-    right: 0;
+    /* the picture's right edge goes a little past the content column (the laptop may run out of it),
+       never past the window; on wide screens the cat therefore stays next to the text */
+    right: max(0px, calc((100vw - var(--wrap)) / 2 - var(--s-8)));
     bottom: 0;
     height: min(100%, calc(2 * (100vw - var(--text-edge)) * 1400 / 2400));
     aspect-ratio: 2400 / 1400;
     /* the left, bottom and top edges melt into the background (the hero's own background fades out at the bottom;
        on narrower screens the picture starts below the hero's top edge) */
     -webkit-mask-image:
-      linear-gradient(90deg, transparent 0, #000 22%),
+      linear-gradient(90deg, transparent 0, #000 22%, #000 92%, transparent 100%),
       linear-gradient(0deg, transparent 0, #000 16%),
       linear-gradient(180deg, transparent 0, #000 5%);
     -webkit-mask-composite: source-in, source-in;
     mask-image:
-      linear-gradient(90deg, transparent 0, #000 22%),
+      linear-gradient(90deg, transparent 0, #000 22%, #000 92%, transparent 100%),
       linear-gradient(0deg, transparent 0, #000 16%),
       linear-gradient(180deg, transparent 0, #000 5%);
     mask-composite: intersect;
@@ -105,23 +102,6 @@ const decor = `
     border-radius: var(--radius-panel) 0 0 var(--radius-panel);
   }
 
-  .hero-label {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-    margin-bottom: var(--s-5);
-    font-size: var(--fs-sm);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .hero-label::before {
-    content: '';
-    width: 28px;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--blue);
-  }
   .hero-title {
     font-size: clamp(2.125rem, 1.2rem + 3vw, 3.5rem);
   }
@@ -161,42 +141,10 @@ const decor = `
     margin-top: var(--s-6);
   }
 
-  /* decor sits over the picture in its own proportions, so it stays next to the cat */
-  .hero-decor {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    color: var(--blue);
-  }
-  /* positions in the picture's own proportions (hero.webp): rays left of the left ear, the crown right of the
-     right ear — both on the empty background, never on the cat's face */
-  .hero-decor :global(.hd-rays) {
-    position: absolute;
-    left: 40%;
-    top: 13%;
-    width: 7%;
-  }
-  .hero-decor :global(.hd-crown) {
-    position: absolute;
-    left: 81%;
-    top: 5%;
-    width: 8%;
-    transform: rotate(12deg);
-  }
-
   .hero-mobile {
     display: none;
   }
 
-  /* narrower desktops: the picture's empty left part lies under the title, so the rays move above the head,
-     between the ears */
-  @media (max-width: 1180px) {
-    .hero-media .hero-decor :global(.hd-rays) {
-      left: 57%;
-      top: 5%;
-      width: 6%;
-    }
-  }
   @media (max-width: 1100px) {
     .hero {
       /* both buttons still fit on one line at 1024 */
@@ -235,25 +183,9 @@ const decor = `
       mask-image: linear-gradient(270deg, transparent 0, #000 14%), linear-gradient(0deg, transparent 0, #000 10%);
       mask-composite: intersect;
     }
-    /* hero-mobile.webp: rays above-left of the left ear, the crown right of the right ear */
-    .hero-mobile .hero-decor :global(.hd-rays) {
-      left: 3%;
-      top: 5%;
-      width: 12%;
-    }
-    .hero-mobile .hero-decor :global(.hd-crown) {
-      left: 73%;
-      top: 5%;
-      width: 14%;
-    }
   }
 
   @media (max-width: 560px) {
-    .hero-label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      margin-bottom: var(--s-4);
-    }
     .hero-sub {
       margin-top: var(--s-5);
       font-size: var(--fs-base);
