@@ -113,7 +113,7 @@ export const tagLabels: Record<string, string> = {
   nakleyki: 'Стикеры',
   poligrafiya: 'Полиграфия',
   kalendari: 'Календари',
-  sport: 'Спортивная форма',
+  sport: 'Спорт',
   korporativ: 'Для компаний',
   podarki: 'Подарки',
   svadba: 'Свадьба',

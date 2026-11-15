@@ -1,6 +1,6 @@
 ---
 // «Отзывы клиентов»: platform ratings as text with links (site.ratings; never AggregateRating markup),
-// six real reviews from reviews.ts, a link to all reviews.
+// six real reviews from reviews.ts (stars only when the review data has its rating — never invented), a link to all reviews.
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { homeReviews } from '@/data/home';
@@ -42,15 +42,16 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
     <ul class="rv-list" role="list">
       {
         homeReviews.map((r) => {
-          const stars = r.rating ?? 5;
           return (
             <li class="rv-card">
-              <p class="rv-stars">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <Icon name="star" size={18} class:list={['rv-star', { 'rv-star-off': i >= stars }]} />
-                ))}
-                <span class="visually-hidden">Оценка {stars} из 5</span>
-              </p>
+              {r.rating ? (
+                <p class="rv-stars">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Icon name="star" size={18} class:list={['rv-star', { 'rv-star-off': i >= (r.rating ?? 0) }]} />
+                  ))}
+                  <span class="visually-hidden">Оценка {r.rating} из 5</span>
+                </p>
+              ) : null}
               <blockquote class="rv-text">
                 <p>{r.text}</p>
               </blockquote>

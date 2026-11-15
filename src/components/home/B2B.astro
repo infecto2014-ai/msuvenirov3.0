@@ -1,5 +1,6 @@
 ---
-// «Нужны сувениры для компании?»: a light-blue plate — the cat with a thumbs-up on the left, text, request button.
+// «Нужны сувениры для компании?»: a light-blue plate — the cat with a thumbs-up stands on its bottom edge at the left
+// (its head may rise above the plate), text and the request button. ≤ 560px — the cat stands under the buttons.
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
@@ -8,11 +9,15 @@ import Pic from '@/components/ui/Pic.astro';
 <section class="section b2b-sec" aria-labelledby="b2b-title">
   <div class="wrap">
     <div class="b2b">
-      <svg class="b2b-wave" viewBox="0 0 1240 300" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path d="M0 220C200 170 420 260 660 220s400-120 580-90V300H0Z" fill="#fff" fill-opacity=".55" />
-      </svg>
+      <span class="b2b-bg" aria-hidden="true">
+        <svg class="b2b-wave" viewBox="0 0 1240 300" preserveAspectRatio="none" focusable="false">
+          <path d="M0 262C220 236 440 284 680 258s380-74 560-62V300H0Z" fill="#fff" fill-opacity=".4" />
+        </svg>
+      </span>
       <div class="b2b-cat">
-        <Pic name="cat-like" alt="" w={1000} h={1000} fit="contain" label="cat-like" />
+        <span class="b2b-cat-in">
+          <Pic name="cat-like" alt="" w={1000} h={1000} fit="contain" label="cat-like" />
+        </span>
       </div>
       <div class="b2b-text">
         <h2 id="b2b-title" class="b2b-title">Нужны сувениры для компании?</h2>
@@ -30,26 +35,54 @@ import Pic from '@/components/ui/Pic.astro';
 
 <style>
   .b2b {
+    --pb: var(--s-6);
+    --cat: 250px;
     position: relative;
     isolation: isolate;
-    overflow: hidden;
     display: grid;
-    grid-template-columns: 220px minmax(0, 1fr) auto;
+    grid-template-columns: var(--cat) minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--s-6);
-    padding: var(--s-5) var(--s-7) var(--s-5) var(--s-6);
+    margin-top: var(--s-7);
+    padding: var(--s-6) var(--s-7) var(--pb) var(--s-6);
     border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-card);
+  }
+  /* background and wave are clipped to the plate; the cat itself may rise above it */
+  .b2b-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: inherit;
     background:
       radial-gradient(30rem 18rem at 60% 0, rgba(21, 87, 255, 0.12), transparent 70%),
       var(--sky);
-    box-shadow: var(--shadow-card);
   }
   .b2b-wave {
     position: absolute;
     inset: auto 0 0 0;
-    z-index: -1;
     width: 100%;
-    height: 60%;
+    height: 36%;
+  }
+  /* the cat column: the picture stands on the plate's bottom edge. Its box is cut at the hoodie's lower edge
+     (946 of 1000 px), so the hoodie sits flush on the edge and only the transparent margin is dropped. */
+  .b2b-cat {
+    position: relative;
+    align-self: stretch;
+    min-height: 1px;
+  }
+  .b2b-cat-in {
+    position: absolute;
+    left: 0;
+    bottom: calc(-1 * var(--pb));
+    width: 100%;
+    aspect-ratio: 1000 / 946;
+    overflow: hidden;
+    border-bottom-left-radius: calc(var(--radius-panel) - var(--s-6));
+  }
+  .b2b-cat-in :global(.pic) {
+    width: 100%;
   }
   .b2b-cat :global(.pic-ph) {
     border-radius: var(--radius-card);
@@ -93,38 +126,51 @@ import Pic from '@/components/ui/Pic.astro';
 
   @media (max-width: 1100px) {
     .b2b {
-      grid-template-columns: 180px minmax(0, 1fr);
-      padding: var(--s-5) var(--s-6);
+      --cat: 210px;
+      grid-template-columns: var(--cat) minmax(0, 1fr);
+      padding: var(--s-6) var(--s-6) var(--pb);
+    }
+    .b2b-cat {
+      grid-row: 1 / span 2;
     }
     .b2b-actions {
       grid-column: 2;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: flex-start;
       gap: var(--s-2) var(--s-5);
     }
   }
   @media (max-width: 900px) {
     .b2b {
-      grid-template-columns: 140px minmax(0, 1fr);
+      --cat: 170px;
       gap: var(--s-4) var(--s-5);
-    }
-    .b2b-actions {
-      grid-column: 1 / -1;
+      margin-top: var(--s-6);
     }
   }
   @media (max-width: 560px) {
     .b2b {
+      --pb: 0px;
       grid-template-columns: minmax(0, 1fr);
-      padding: var(--s-5) var(--s-4);
+      padding: var(--s-5) var(--s-4) 0;
       border-radius: var(--radius-card);
     }
+    /* under the buttons, standing on the bottom edge */
     .b2b-cat {
-      width: 132px;
+      grid-row: auto;
+      order: 3;
+      width: 180px;
+      height: calc(180px * 946 / 1000);
+      margin-top: var(--s-2);
+    }
+    .b2b-cat-in {
+      border-bottom-left-radius: 0;
     }
     .b2b-lead {
       font-size: var(--fs-base);
     }
     .b2b-actions {
+      grid-column: auto;
       flex-direction: column;
       align-items: stretch;
     }

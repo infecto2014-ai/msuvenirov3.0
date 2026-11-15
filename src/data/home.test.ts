@@ -25,6 +25,8 @@ test('подпись работы: первый тег-изделие, инач�
   expect(workLabel(['korporativ'])).toBe('Для компаний');
   expect(workLabel([])).toBe('Работа');
   expect(workLabel(['неизвестный'])).toBe('Работа');
+  // the medal (sport, podarki) is not a uniform — the caption says «Спорт»
+  expect(workLabel(['sport', 'podarki'])).toBe('Спорт');
 });
 test('лента работ: 12 настоящих фото, без запрещённого, не больше двух на подпись', () => {
   expect(homeWorks).toHaveLength(12);

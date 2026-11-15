@@ -11,7 +11,7 @@ import { resolvePic } from '@/lib/pic';
 const labelIcon: Record<string, IconName> = {
   Футболки: 'shirt',
   Худи: 'shirt',
-  'Спортивная форма': 'shirt',
+  Спорт: 'award',
   Шопперы: 'shopping-bag',
   Бейсболки: 'shirt',
   Кружки: 'coffee',
@@ -84,12 +84,16 @@ const catReady = 'src' in resolvePic('cat-peek');
     z-index: 1;
   }
   /* the cat peeks over the strip between the heading and the button; its paws rest on the cards */
+  /* The picture's hoodie edge (842 of 900 px) lies on the cards' top edge, the paws hang over the cards a little.
+     Card tops are the heading's margin (--s-6) plus the strip's top padding (--s-2) below the heading block.
+     The cat stands just left of the «Смотреть всё портфолио» button. */
   .wk-cat {
+    --cw: clamp(210px, 24vw, 340px);
     position: absolute;
     z-index: 2;
-    left: 47%;
-    bottom: calc(-1 * var(--s-6) - 18px);
-    width: clamp(200px, 22vw, 300px);
+    right: 312px;
+    bottom: calc(-1 * (var(--s-6) + var(--s-2)) - var(--cw) * 58 / 1399);
+    width: var(--cw);
     pointer-events: none;
   }
   .wk-cat-ph {
