@@ -95,7 +95,7 @@ export const facts: { icon: IconName; value: string; label: string }[] = [
   { icon: 'check-square', value: '10 000+', label: 'заказов выполнено' },
   { icon: 'award', value: '10+ лет', label: 'опыта в печати' },
   { icon: 'factory', value: 'С 2019 года', label: 'своя мастерская' },
-  { icon: 'clock', value: '10:00–20:00', label: 'ежедневно, без выходных' },
+  { icon: 'clock', value: '10:00–20:00', label: 'ежедневно, без выходных' },
 ];
 
 // ——— lower half of the home page ———
