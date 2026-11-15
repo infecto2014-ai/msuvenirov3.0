@@ -5,6 +5,14 @@ import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
+import { imageSize, resolvePic } from '@/lib/pic';
+import { join } from 'node:path';
+
+// the slot follows the real proportions of the owner's file (now a 715×890 crop; planned 1400×1000),
+// so the T-shirt is never letterboxed and the decor lands on its chest
+const tee = resolvePic('constructor-tee');
+const size = ('src' in tee && imageSize(join(process.cwd(), 'public', tee.src))) || { w: 1400, h: 1000 };
+const portrait = size.w < size.h;
 ---
 
 <section class="section cb-sec" aria-labelledby="cb-title">
@@ -24,12 +32,12 @@ import { site } from '@/data/site';
         <Button href={site.constructorUrl} arrow target="_blank" rel="noopener">Перейти в конструктор</Button>
       </div>
 
-      <div class="cb-visual">
+      <div class:list={['cb-visual', { 'cb-portrait': portrait }]} style={`--ar: ${size.w} / ${size.h}`}>
         <Pic
           name="constructor-tee"
           alt="Белая футболка с макетом принта в конструкторе"
-          w={1400}
-          h={1000}
+          w={size.w}
+          h={size.h}
           fit="contain"
           label="constructor-tee"
           class="cb-pic"
@@ -111,11 +119,24 @@ import { site } from '@/data/site';
     font-size: var(--fs-lg);
   }
 
+  /* the picture as tall as --cb-h at most, in its own proportions */
   .cb-visual {
+    --cb-h: 400px;
     position: relative;
-    max-width: 560px;
-    width: 100%;
+    width: min(100%, calc(var(--cb-h) * (var(--ar))));
     justify-self: center;
+  }
+  /* an opaque picture (its own light-blue background) melts into the plate: feathered edges, no hard rectangle.
+     A transparent picture is not changed by this — its edges are empty anyway. */
+  .cb-visual :global(img.cb-pic) {
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0, #000 18%, #000 84%, transparent 100%),
+      linear-gradient(180deg, transparent 0, #000 10%, #000 86%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 0, #000 18%, #000 84%, transparent 100%),
+      linear-gradient(180deg, transparent 0, #000 10%, #000 86%, transparent 100%);
+    mask-composite: intersect;
   }
   .cb-visual :global(.cb-pic.pic-ph) {
     border-radius: var(--radius-card);
@@ -126,7 +147,7 @@ import { site } from '@/data/site';
     inset: 0;
     pointer-events: none;
   }
-  /* print area on the chest, in the picture's proportions */
+  /* print area on the chest, in the picture's proportions (landscape 1400×1000 shirt by default) */
   .cb-frame {
     position: absolute;
     left: 34%;
@@ -171,6 +192,13 @@ import { site } from '@/data/site';
     stroke-width: 1.5;
     stroke-linejoin: round;
   }
+  /* the owner's portrait crop: the shirt fills the frame and sits a little left of centre */
+  .cb-portrait .cb-frame {
+    left: 27%;
+    top: 26%;
+    width: 34%;
+    height: 30%;
+  }
   .cb-tools {
     position: absolute;
     right: 2%;
@@ -195,6 +223,15 @@ import { site } from '@/data/site';
     background: var(--white);
     box-shadow: var(--shadow-card);
   }
+  /* beside a narrow portrait picture the tools and colours stand just outside it, like in an editor */
+  .cb-portrait .cb-tools {
+    right: -72px;
+    top: 14%;
+  }
+  .cb-portrait .cb-colors {
+    right: -48px;
+    bottom: 10%;
+  }
   .cb-dot {
     width: 24px;
     height: 24px;
@@ -210,6 +247,12 @@ import { site } from '@/data/site';
     }
   }
   @media (max-width: 900px) {
+    .cb-visual {
+      --cb-h: 380px;
+    }
+    .cb-portrait .cb-tools {
+      right: -60px;
+    }
     .cb {
       grid-template-columns: minmax(0, 1fr);
       padding: var(--s-6) var(--s-5) var(--s-5);
@@ -219,6 +262,17 @@ import { site } from '@/data/site';
     }
   }
   @media (max-width: 560px) {
+    /* no room beside the picture on a phone: tools and colours sit on its faded right edge */
+    .cb-visual {
+      --cb-h: 340px;
+    }
+    .cb-portrait .cb-tools {
+      right: 0;
+    }
+    .cb-portrait .cb-colors {
+      right: 0;
+      bottom: 4%;
+    }
     .cb {
       padding: var(--s-5) var(--s-4) var(--s-4);
       border-radius: var(--radius-card);
