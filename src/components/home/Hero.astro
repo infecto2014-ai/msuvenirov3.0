@@ -19,7 +19,7 @@ const alt = 'Кот в худи с логотипом мастерской ря�
   <div class="wrap hero-in">
     <div class="hero-text">
       <h1 id="hero-title" class="hero-title">
-        Печатаем на футболках, кружках и&nbsp;сувенирах&nbsp;—{' '}
+        Печать на&nbsp;одежде и&nbsp;сувенирах в&nbsp;Калининграде{' '}
         <span class="accent">
           от 1 штуки
           <svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -27,7 +27,7 @@ const alt = 'Кот в худи с логотипом мастерской ря�
           </svg>
         </span>
       </h1>
-      <p class="hero-sub">Подарки с вашим фото и мерч с логотипом компании. <span class="nowrap">{site.address.place}</span></p>
+      <p class="hero-sub">Сельма, {site.address.place}</p>
       <div class="hero-actions">
         <Button href="#catalog" arrow>Выбрать изделие</Button>
         <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн</Button>
@@ -36,7 +36,7 @@ const alt = 'Кот в худи с логотипом мастерской ря�
 
     <div class="hero-mobile">
       <Pic name="hero-mobile" alt={alt} w={1200} h={1200} loading="eager" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-mpic" />
-      </div>
+    </div>
   </div>
 </section>
 
@@ -130,9 +130,6 @@ const alt = 'Кот в худи с логотипом мастерской ря�
     max-width: 30rem;
     color: var(--muted);
     font-size: var(--fs-lg);
-  }
-  .nowrap {
-    white-space: nowrap;
   }
   .hero-actions {
     display: flex;
