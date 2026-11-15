@@ -25,7 +25,8 @@ dialog.order::backdrop {
   max-height: min(92dvh, 860px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--s-6) var(--s-6) var(--s-5);
+  /* the same air under the consent note as above the title */
+  padding: var(--s-6);
 }
 
 .order-close {
