@@ -1,0 +1,44 @@
+---
+// Bottom bar on phones and tablets (≤ 900px): «Позвонить» and «Заявка» always at hand.
+import { site } from '@/data/site';
+import Button from './ui/Button.astro';
+---
+
+<div class="mbar">
+  <Button href={site.phoneHref} variant="ghost" icon="phone" class="mbar-btn">Позвонить</Button>
+  <Button data-order class="mbar-btn">Заявка</Button>
+</div>
+
+<style>
+  .mbar {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .mbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-2);
+      padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+      background: rgba(255, 255, 255, 0.94);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px);
+      backdrop-filter: saturate(1.4) blur(14px);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -6px 24px rgba(11, 26, 63, 0.06);
+    }
+    .mbar :global(.mbar-btn) {
+      min-height: 52px;
+      padding-inline: 12px;
+    }
+    :global(body) {
+      padding-bottom: calc(var(--mobilebar-h) + env(safe-area-inset-bottom));
+    }
+    :global(html) {
+      scroll-padding-bottom: calc(var(--mobilebar-h) + var(--s-4));
+    }
+  }
+</style>

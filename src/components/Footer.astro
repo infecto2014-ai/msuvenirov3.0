@@ -1,0 +1,242 @@
+---
+// Site footer: logo + contacts, three service groups, info links, legal details of the IP.
+import { flatLinks, infoNav, serviceNav, site } from '@/data/site';
+import Logo from './Logo.astro';
+import Icon from './ui/Icon.astro';
+
+const year = new Date().getFullYear();
+const socials = [
+  { href: site.social.telegram, label: 'Telegram' },
+  { href: site.social.max, label: 'MAX' },
+  { href: site.social.vk, label: 'ВКонтакте' },
+];
+---
+
+<footer class="ftr wave-top">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="ftr-brand">
+        <a class="ftr-logo" href="/" aria-label="Мастерская сувениров — на главную">
+          <Logo size={48} />
+        </a>
+        <p class="ftr-about">Мастерская печати в Калининграде с {site.founded} года: одежда, кружки, значки, полиграфия — от 1 штуки.</p>
+        <ul role="list" class="ftr-contacts">
+          <li>
+            <a class="ftr-phone" href={site.phoneHref}>
+              <Icon name="phone" size={20} />
+              {site.phone}
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${site.email}`}>
+              <Icon name="mail" size={20} />
+              {site.email}
+            </a>
+          </li>
+          <li>
+            <a href={site.yandexMapsOrg} target="_blank" rel="noopener">
+              <Icon name="map-pin" size={20} />
+              <span>
+                {site.address.city}, {site.address.street}, {site.address.place}
+                <span class="visually-hidden"> (Яндекс Карты, откроется в новой вкладке)</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <span class="ftr-row">
+              <Icon name="clock" size={20} />
+              {site.hours}
+            </span>
+          </li>
+        </ul>
+        <ul role="list" class="ftr-social" aria-label="Мы в мессенджерах и соцсетях">
+          {
+            socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener">
+                  {s.label}
+                  <span class="visually-hidden"> (откроется в новой вкладке)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        serviceNav.map((g) => (
+          <nav class="ftr-col" aria-label={g.group}>
+            <p class="ftr-title">{g.group}</p>
+            <ul role="list">
+              {flatLinks(g.links).map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+
+      <nav class="ftr-col" aria-label="Информация">
+        <p class="ftr-title">Информация</p>
+        <ul role="list">
+          <li><a href="/uslugi">Все услуги</a></li>
+          {
+            infoNav.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="ftr-bottom">
+      <p>© {site.founded}–{year} {site.name}</p>
+      <p>{site.legal.name} · ОГРНИП {site.legal.ogrnip} · ИНН {site.legal.inn}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    margin-top: var(--s-8);
+    padding: var(--s-7) 0 var(--s-6);
+    background:
+      radial-gradient(40rem 20rem at 100% 100%, rgba(21, 87, 255, 0.07), transparent 70%),
+      var(--sky-2);
+    font-size: 0.9375rem;
+  }
+  .ftr-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) repeat(4, minmax(0, 1fr));
+    gap: var(--s-6) var(--s-5);
+  }
+  .ftr-logo {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    border-radius: 8px;
+  }
+  .ftr-about {
+    margin: var(--s-4) 0 var(--s-5);
+    max-width: 22rem;
+    color: var(--muted);
+  }
+  .ftr-contacts {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+  }
+  .ftr-contacts a,
+  .ftr-row {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 40px;
+    padding-block: 8px;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .ftr-contacts a:hover {
+    color: var(--blue-hover);
+  }
+  .ftr-contacts :global(svg) {
+    flex: none;
+    margin-top: -1px;
+    color: var(--blue);
+  }
+  .ftr-phone {
+    font-size: var(--fs-lg);
+    font-weight: 800;
+  }
+  .ftr-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: var(--s-4) 0 0;
+  }
+  .ftr-social a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    color: var(--ink);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      border-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .ftr-social a:hover {
+    border-color: var(--blue);
+    color: var(--blue-hover);
+  }
+  .ftr-title {
+    margin-bottom: var(--s-3);
+    font-weight: 700;
+  }
+  .ftr-col ul {
+    margin: 0;
+  }
+  .ftr-col a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding-block: 4px;
+    color: var(--muted);
+    text-decoration: none;
+    line-height: 1.35;
+    transition: color var(--t-fast) ease;
+  }
+  .ftr-col a:hover {
+    color: var(--blue-hover);
+    text-decoration: underline;
+  }
+  .ftr-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-5);
+    margin-top: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+
+  @media (max-width: 1100px) {
+    .ftr-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .ftr-brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 900px) {
+    .ftr {
+      margin-top: var(--s-7);
+    }
+    .ftr-col a {
+      min-height: 44px;
+    }
+  }
+  @media (max-width: 560px) {
+    .ftr-grid {
+      gap: var(--s-5) var(--s-4);
+    }
+    .ftr-col a {
+      font-size: var(--fs-sm);
+    }
+    .ftr-bottom {
+      flex-direction: column;
+    }
+  }
+</style>

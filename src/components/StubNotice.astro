@@ -1,0 +1,155 @@
+---
+// Shared body of the «переезжает» stubs and the 404 page: message, «На главную» / «Заявка», contacts card.
+import { site } from '@/data/site';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+
+interface Props {
+  title: string;
+  eyebrow?: string;
+}
+const { title, eyebrow } = Astro.props;
+---
+
+<section class="section stub">
+  <div class="wrap">
+    <div class="stub-panel bg-wash">
+      <div class="stub-text">
+        {eyebrow && <p class="stub-eyebrow">{eyebrow}</p>}
+        <h1>{title}</h1>
+        <p class="stub-lead"><slot /></p>
+        <div class="stub-actions">
+          <Button href="/" variant="ghost" icon="chevron-left">На главную</Button>
+          <Button data-order arrow>Заявка</Button>
+        </div>
+      </div>
+      <aside class="stub-card" aria-label="Связаться с мастерской">
+        <p class="stub-card-title">Мастерская на связи</p>
+        <ul role="list">
+          <li>
+            <span class="stub-ic"><Icon name="phone" size={20} /></span>
+            <a href={site.phoneHref}>{site.phone}</a>
+          </li>
+          <li>
+            <span class="stub-ic"><Icon name="clock" size={20} /></span>
+            <span>{site.hours}</span>
+          </li>
+          <li>
+            <span class="stub-ic"><Icon name="map-pin" size={20} /></span>
+            <span>{site.address.street}, {site.address.place}</span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stub-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-7);
+    padding: var(--s-8) var(--s-8);
+    border-radius: var(--radius-panel);
+  }
+  .stub-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    margin-bottom: var(--s-5);
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    color: var(--blue-hover);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .stub-text h1 {
+    font-size: clamp(2rem, 1.3rem + 2.6vw, 3.25rem);
+    max-width: 16ch;
+  }
+  .stub-lead {
+    margin-top: var(--s-5);
+    color: var(--muted);
+    font-size: var(--fs-lg);
+    max-width: 34rem;
+  }
+  .stub-lead :global(strong) {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .stub-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+  .stub-card {
+    padding: var(--s-5) var(--s-6);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .stub-card-title {
+    margin-bottom: var(--s-3);
+    font-weight: 700;
+  }
+  .stub-card ul {
+    display: grid;
+    gap: var(--s-1);
+    margin: 0;
+  }
+  .stub-card li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 48px;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .stub-card a {
+    color: var(--ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .stub-card a:hover {
+    color: var(--blue-hover);
+  }
+  .stub-ic {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+
+  @media (max-width: 900px) {
+    .stub-panel {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-6);
+      padding: var(--s-7) var(--s-6);
+    }
+  }
+  @media (max-width: 560px) {
+    .stub {
+      padding-top: var(--s-5);
+    }
+    .stub-panel {
+      padding: var(--s-6) var(--s-5);
+      border-radius: var(--radius-card);
+    }
+    .stub-lead {
+      font-size: var(--fs-base);
+    }
+    .stub-actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+    .stub-card {
+      padding: var(--s-4) var(--s-5);
+    }
+  }
+</style>

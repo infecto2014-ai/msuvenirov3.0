@@ -1,0 +1,93 @@
+---
+// Page shell for every page: head (SEO, Open Graph, JSON-LD), skip link, header, <main>, footer, bottom bar.
+import '@fontsource-variable/onest';
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import MobileBar from '@/components/MobileBar.astro';
+import { localBusiness, website } from '@/lib/schema';
+import { site } from '@/data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** path for canonical; defaults to the current URL */
+  path?: string;
+  noindex?: boolean;
+  /** extra JSON-LD objects */
+  schema?: object[];
+}
+
+const { title, description, path, noindex = false, schema = [] } = Astro.props;
+const pathname = (path ?? Astro.url.pathname).replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const canonical = `${site.url}${pathname === '/' ? '/' : pathname}`;
+const ogImage = `${site.url}/og-image.jpg`;
+const ld = [localBusiness(), website(), ...schema];
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {ld.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+
+    <script is:inline define:vars={{ metrikaId: site.metrikaId }}>
+      // Analytics loads after the page is interactive and idle, so it never slows down the first paint.
+      (function () {
+        var started = false;
+        function start() {
+          if (started) return;
+          started = true;
+          (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t); a = e.getElementsByTagName(t)[0];
+            k.async = 1; k.src = r; a.parentNode.insertBefore(k, a);
+          })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+          window.ym(metrikaId, 'init', { webvisor: true, clickmap: true, accurateTrackBounce: true, trackLinks: true });
+        }
+        ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+          window.addEventListener(ev, start, { once: true, passive: true });
+        });
+        setTimeout(start, 3500);
+      })();
+      // The old site registered a service worker; remove it so visitors always get fresh pages.
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (rs) {
+          rs.forEach(function (r) { if (r.scope.indexOf('/admin') === -1) r.unregister(); });
+        });
+      }
+    </script>
+  </body>
+</html>

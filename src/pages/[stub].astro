@@ -1,0 +1,22 @@
+---
+// One template for every menu address that has no page in the new design yet (closed from indexing).
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StubNotice from '@/components/StubNotice.astro';
+import { stubPages } from '@/lib/stubs';
+
+export function getStaticPaths() {
+  return stubPages().map((p) => ({ params: { stub: p.slug }, props: { label: p.label } }));
+}
+
+const { label } = Astro.props;
+---
+
+<BaseLayout
+  title={`${label} — Мастерская сувениров`}
+  description={`Раздел «${label}» переезжает в новый дизайн. Пока можно позвонить или оставить заявку — мастерская в ТЦ «Экватор», Калининград.`}
+  noindex
+>
+  <StubNotice title="Эта страница переезжает в новый дизайн" eyebrow="Сайт обновляется">
+    Скоро здесь будет: <strong>{label}</strong>
+  </StubNotice>
+</BaseLayout>
