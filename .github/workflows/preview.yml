@@ -1,0 +1,44 @@
+name: Test preview (GitHub Pages)
+
+# Test copy of the site for the owner: https://infecto2014-ai.github.io/msuvenirov3.0/
+# Updates on every push to main and the working branch. Hidden from search engines (noindex + robots.txt Disallow).
+# Does not touch the production server.
+on:
+  push:
+    branches: [main, claude/youthful-fermi-dcvfdj]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - run: node scripts/preview-rewrite.mjs "/${{ github.event.repository.name }}"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
