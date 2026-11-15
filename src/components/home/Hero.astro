@@ -15,7 +15,7 @@ const decor = `
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-media">
-    <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" label="hero — сцена с котом" class="hero-pic" />
+    <Pic name="hero" alt={alt} w={2400} h={1400} loading="eager" hiddenMedia="(max-width: 900px)" label="hero — сцена с котом" class="hero-pic" />
     <div class="hero-decor" set:html={decor} />
   </div>
 
@@ -39,7 +39,7 @@ const decor = `
     </div>
 
     <div class="hero-mobile">
-      <Pic name="hero-mobile" alt={alt} w={1200} h={1200} label="hero-mobile" class="hero-mpic" />
+      <Pic name="hero-mobile" alt={alt} w={1200} h={1200} loading="eager" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-mpic" />
       <div class="hero-decor" set:html={decor} />
     </div>
   </div>
