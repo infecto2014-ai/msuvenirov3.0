@@ -402,7 +402,8 @@ function garment(args: {
   const colourRule = (sel: Selection): { min: number; note: string } | undefined => {
     if (!colorSet || isOwn(sel)) return undefined;
     const color = one(sel, 'color', colorSet.choices[0].id);
-    if (color === 'other') return colorSet.otherMin ? { min: colorSet.otherMin, note: `${colorSet.what} — под заказ от ${colorSet.otherMin} шт` } : undefined;
+    if (color === 'other' && colorSet.otherMin) return { min: colorSet.otherMin, note: `${colorSet.what} — под заказ от ${colorSet.otherMin} шт` };
+    // any colour outside `free` (also «other» and unknown ones from old estimate lines) counts as coloured
     const cm = colorSet.colorMin;
     return cm && !cm.free.includes(color) ? { min: cm.min, note: `${cm.noun} — от ${cm.min} шт` } : undefined;
   };
