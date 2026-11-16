@@ -1,0 +1,187 @@
+---
+// «Цены на печать на футболках»: the last block of the page, always open (no JS needed, indexable).
+// Both tables are the `table` of the calculator products in pricing.ts: blank by run + DTF print A6–A3.
+// Two rules under them: coloured T-shirts from 5 pcs, every next print −30 %.
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { findProduct } from '@/data/pricing';
+
+const tables = [
+  { id: 'tshirt-unisex', title: 'Взрослая футболка' },
+  { id: 'tshirt-kids', title: 'Детская футболка' },
+].map((t) => ({ ...t, table: findProduct('textile', t.id)!.table! }));
+
+const rules = [
+  { icon: 'palette' as const, text: 'Цветные футболки — от 5 шт. Белые и чёрные — с 1 шт.' },
+  { icon: 'layers' as const, text: 'Каждый следующий принт на изделии — со скидкой −30%.' },
+];
+---
+
+<section class="section tpr-sec" aria-labelledby="tpr-title">
+  <div class="wrap">
+    <SectionHead id="tpr-title" title="Цены на печать" accent="на футболках" lead="Цена за одну футболку: сама футболка плюс печать. Чем больше тираж, тем дешевле каждая." />
+
+    <div class="tpr-tables">
+      {
+        tables.map(({ id, title, table }) => (
+          <div class="tpr-block">
+            <h3 class="tpr-h3">{title}</h3>
+            <div class="tpr-scroll" tabindex="0" role="region" aria-label={`${title}: цены по тиражам, прокрутка таблицы`}>
+              <table class="tpr-table">
+                <thead>
+                  <tr>
+                    <th scope="col">За 1 шт</th>
+                    {table.columns.map((c) => (
+                      <th scope="col">{c}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {table.rows.map((r) => (
+                    <tr>
+                      <th scope="row">{r.label}</th>
+                      {r.cells.map((c) => (
+                        <td>{c}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {table.note && <p class="tpr-note muted">{table.note}</p>}
+          </div>
+        ))
+      }
+    </div>
+
+    <ul class="tpr-rules" role="list">
+      {
+        rules.map((r) => (
+          <li class="tpr-rule">
+            <span class="tpr-rule-ic">
+              <Icon name={r.icon} size={22} />
+            </span>
+            <span>{r.text}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="tpr-more">
+      <Button href="/price" variant="ghost" arrow>Все цены</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tpr-tables {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-5);
+    align-items: start;
+  }
+  .tpr-block {
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .tpr-h3 {
+    margin-bottom: var(--s-3);
+    font-size: var(--fs-lg);
+  }
+  .tpr-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  .tpr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .tpr-table th,
+  .tpr-table td {
+    padding: 10px var(--s-4);
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .tpr-table thead th {
+    background: var(--sky-2);
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    vertical-align: bottom;
+  }
+  .tpr-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  .tpr-table tbody th {
+    font-weight: 700;
+  }
+  .tpr-table tbody tr:hover > * {
+    background: var(--sky-2);
+  }
+  .tpr-note {
+    margin-top: var(--s-3);
+    font-size: var(--fs-sm);
+  }
+  .tpr-rules {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4);
+    margin-top: var(--s-5);
+  }
+  .tpr-rule {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--radius-card);
+    background: var(--sky);
+    font-weight: 600;
+  }
+  .tpr-rule-ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--blue);
+  }
+  .tpr-more {
+    margin-top: var(--s-5);
+  }
+  @media (max-width: 1100px) {
+    .tpr-tables {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 900px) {
+    .tpr-rules {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-3);
+    }
+  }
+  @media (max-width: 560px) {
+    .tpr-block {
+      padding: var(--s-4);
+    }
+    .tpr-table th,
+    .tpr-table td {
+      padding: 8px var(--s-3);
+    }
+    .tpr-rule {
+      padding: var(--s-3) var(--s-4);
+    }
+    .tpr-more :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

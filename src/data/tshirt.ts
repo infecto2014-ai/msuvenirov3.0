@@ -3,6 +3,11 @@
 // a variant's price is quoted by the calculator rules in pricing.ts (presetPrice).
 import { findProduct } from './pricing';
 import { applyPreset } from '@/lib/calc-preset';
+import { portfolio } from './portfolio';
+import { reviews } from './reviews';
+import { services } from './services';
+import { homeReviews } from './home';
+import type { Faq, PortfolioItem, Review } from './types';
 
 export interface TeePreset {
   title: string;
@@ -126,3 +131,19 @@ export const teeCare: string[] = [
   'Не сушите в барабанной сушилке и на батарее.',
   'Без химчистки и агрессивных пятновыводителей на принте.',
 ];
+
+// ——— works, reviews and questions of the page (same selection as on 2.0) ———
+
+/** real works with T-shirts (tag «futbolki»); the cup with the rude print (portfolio-14) never goes to the site */
+export const teeWorks: PortfolioItem[] = portfolio.filter((w) => w.tags.includes('futbolki') && !w.src.includes('portfolio-14.'));
+
+/** up to six reviews that mention T-shirts; if there are fewer than three, the rest comes from the home selection */
+export const teeReviews: Review[] = (() => {
+  const about = reviews.filter((r) => r.text.toLowerCase().includes('футболк')).slice(0, 6);
+  if (about.length >= 3) return about;
+  const rest = homeReviews.filter((r) => !about.includes(r));
+  return [...about, ...rest].slice(0, 3);
+})();
+
+/** the page's questions: the «Печать на футболках» entry of services.ts */
+export const teeFaq: Faq[] = services.find((s) => s.slug === '/pechat-na-futbolkah')!.faq;

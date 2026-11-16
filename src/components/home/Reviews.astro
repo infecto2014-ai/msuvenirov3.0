@@ -1,17 +1,25 @@
 ---
 // «Отзывы клиентов»: platform ratings as text with links (site.ratings; never AggregateRating markup),
-// six real reviews from reviews.ts (stars only when the review data has its rating — never invented), a link to all reviews.
+// real reviews (the home page: six from reviews.ts; other pages pass their own list) from reviews.ts (stars only when the review data has its rating — never invented), a link to all reviews.
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { homeReviews } from '@/data/home';
 import { site } from '@/data/site';
+import type { Review } from '@/data/types';
+
+interface Props {
+  items?: Review[];
+  title?: string;
+  accent?: string;
+}
+const { items = homeReviews, title = 'Отзывы', accent = 'клиентов' } = Astro.props;
 
 const score = (n: number) => n.toFixed(1).replace('.', ',');
 ---
 
 <section class="section reviews" aria-labelledby="reviews-title">
   <div class="wrap">
-    <SectionHead id="reviews-title" title="Отзывы" accent="клиентов">
+    <SectionHead id="reviews-title" title={title} accent={accent}>
       <a slot="action" class="rv-all" href="/otzyvy">
         Все отзывы <Icon name="arrow-right" size={20} />
       </a>
@@ -42,7 +50,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
 
     <ul class="rv-list" role="list">
       {
-        homeReviews.map((r) => {
+        items.map((r) => {
           return (
             <li class="rv-card">
               {r.rating ? (

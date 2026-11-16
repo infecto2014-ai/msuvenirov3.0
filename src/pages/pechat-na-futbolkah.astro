@@ -1,22 +1,43 @@
 ---
 // «Печать на футболках» in the 3.0 design: first screen → calculator (T-shirts only) → ready-made variants →
-// constructor invitation (the home block) → «Подробнее о футболке». Works, reviews, FAQ, price table and
-// JSON-LD follow in the next step.
+// constructor invitation (the home block) → «Подробнее о футболке» → works → reviews → questions → price table
+// (open, at the very bottom). JSON-LD: breadcrumbs, service with the «от» price, FAQPage.
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import TeeHero from '@/components/tshirt/TeeHero.astro';
 import TeePresets from '@/components/tshirt/TeePresets.astro';
 import TeeDetails from '@/components/tshirt/TeeDetails.astro';
+import TeePrices from '@/components/tshirt/TeePrices.astro';
 import ConstructorBanner from '@/components/home/ConstructorBanner.astro';
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import Calculator from '@/components/islands/Calculator';
+import Works from '@/components/home/Works.astro';
+import Reviews from '@/components/home/Reviews.astro';
+import Faq from '@/components/home/Faq.astro';
 import { site } from '@/data/site';
+import { findProduct } from '@/data/pricing';
+import { teeFaq, teeReviews, teeWorks } from '@/data/tshirt';
+import { breadcrumbs, faqPage, service } from '@/lib/schema';
+
+const description =
+  'Печать на белых, чёрных и цветных футболках в ТЦ «Экватор»: DTF-печать от А6 до А3, взрослые и детские размеры, от 1 штуки. Рассчитайте цену онлайн и оставьте заявку.';
+const lowPrice = Math.min(...['tshirt-unisex', 'tshirt-kids'].map((id) => findProduct('textile', id)!.fromPrice));
+const schema = [
+  breadcrumbs([
+    { name: 'Главная', href: '/' },
+    { name: 'Печать на одежде', href: '/pechat-na-odezhde' },
+    { name: 'Футболки', href: '/pechat-na-futbolkah' },
+  ]),
+  service({ name: 'Печать на футболках', description, url: '/pechat-na-futbolkah', lowPrice }),
+  faqPage(teeFaq),
+];
 ---
 
 <BaseLayout
   title="Печать на футболках в Калининграде — от 1 штуки | Мастерская сувениров"
-  description="Печать на белых, чёрных и цветных футболках в ТЦ «Экватор»: DTF-печать от А6 до А3, взрослые и детские размеры, от 1 штуки. Рассчитайте цену онлайн и оставьте заявку."
+  description={description}
   path="/pechat-na-futbolkah"
+  schema={schema}
 >
   <TeeHero />
 
@@ -48,6 +69,14 @@ import { site } from '@/data/site';
   <div class="band-sky"><TeePresets /></div>
   <div class="tee-cb"><ConstructorBanner /></div>
   <TeeDetails />
+  <div class="band-sky">
+    <Works works={teeWorks} title="Наши работы" accent="на футболках" lead="Настоящие футболки наших клиентов" />
+  </div>
+  <Reviews items={teeReviews} title="Отзывы" accent="о печати на футболках" />
+  <div class="band-sky">
+    <Faq items={teeFaq} title="Вопросы" accent="о футболках" />
+  </div>
+  <TeePrices />
 </BaseLayout>
 
 <style>

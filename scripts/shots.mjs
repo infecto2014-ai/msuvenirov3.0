@@ -1,6 +1,6 @@
-// Screenshots of the home page at 1440 / 1024 / 768 / 360 px for a visual check.
-// Usage: npm run build && node scripts/shots.mjs <folder> [--no-js]
-// Starts `astro preview`, saves home-<width>.png (whole page) into <folder>, prints console errors
+// Screenshots of the home page (or of another page: pass its address, e.g. /pechat-na-futbolkah) at 1440 / 1024 / 768 / 360 px for a visual check.
+// Usage: npm run build && node scripts/shots.mjs <folder> [/page-address] [--no-js]
+// Starts `astro preview`, saves <page>-<width>.png (whole page) into <folder>, prints console errors
 // and, if the page scrolls sideways, the element that sticks out. Exit code 1 on any problem.
 // Playwright is taken from the environment (it is not a project dependency).
 import { createRequire } from 'node:module';
@@ -13,8 +13,10 @@ const { chromium } = require('playwright');
 
 const args = process.argv.slice(2);
 const outDir = args.find((a) => !a.startsWith('--'));
+const pagePath = args.find((a) => a.startsWith('/')) ?? '/'; // page to shoot, e.g. /pechat-na-futbolkah
+const slug = pagePath === '/' ? 'home' : pagePath.slice(1);
 if (!outDir) {
-  console.error('Укажите папку для снимков: node scripts/shots.mjs <папка> [--no-js]');
+  console.error('Укажите папку для снимков: node scripts/shots.mjs <папка> [/адрес-страницы] [--no-js]');
   process.exit(1);
 }
 const noJs = args.includes('--no-js');
@@ -62,7 +64,7 @@ try {
     page.on('console', (m) => m.type() === 'error' && errors.push(`${m.text()} ${m.location().url ?? ''}`.trim()));
     page.on('pageerror', (e) => errors.push(String(e)));
     page.on('requestfailed', (r) => errors.push(`не загрузилось: ${r.url()}`));
-    await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+    await page.goto(BASE + pagePath, { waitUntil: 'networkidle' });
     // lazy pictures: scroll through the page so every one of them loads before the shot
     // (with the mouse wheel: in a page without JavaScript timers inside evaluate() never fire)
     const height = await page.evaluate(() => document.body.scrollHeight);
@@ -89,7 +91,7 @@ try {
       return { scrollWidth: de.scrollWidth, clientWidth: limit, offenders: out };
     });
 
-    const file = join(resolve(outDir), `home-${width}.png`);
+    const file = join(resolve(outDir), `${slug}-${width}.png`);
     await page.screenshot({ path: file, fullPage: true });
     console.log(`${width} px → ${file}`);
     if (overflow) {

@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { adultSizes, kidsSizes, presetPrice, printSizes, teeCare, teePresets, teeSpecs } from './tshirt';
+import { adultSizes, kidsSizes, presetPrice, printSizes, teeCare, teeFaq, teePresets, teeReviews, teeSpecs, teeWorks } from './tshirt';
+import { services } from './services';
 
 test('готовые варианты: четыре, цена по прайсу', () => {
   expect(teePresets).toHaveLength(4);
@@ -47,4 +48,24 @@ test('взрослая сетка, принты, характеристики, �
 test('в данных нет старого адреса', () => {
   const all = JSON.stringify({ teePresets, teeSpecs, teeCare, adultSizes, kidsSizes, printSizes });
   expect(all).not.toContain('Челнокова, 11');
+});
+
+test('«Наши работы» футболок: только с тегом futbolki, без portfolio-14', () => {
+  expect(teeWorks.length).toBeGreaterThan(0);
+  for (const w of teeWorks) {
+    expect(w.tags).toContain('futbolki');
+    expect(w.src).not.toContain('portfolio-14');
+  }
+});
+
+test('отзывы футболок: не меньше трёх, про футболки в первую очередь', () => {
+  expect(teeReviews.length).toBeGreaterThanOrEqual(3);
+  expect(teeReviews[0].text.toLowerCase()).toContain('футболк');
+  expect(new Set(teeReviews.map((r) => r.text)).size).toBe(teeReviews.length);
+});
+
+test('вопросы футболок — из services.ts', () => {
+  const svc = services.find((s) => s.slug === '/pechat-na-futbolkah')!;
+  expect(teeFaq.length).toBeGreaterThan(0);
+  expect(teeFaq).toEqual(svc.faq);
 });
