@@ -3,7 +3,8 @@
 // (src/data/garments/<page>.ts, type GarmentPage) per page. Order: first screen → calculator (the page's tiles)
 // → ready-made variants → constructor invitation (the home block) → «Подробнее о …» → works → reviews (no rating
 // strip — owner, 16.11.2026: only on the home page) → questions → price table (open, at the very bottom).
-// JSON-LD: breadcrumbs, service with the «от» price, FAQPage.
+// JSON-LD: breadcrumbs, service with the «от» price, FAQPage. Section headings (owner, 16.11.2026): the product name
+// only in h1, «Подробнее о …» and the price table; the rest are neutral («Наши работы», «Отзывы клиентов», …).
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import GarmentHero from '@/components/garment/GarmentHero.astro';
 import GarmentPresets from '@/components/garment/GarmentPresets.astro';
@@ -17,8 +18,7 @@ import Works from '@/components/home/Works.astro';
 import Reviews from '@/components/home/Reviews.astro';
 import Faq from '@/components/home/Faq.astro';
 import { site } from '@/data/site';
-import { findProduct } from '@/data/pricing';
-import { garmentFaq, garmentReviews, garmentWorks } from '@/data/garments/select';
+import { garmentFaq, garmentFrom, garmentReviews, garmentWorks } from '@/data/garments/select';
 import type { GarmentPage } from '@/data/garments/types';
 import { breadcrumbs, faqPage, service } from '@/lib/schema';
 
@@ -29,7 +29,9 @@ const { page } = Astro.props;
 const { calc, heads } = page;
 
 const faq = garmentFaq(page);
-const lowPrice = Math.min(...calc.products.map((id) => findProduct(calc.category, id)!.fromPrice));
+// the garment's reviews first, topped up from the home selection
+const reviews = garmentReviews(page);
+const lowPrice = garmentFrom(page);
 const schema = [
   breadcrumbs(page.crumbs.map((c) => ({ name: c.label, href: c.href }))),
   service({ name: page.serviceName, description: page.description, url: page.slug, lowPrice }),
@@ -44,7 +46,7 @@ const schema = [
     <div class="wrap">
       <SectionHead id="g-calc-title" title="Рассчитайте" accent="стоимость" lead={calc.lead} />
       <div class="g-calc">
-        <Calculator client:visible category={calc.category} products={calc.products} tiles={calc.tiles} hideCategories />
+        <Calculator client:visible category={calc.category} tiles={calc.tiles} hideCategories />
       </div>
       <noscript>
         <style>
@@ -69,11 +71,11 @@ const schema = [
   <div class="g-cb"><ConstructorBanner /></div>
   <GarmentDetails page={page} />
   <div class="band-sky">
-    <Works works={garmentWorks(page)} title="Наши работы" accent={heads.works} lead={heads.worksLead} />
+    <Works works={garmentWorks(page)} title="Наши" accent="работы" lead={heads.worksLead} />
   </div>
-  <Reviews items={garmentReviews(page)} title="Отзывы" accent={heads.reviews} showRatings={false} />
+  <Reviews items={reviews.items} title="Отзывы" accent="клиентов" showRatings={false} />
   <div class="band-sky">
-    <Faq items={faq} title="Вопросы" accent={heads.faq} />
+    <Faq items={faq} title="Частые" accent="вопросы" />
   </div>
   <GarmentPrices page={page} />
 </BaseLayout>

@@ -4,23 +4,25 @@ import { garmentFaq, garmentReviews, garmentWorks, presetPrice } from './select'
 import { services } from '../services';
 import { findProduct } from '../pricing';
 
-const { presets, sizes, printSizes, specs, care } = tshirt;
+const { presets, sizes, care } = tshirt;
+const specs = tshirt.specs!.items;
+const printSizes = tshirt.prints!.sizes;
 const works = garmentWorks(tshirt);
-const reviews = garmentReviews(tshirt);
+const { items: reviews, topped } = garmentReviews(tshirt);
 const faq = garmentFaq(tshirt);
 
 test('готовые варианты: четыре, цена по прайсу', () => {
   expect(presets).toHaveLength(4);
   for (const v of presets) {
-    const price = presetPrice(v);
+    const price = presetPrice(v, 'textile');
     expect(price.unit, v.title).toBeGreaterThan(0);
     expect(price.total, v.title).toBe(price.unit * v.qty);
   }
   // pinned: blank 750 + DTF A4 800 (1 pc)
-  expect(presetPrice(presets.find((v) => v.title === 'Футболка с фото в подарок')!).total).toBe(1550);
+  expect(presetPrice(presets.find((v) => v.title === 'Футболка с фото в подарок')!, 'textile').total).toBe(1550);
   const team = presets.find((v) => v.title.startsWith('Для команды'))!;
   // 20 pcs: blank 550 + A4 at the 20+ tier + A6 −30%
-  expect(presetPrice(team)).toEqual({ unit: 1196, total: 23920 });
+  expect(presetPrice(team, 'textile')).toEqual({ unit: 1196, total: 23920 });
 });
 
 test('«Для команды» — 20 синих футболок', () => {
@@ -56,13 +58,13 @@ test('взрослая сетка, принты, характеристики, �
 
 test('правки владельца 16.11: взрослая сетка верная — без пометки; характеристики без пометки', () => {
   expect(sizes!.todo).toBeFalsy();
-  expect(tshirt.specsTodo).toBeFalsy();
+  expect(tshirt.specs!.todo).toBeFalsy();
 });
 
 test('калькулятор: три плитки — унисекс, детская, своя (только печать)', () => {
-  expect(tshirt.calc.tiles!.map((t) => t.label)).toEqual(['Футболка унисекс', 'Детская', 'Своя футболка']);
-  expect(tshirt.calc.tiles!.find((t) => t.id === 'own')!.preset).toEqual({ blank: 'own' });
-  for (const t of tshirt.calc.tiles!) expect(findProduct(tshirt.calc.category, t.product), t.id).toBeTruthy();
+  expect(tshirt.calc.tiles.map((t) => t.label)).toEqual(['Футболка унисекс', 'Детская', 'Своя футболка']);
+  expect(tshirt.calc.tiles.find((t) => t.id === 'own')!.preset).toEqual({ blank: 'own' });
+  for (const t of tshirt.calc.tiles) expect(findProduct(tshirt.calc.category, t.product), t.id).toBeTruthy();
 });
 
 test('таблица цен: заголовок и подзаголовок владельца, продукты есть в прайсе', () => {
@@ -71,10 +73,11 @@ test('таблица цен: заголовок и подзаголовок вл
   for (const p of tshirt.prices.products) expect(findProduct(tshirt.calc.category, p.id)?.table, p.id).toBeTruthy();
 });
 
-test('цвета: все цвета футболки из pricing.ts, белый и чёрный — в наличии', () => {
-  const ids = tshirt.colors!.choices.map((c) => c.id);
+test('цвета: все цвета футболки из pricing.ts, белый и чёрный — в наличии', async () => {
+  const { garmentColors } = await import('./select');
+  const ids = garmentColors(tshirt).map((c) => c.id);
   expect(ids.slice(0, 2)).toEqual(['white', 'black']);
-  expect(tshirt.colors!.choices.filter((c) => !c.hint).map((c) => c.id)).toEqual(['white', 'black']);
+  expect(garmentColors(tshirt).filter((c) => c.free).map((c) => c.id)).toEqual(['white', 'black']);
 });
 
 test('тексты сайта не спорят с правилами 16.11: худи — цена из прайса, 5 принтов, детская до А3', async () => {
@@ -83,9 +86,10 @@ test('тексты сайта не спорят с правилами 16.11: х�
   const prints = (id: string) => findProduct('textile', id)!.options!.filter((g) => /^print\d$/.test(g.id)).length;
   const all = JSON.stringify({ services, generalFaq });
   const general = JSON.stringify(generalFaq);
-  expect(general).toContain(`Худи — белые и чёрные, ${rub(HOODIE_BLANK)} за штуку при любом количестве`);
+  expect(general).toContain(`Худи — ${rub(HOODIE_BLANK)} за штуку при любом количестве, плюс печать; белые и чёрные — от 1 штуки, цветные — от 5.`);
   expect(all).not.toMatch(/худи[^"]{0,40}уточняйте наличие/i);
-  expect(all).not.toContain('До 4 принтов');
+  // «До 4 принтов» is right for the cap now — the T-shirt and the hoodie must not say it
+  for (const slug of ['/pechat-na-futbolkah', '/pechat-na-hudi']) expect(JSON.stringify(services.find((s) => s.slug === slug)), slug).not.toContain('До 4 принтов');
   expect(all).toContain(`${rub(HOODIE_BLANK)} за штуку при любом количестве`);
   expect(findProduct('textile', 'hoodie')!.quote({ options: { blank: 'ours', color: 'white', print1: 'none' }, dims: {}, qty: 1 }).breakdown[0].amount).toBe(HOODIE_BLANK);
   const tee = services.find((s) => s.slug === '/pechat-na-futbolkah')!;
@@ -116,4 +120,37 @@ test('вопросы футболок — из services.ts', () => {
   const svc = services.find((s) => s.slug === '/pechat-na-futbolkah')!;
   expect(faq.length).toBeGreaterThan(0);
   expect(faq).toEqual(svc.faq);
+});
+
+test('отзывы футболок: все про футболки, не добраны с главной', () => {
+  expect(reviews.length).toBeGreaterThanOrEqual(3);
+  for (const r of reviews) expect(r.text.toLowerCase()).toContain('футболк');
+  expect(topped).toBe(false);
+});
+
+// owner, 16.11.2026 (after the hoodie): the kids T-shirt is printed on all places like the adult one
+test('детская футболка в «Печати на одежде»: «Грудь, спина, рукав; до 5 принтов, каждый до А3»', () => {
+  const prints = findProduct('textile', 'tshirt-kids')!.options!.filter((g) => /^print\d$/.test(g.id)).length;
+  const blocks = JSON.stringify(services.find((s) => s.slug === '/pechat-na-odezhde')!.blocks);
+  const kidsRow = blocks.match(/"Детская футболка","values":\[[^\]]*\]/)![0];
+  expect(kidsRow).toContain(`"Грудь, спина, рукав; до ${prints} принтов, каждый до А3"`);
+});
+
+test('шаблон: цвета из прайса с пометкой по правилам, цена «от» — по плиткам', async () => {
+  const { garmentColors, garmentFrom } = await import('./select');
+  const colors = garmentColors(tshirt);
+  expect(colors.map((c) => c.id)).toEqual(['white', 'black', 'yellow', 'green', 'brown', 'red', 'orange', 'pink', 'gray', 'blue', 'lilac']);
+  expect(colors.filter((c) => c.free).map((c) => c.note)).toEqual(['в наличии', 'в наличии']);
+  expect(colors.find((c) => c.id === 'red')!.note).toBe('от 5 шт');
+  // the cheapest product of the tiles: the kids T-shirt
+  expect(garmentFrom(tshirt)).toBe(findProduct('textile', 'tshirt-kids')!.fromPrice);
+  expect('products' in tshirt.calc).toBe(false);
+  expect(tshirt.calc.tiles.find((t) => t.id === 'own')!.own).toBe(true);
+});
+
+test('шаблон: разделы «Подробнее» — из данных, характеристики с заголовком по умолчанию', () => {
+  expect(tshirt.specs!.items.length).toBeGreaterThan(5);
+  expect(tshirt.specs!.title).toBeUndefined();
+  expect(tshirt.prints!.sizes).toHaveLength(4);
+  expect(tshirt.care).toHaveLength(5);
 });

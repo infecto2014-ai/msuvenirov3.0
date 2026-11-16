@@ -1,59 +1,39 @@
 ---
 // «Подробнее об изделии»: collapsed sections (<details> — the text stays in the HTML for search engines and opens
 // without JS): colours, fabric and specs, print sizes (a to-scale scheme on the garment's outline, drawn in cm),
-// adult and kids size charts (with the measuring cat), care. A section without data (no colours, no sizes) is left out.
-// Texts come from the page's data file (src/data/garments/<page>.ts).
+// adult and kids size charts (with the measuring cat), care. Every section is optional: one without data is left
+// out, and without any the block is not drawn. Texts come from the page's data file (src/data/garments/<page>.ts),
+// colours from pricing.ts (garmentColors), outlines from src/data/garments/shapes.ts.
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import type { GarmentPage } from '@/data/garments/types';
+import { garmentColors } from '@/data/garments/select';
+import { SHAPES, type GarmentShape } from '@/data/garments/shapes';
 
 interface Props {
   page: GarmentPage;
 }
 const { page } = Astro.props;
-const { colors, specs, sizes, care, printSizes, prints } = page;
+const { colors, specs, sizes, care, prints } = page;
+const colorList = garmentColors(page);
 const adultSizes = sizes?.adult;
 const kidsSizes = sizes?.kids;
 const measure = page.images.extra?.measure;
 
-const sections: { id: string; icon: IconName; title: string; sub: string }[] = [
-  ...(colors ? [{ id: 'colors', icon: 'palette' as const, title: 'Цвета', sub: colors.sub }] : []),
-  { id: 'specs', icon: 'shirt', title: 'Ткань и характеристики', sub: page.specsSub },
-  { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: prints.sub },
-  ...(sizes ? [{ id: 'sizes', icon: 'ruler' as const, title: 'Размерный ряд', sub: sizes.sub }] : []),
-  { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' },
-];
+const sections = [
+  colors && colorList.length ? { id: 'colors', icon: 'palette', title: 'Цвета', sub: colors.sub } : undefined,
+  specs ? { id: 'specs', icon: specs.icon ?? 'shirt', title: specs.title ?? 'Ткань и характеристики', sub: specs.sub } : undefined,
+  prints ? { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: prints.sub } : undefined,
+  sizes ? { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: sizes.sub } : undefined,
+  care?.length ? { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' } : undefined,
+].filter((s): s is { id: string; icon: IconName; title: string; sub: string } => !!s);
 
-// garment outlines in centimetres; prints hang from `top` cm below the shoulder line, centred on `center`.
-// `dims` — the A / B / C measuring lines and their labels (length, width, sleeve) for the size scheme.
-const SHAPES = {
-  // T-shirt, size M: 52 cm wide, 72 cm long
-  tshirt: {
-    path: 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z',
-    extra: '',
-    center: 26,
-    top: 9,
-    viewBox: '-18 -2 88 76',
-    dims: ['M6 4V71', 'M1 30H51', 'M50.5 6.5L64.5 15'],
-    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 30 }, { l: 'C', x: 57.5, y: 10.8 }],
-  },
-  // Hoodie, size M–L: 54 cm wide, 70 cm long, long sleeves, hood and kangaroo pocket
-  hoodie: {
-    path: 'M14 3L38 3L46 6L66 52L57 56L52 32L52 70L0 70L0 32L-5 56L-14 52L6 6Z',
-    extra: 'M14 3C12 -9 40 -9 38 3C32 8 20 8 14 3ZM9 50L43 50L47 66L5 66Z',
-    center: 26,
-    top: 7,
-    viewBox: '-18 -9 88 82',
-    dims: ['M6 6V69', 'M1 32H51', 'M47 7L61.5 52'],
-    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 32 }, { l: 'C', x: 56, y: 30 }],
-  },
-} as const;
-const shape = SHAPES[prints.shape];
-const SHIRT = shape.path;
-const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p.w / 2, y: shape.top }));
+const shape: GarmentShape | undefined = prints ? SHAPES[prints.shape] : undefined;
+const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p, x: shape.center - p.w / 2, y: shape.top })) : [];
 ---
 
+{sections.length > 0 && (
 <section class="section td-sec" aria-labelledby="td-title">
   <div class="wrap">
     <SectionHead id="td-title" title="Подробнее" accent={page.heads.details} />
@@ -76,29 +56,29 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
             </summary>
 
             <div class="td-a">
-              {s.id === 'colors' && colors && (
+              {s.id === 'colors' && (
                 <ul class="td-colors" role="list">
-                  {colors.choices.map((c) => (
+                  {colorList.map((c) => (
                     <li class="td-color">
-                      <span class="td-swatch" style={`--c: ${c.swatch}`} aria-hidden="true" />
+                      <span class="td-swatch" style={`--c: ${c.swatch ?? 'transparent'}`} aria-hidden="true" />
                       <span class="td-color-name">{c.label}</span>
-                      <span class:list={['td-color-mark', { 'td-color-mark-free': !c.hint }]}>{c.hint ?? 'в наличии'}</span>
+                      <span class:list={['td-color-mark', { 'td-color-mark-free': c.free }]}>{c.note}</span>
                     </li>
                   ))}
                 </ul>
               )}
 
-              {s.id === 'specs' && (
+              {s.id === 'specs' && specs && (
                 <div>
                   <dl class="td-specs">
-                    {specs.map((x) => (
+                    {specs.items.map((x) => (
                       <div class="td-spec">
                         <dt>{x.label}</dt>
                         <dd>{x.value}</dd>
                       </div>
                     ))}
                   </dl>
-                  {page.specsTodo && (
+                  {specs.todo && (
                     <p class="td-note">
                       <Icon name="info" size={20} />
                       <span>Характеристики уточняйте у менеджера</span>
@@ -107,11 +87,11 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
                 </div>
               )}
 
-              {s.id === 'prints' && (
+              {s.id === 'prints' && prints && shape && (
                 <div class="td-prints">
                   <figure class="td-scheme">
                     <svg viewBox={shape.viewBox} role="img" aria-labelledby="td-scheme-cap" focusable="false">
-                      <path class="td-shirt" d={SHIRT} />
+                      <path class="td-shirt" d={shape.path} />
                       {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                       {frames.map((f) => (
                         <g class="td-frame">
@@ -125,7 +105,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
                     <figcaption id="td-scheme-cap">{prints.caption}</figcaption>
                   </figure>
                   <ul class="td-print-list" role="list">
-                    {printSizes.map((p) => (
+                    {prints.sizes.map((p) => (
                       <li>
                         <span class="td-print-box" style={`--w: ${p.w}; --h: ${p.h}`} aria-hidden="true" />
                         <span class="td-print-label">{p.label}</span>
@@ -178,9 +158,10 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
                   </div>
                   <aside class="td-measure" aria-label="Как мерить">
                     {measure && <Pic name={measure} alt="Рыжий кот с сантиметровой лентой на шее" w={800} h={800} fit="contain" label={measure} class="td-cat" />}
+                    {shape && (
                     <figure class="td-abc">
                       <svg viewBox={shape.viewBox} aria-hidden="true" focusable="false">
-                        <path class="td-shirt" d={SHIRT} />
+                        <path class="td-shirt" d={shape.path} />
                         {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                         <g class="td-dim">
                           {shape.dims.map((d) => (
@@ -197,14 +178,20 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
                         </g>
                       </svg>
                       <figcaption>
-                        <b>A</b> — длина изделия, <b>B</b> — ширина изделия, <b>C</b> — длина рукава
+                        {shape.labels.map((x, i) => (
+                          <>
+                            {i > 0 && ', '}
+                            <b>{x.l}</b> — {x.what}
+                          </>
+                        ))}
                       </figcaption>
                     </figure>
+                    )}
                   </aside>
                 </div>
               )}
 
-              {s.id === 'care' && (
+              {s.id === 'care' && care && (
                 <ul class="td-care" role="list">
                   {care.map((t) => (
                     <li>
@@ -223,6 +210,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p
     </div>
   </div>
 </section>
+)}
 
 <style>
   .td {

@@ -7,7 +7,8 @@ import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
-import { findProduct, rub } from '@/data/pricing';
+import { rub } from '@/data/pricing';
+import { garmentFrom } from '@/data/garments/select';
 import type { GarmentPage } from '@/data/garments/types';
 
 interface Props {
@@ -15,8 +16,8 @@ interface Props {
 }
 const { page } = Astro.props;
 
-/** the cheapest garment of the page with a print */
-const from = Math.min(...page.calc.products.map((id) => findProduct(page.calc.category, id)!.fromPrice));
+/** the cheapest garment of the page's tiles with a print */
+const from = garmentFrom(page);
 const alt = page.images.alt;
 const crumbs = page.crumbs.slice(0, -1);
 const current = page.crumbs.at(-1)!.label;
