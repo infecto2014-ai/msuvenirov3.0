@@ -124,3 +124,13 @@ test('presetPrice: категория обязательна (страницы �
   expect(typeof withoutCategory).toBe('function');
   expect(presetPrice(v, hoodie.calc.category)).toEqual(presetPrice(v, 'textile'));
 });
+
+test('описание худи: DTF только на белых и чёрных и на вашем; телефон — из site.ts', async () => {
+  const { site } = await import('../site');
+  const svc = services.find((s) => s.slug === '/pechat-na-hudi')!;
+  for (const d of [hoodie.description, svc.description]) {
+    expect(d).toContain('DTF на белых и чёрных худи и на вашем');
+    expect(d).not.toContain('любом цвете');
+  }
+  expect(hoodie.description).toContain(site.phone);
+});

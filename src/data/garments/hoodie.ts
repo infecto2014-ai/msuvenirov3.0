@@ -3,6 +3,7 @@
 // variant's price is quoted by the calculator rules in pricing.ts (presetPrice). Specs and sizes are confirmed by
 // the owner (16.11.2026) — no «уточняйте» notes. Colours: white and black only (no grey melange).
 import { extraPrintFactor } from '../pricing';
+import { site } from '../site';
 import type { GarmentPage, GarmentPreset, SizeTable } from './types';
 
 /** the calm product photo is not there yet (the neon one of 2.0 does not fit): a labelled slot in public/img/v3 */
@@ -86,8 +87,8 @@ const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
 export const hoodie: GarmentPage = {
   slug: '/pechat-na-hudi',
   title: 'Печать на худи в Калининграде от 1 шт | Мастерская сувениров',
-  description:
-    'Печать на худи в Калининграде от 1 шт: большой принт на спине, логотип на груди, надпись на рукаве. DTF на любом цвете. ТЦ «Экватор», +7 952 114-23-50.',
+  // owner, 16.11.2026: hoodies are white and black only (+ the customer's own) — not «на любом цвете»
+  description: `Печать на худи в Калининграде от 1 шт: большой принт на спине, логотип на груди, надпись на рукаве. DTF на белых и чёрных худи и на вашем. ТЦ «Экватор», ${site.phone}.`,
   h1: 'Печать на худи в Калининграде',
   accent: 'от 1 штуки',
   crumbs: [
