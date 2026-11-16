@@ -46,3 +46,17 @@ export const takeCalcPreset = (w: object): CalcApplyDetail | undefined => {
   delete rec[PENDING];
   return d;
 };
+
+/** a product tile of the calculator: «Своя футболка» = tshirt-unisex with { blank: 'own' } */
+export interface CalcTile {
+  id: string;
+  label: string;
+  product: string;
+  preset?: Record<string, string>;
+}
+
+/** the tile that matches the product and the selection; with several, the one with the most preset settings wins */
+export const activeTile = (tiles: CalcTile[], productId: string, options: Selection['options']): CalcTile | undefined =>
+  tiles
+    .filter((t) => t.product === productId && Object.entries(t.preset ?? {}).every(([k, v]) => options[k] === v))
+    .sort((a, b) => Object.keys(b.preset ?? {}).length - Object.keys(a.preset ?? {}).length)[0];

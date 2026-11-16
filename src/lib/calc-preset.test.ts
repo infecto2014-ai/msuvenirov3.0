@@ -58,3 +58,23 @@ test('очередь: вариант, нажатый до загрузки ка�
   expect(takeCalcPreset(w)).toEqual(d);
   expect(takeCalcPreset(w)).toBeUndefined();
 });
+
+test('плитка «Своя футболка»: preset blank own даёт только печать', () => {
+  const s = applyPreset(tee, { options: { blank: 'own' } });
+  expect(s.options.blank).toBe('own');
+  const q = tee.quote(s);
+  expect(q.breakdown.every((b) => b.label.startsWith('Печать'))).toBe(true);
+});
+
+test('активная плитка: своя выигрывает у обычной, когда blank own; детская — по продукту', async () => {
+  const { activeTile } = await import('./calc-preset');
+  const tiles = [
+    { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' },
+    { id: 'kids', label: 'Детская', product: 'tshirt-kids' },
+    { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } },
+  ];
+  expect(activeTile(tiles, 'tshirt-unisex', { blank: 'ours' })?.id).toBe('unisex');
+  expect(activeTile(tiles, 'tshirt-unisex', { blank: 'own' })?.id).toBe('own');
+  expect(activeTile(tiles, 'tshirt-kids', {})?.id).toBe('kids');
+  expect(activeTile(tiles, 'hoodie', {})).toBeUndefined();
+});

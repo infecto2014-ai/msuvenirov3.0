@@ -19,6 +19,12 @@ import { findProduct } from '@/data/pricing';
 import { teeFaq, teeReviews, teeWorks } from '@/data/tshirt';
 import { breadcrumbs, faqPage, service } from '@/lib/schema';
 
+// owner, 16.11.2026: three tiles instead of the product list and the «наша / своя» switch
+const teeTiles = [
+  { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' },
+  { id: 'kids', label: 'Детская', product: 'tshirt-kids' },
+  { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } },
+];
 const description =
   'Печать на белых, чёрных и цветных футболках в ТЦ «Экватор»: DTF-печать от А6 до А3, взрослые и детские размеры, от 1 штуки. Рассчитайте цену онлайн и оставьте заявку.';
 const lowPrice = Math.min(...['tshirt-unisex', 'tshirt-kids'].map((id) => findProduct('textile', id)!.fromPrice));
@@ -45,7 +51,7 @@ const schema = [
     <div class="wrap">
       <SectionHead id="tee-calc-title" title="Рассчитайте" accent="стоимость" lead="Выберите футболку, цвет и принты — цена за штуку и за тираж посчитается сразу." />
       <div class="tee-calc">
-        <Calculator client:visible category="textile" products={['tshirt-unisex', 'tshirt-kids']} hideCategories />
+        <Calculator client:visible category="textile" tiles={teeTiles} hideCategories />
       </div>
       <noscript>
         <style>

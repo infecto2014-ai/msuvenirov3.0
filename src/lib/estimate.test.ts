@@ -84,3 +84,30 @@ test('setEstimateQty: количество ниже минимума подни�
   expect(getEstimate()[0].qty).toBe(5);
   expect(getEstimate()[0].calc!.sel.qty).toBe(5);
 });
+
+test('setEstimateQty: старые позиции (4 принта у взрослой, детская до А4 с 2 местами, худи «от 2000») пересчитываются', async () => {
+  const old = (id: string, product: string, options: Record<string, string>) => ({
+    id,
+    title: 'старая позиция',
+    details: '',
+    qty: 1,
+    unitPrice: 1,
+    total: 1,
+    calc: { cat: 'textile', product, sel: { qty: 1, options, dims: {} } },
+  });
+  const stored = [
+    old('u4', 'tshirt-unisex', { blank: 'ours', color: 'white', print1: 'a4', print2: 'a6', print3: 'a6', print4: 'a6' }),
+    old('k2', 'tshirt-kids', { color: 'white', print1: 'a4', print2: 'a6' }),
+    old('h1', 'hoodie', { print1: 'a4', print2: 'none', print3: 'none', print4: 'none' }),
+  ];
+  const { setEstimateQty, getEstimate } = await load(JSON.stringify(stored));
+  setEstimateQty('u4', 2);
+  setEstimateQty('k2', 2);
+  setEstimateQty('h1', 2);
+  const [u, k, h] = getEstimate();
+  expect(u.note).toBeUndefined();
+  expect(u.unitPrice).toBe(750 + 800 + 3 * 420);
+  expect(k.unitPrice).toBe(750 + 800 + 420);
+  expect(h.unitPrice).toBe(2600 + 800);
+  expect(h.from).toBeFalsy();
+});

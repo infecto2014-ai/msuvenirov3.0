@@ -144,6 +144,72 @@ describe('pricing', () => {
     expect(findProduct('textile', 'cap')!.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(3);
   });
 
+  it('t-shirts (unisex and kids) take up to 5 prints, the 5th also at −30%', () => {
+    for (const id of ['tshirt-unisex', 'tshirt-kids']) {
+      expect(findProduct('textile', id)!.options!.filter((g) => g.id.startsWith('print')), id).toHaveLength(5);
+    }
+    const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a3', print2: 'a6', print3: 'a6', print4: 'a6', print5: 'a6' } });
+    expect(p.quote(s).total).toBe(750 + 1100 + 4 * 600 * 0.7);
+    expect(p.quote(s).breakdown).toHaveLength(6);
+    const own = sel('textile', 'tshirt-unisex', { qty: 1, options: { blank: 'own', print1: 'a4', print5: 'a6' } });
+    expect(own.p.quote(own.s).total).toBe(800 + 420);
+  });
+
+  it('kids t-shirt: print sizes А6–А3, А3 is priced', () => {
+    const p = findProduct('textile', 'tshirt-kids')!;
+    expect(p.options!.find((g) => g.id === 'print1')!.choices.map((c) => c.id)).toEqual(['a6', 'a5', 'a4', 'a3']);
+    const { s } = sel('textile', 'tshirt-kids', { qty: 1, options: { print1: 'a3' } });
+    expect(p.quote(s).total).toBe(750 + 1100);
+    expect(p.table!.rows.map((r) => r.label)).toContain('+ печать DTF А3');
+  });
+
+  it('old estimate lines (4 prints, kids up to А4) still quote', () => {
+    const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a4', print2: 'a6', print3: 'a6', print4: 'a6' } });
+    delete (s.options as Record<string, unknown>).print5;
+    expect(p.quote(s).total).toBe(750 + 800 + 3 * 420);
+    const k = sel('textile', 'tshirt-kids', { qty: 1, options: { print1: 'a4', print2: 'a6' } });
+    delete (k.s.options as Record<string, unknown>).print3;
+    delete (k.s.options as Record<string, unknown>).print4;
+    delete (k.s.options as Record<string, unknown>).print5;
+    expect(k.p.quote(k.s).total).toBe(750 + 800 + 420);
+  });
+
+  it('hoodie: 2 600 ₽ at any run, exact (no «от»), white and black without a minimum', () => {
+    const p = findProduct('textile', 'hoodie')!;
+    for (const qty of [1, 5, 20, 50]) {
+      const q = p.quote({ ...defaultSelection(p), qty, options: { ...defaultSelection(p).options, print1: 'none' } });
+      expect(q.breakdown[0], `qty ${qty}`).toEqual({ label: 'Худи', amount: 2600, per: 'шт' });
+      expect(q.from, `qty ${qty}`).toBeFalsy();
+    }
+    const q1 = p.quote(defaultSelection(p));
+    expect(q1.notes.join(' ')).not.toContain('уточнит');
+    expect(p.short).not.toContain('уточняйте');
+    expect(p.table!.rows[0].cells.every((c) => !c.startsWith('от'))).toBe(true);
+    const color = p.options!.find((g) => g.id === 'color')!;
+    expect(color.choices.map((c) => c.id)).toEqual(['white', 'black']);
+    expect(color.choices.every((c) => !c.hint)).toBe(true);
+    expect(p.minQty).toBeUndefined();
+    expect(p.quote({ ...defaultSelection(p), options: { ...defaultSelection(p).options, color: 'black' } }).error).toBeUndefined();
+    expect(p.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(4);
+  });
+
+  it('own hoodie: «Наше худи / Своё худи», only the DTF print, colour hidden, no minimum', () => {
+    const p = findProduct('textile', 'hoodie')!;
+    const blank = p.options!.find((g) => g.id === 'blank')!;
+    expect(blank.choices.map((c) => c.label)).toEqual(['Наше худи', 'Своё худи']);
+    expect(p.options!.find((g) => g.id === 'color')!.hideWhen).toEqual({ group: 'blank', value: 'own' });
+    const { s } = sel('textile', 'hoodie', { qty: 1, options: { blank: 'own', print1: 'a4' } });
+    const q = p.quote(s);
+    expect(q.total).toBe(800);
+    expect(q.error).toBeUndefined();
+    expect(q.breakdown.map((b) => b.label)).toEqual(['Печать DTF А4']);
+    expect(q.notes.join(' ')).toContain('Своё худи: принесите его в мастерскую, напечатаем на нём.');
+    expect(p.minQty).toBeUndefined();
+    // the T-shirt wording stays feminine
+    const t = sel('textile', 'tshirt-unisex', { qty: 1, options: { blank: 'own' } });
+    expect(t.p.quote(t.s).notes.join(' ')).toContain('Своя футболка: принесите её в мастерскую, напечатаем на ней.');
+  });
+
   it('clothing is priced up to 50 pcs, more — individually', () => {
     const p = findProduct('textile', 'tshirt-unisex')!;
     expect(p.qty.max).toBe(50);
