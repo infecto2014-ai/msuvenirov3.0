@@ -26,5 +26,5 @@ export const pluralLines = (n: number): string => {
   return 'позиций';
 };
 
-/** accessible name of the header «Смета» button */
-export const estimateLabel = (n: number): string => (n > 0 ? `Смета, ${n} ${pluralLines(n)}` : 'Смета');
+/** accessible name of a «Заявка» button; `base` is its visible text */
+export const orderLabel = (n: number, base = 'Заявка'): string => (n > 0 ? `${base}, в смете ${n} ${pluralLines(n)}` : base);

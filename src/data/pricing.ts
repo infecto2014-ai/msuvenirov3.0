@@ -335,18 +335,21 @@ function garment(args: {
   max?: number;
   /** offer «своя вещь»: e.g. 'футболка' → choice «Своя футболка», only the print is charged */
   own?: string;
+  /** word forms for a non-feminine `own` (hoodie: «Наше худи» / «Своё худи», «его», «на нём»); default — feminine */
+  ownForms?: { ours: string; own: string; it: string; onIt: string };
 }): Product {
-  const placeLabels = ['Основной принт', 'Второй принт', 'Третий принт', 'Четвёртый принт'];
+  const placeLabels = ['Основной принт', 'Второй принт', 'Третий принт', 'Четвёртый принт', 'Пятый принт'];
   const options: OptionGroup[] = [];
   const cap = (w: string) => w.charAt(0).toUpperCase() + w.slice(1);
+  const ownForms = args.ownForms ?? { ours: `Наша ${args.own}`, own: `Своя ${args.own}`, it: 'её', onIt: 'ней' };
   if (args.own) {
     options.push({
       id: 'blank',
       label: cap(args.own),
       type: 'one',
       choices: [
-        { id: 'ours', label: `Наша ${args.own}`, hint: 'с печатью' },
-        { id: 'own', label: `Своя ${args.own}`, hint: 'только печать' },
+        { id: 'ours', label: ownForms.ours, hint: 'с печатью' },
+        { id: 'own', label: ownForms.own, hint: 'только печать' },
       ],
       default: 'ours',
     });
@@ -458,7 +461,7 @@ function garment(args: {
       }
       if (colorSet?.colorMin && qty < minQtyOf(sel)) error = `${colorSet.colorMin.noun} — от ${colorSet.colorMin.min} шт`;
       if (args.blankFrom && !isOwn(sel)) notes.push('Наличие и точную цену изделия уточнит менеджер.');
-      if (isOwn(sel)) notes.push(`${cap(`своя ${args.own}`)}: принесите её в мастерскую, напечатаем на ней. Подойдут хлопок, смесовые ткани, синтетика.`);
+      if (isOwn(sel)) notes.push(`${ownForms.own}: принесите ${ownForms.it} в мастерскую, напечатаем на ${ownForms.onIt}. Подойдут хлопок, смесовые ткани, синтетика.`);
       if (!args.blank) notes.push('Печать на вашем изделии. Подойдут хлопок, смесовые ткани, синтетика.');
       if (qty >= maxQty) notes.push(`Нужно больше ${maxQty} шт? Цену рассчитаем индивидуально — отправьте заявку.`);
       return {
@@ -536,6 +539,9 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   };
 }
 
+/** a hoodie without print, any run (owner, 16.11.2026) — also quoted in the texts (faq.ts, services.ts) */
+export const HOODIE_BLANK = 2600;
+
 const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные футболки' } };
 
 const textile: Category = {
@@ -550,7 +556,8 @@ const textile: Category = {
       image: '/img/showcase/tshirt.webp',
       blank: tiers([1, 5, 20], [750, 650, 550]),
       formats: ['a6', 'a5', 'a4', 'a3'],
-      places: 4,
+      // owner, 16.11.2026: up to 5 prints (was 4)
+      places: 5,
       colorSet: tshirtColors,
       own: 'футболка',
     }),
@@ -560,19 +567,24 @@ const textile: Category = {
       short: '100% хлопок, размеры 98–164',
       image: '/img/showcase/tshirt.webp',
       blank: tiers([1, 5, 20], [750, 550, 500]),
-      formats: ['a6', 'a5', 'a4'],
-      places: 2,
+      // owner, 16.11.2026: up to 5 prints and up to А3 (was 2 prints up to А4)
+      formats: ['a6', 'a5', 'a4', 'a3'],
+      places: 5,
       colorSet: tshirtColors,
     }),
     garment({
       id: 'hoodie',
       name: 'Худи',
-      short: 'уточняйте наличие',
+      short: 'белое или чёрное',
       image: '/img/showcase/hoodie.webp',
-      blank: tiers([1], [2000]),
-      blankFrom: true,
+      // owner, 16.11.2026: 2 600 ₽ at any run (was «от 2 000 ₽, уточняйте наличие»), only white and black, no minimum
+      blank: tiers([1], [HOODIE_BLANK]),
       formats: ['a6', 'a5', 'a4', 'a3'],
       places: 4,
+      colorSet: { choices: GARMENT_COLORS.filter((c) => COLOR_FREE.includes(c.id)), otherMin: 0, what: '' },
+      // owner, 16.11.2026: every clothing page has a «свой» tile — the customer's own hoodie, only the print
+      own: 'худи',
+      ownForms: { ours: 'Наше худи', own: 'Своё худи', it: 'его', onIt: 'нём' },
     }),
     garment({
       id: 'oversize',

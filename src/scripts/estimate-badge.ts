@@ -1,6 +1,6 @@
-// Header estimate badge: the number of lines in the estimate; hidden when there are none.
+// Estimate badge on the «Заявка» buttons: the number of lines in the estimate; hidden when there are none.
 // Reads localStorage directly (estimate.ts would pull the whole price list into every page).
-import { countStored, estimateLabel, ESTIMATE_EVENT, ESTIMATE_KEY } from '@/lib/estimate-count';
+import { countStored, orderLabel, ESTIMATE_EVENT, ESTIMATE_KEY } from '@/lib/estimate-count';
 
 const read = (): number => {
   try {
@@ -15,7 +15,8 @@ const paint = (n: number) => {
     el.textContent = String(n);
     el.hidden = n === 0;
   });
-  document.querySelectorAll<HTMLElement>('[data-estimate-open]').forEach((el) => el.setAttribute('aria-label', estimateLabel(n)));
+  // the attribute value is the button's visible text
+  document.querySelectorAll<HTMLElement>('[data-estimate-order]').forEach((el) => el.setAttribute('aria-label', orderLabel(n, el.dataset.estimateOrder || 'Заявка')));
 };
 
 paint(read());

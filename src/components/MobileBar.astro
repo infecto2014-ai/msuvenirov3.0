@@ -6,7 +6,9 @@ import Button from './ui/Button.astro';
 
 <div class="mbar">
   <Button href={site.phoneHref} variant="ghost" icon="phone" class="mbar-btn">Позвонить</Button>
-  <Button data-order="" class="mbar-btn">Заявка</Button>
+  <Button data-order="" data-estimate-order="Заявка" class="mbar-btn">
+    Заявка<span class="est-count" data-estimate-count aria-hidden="true" hidden>0</span>
+  </Button>
 </div>
 
 <style>

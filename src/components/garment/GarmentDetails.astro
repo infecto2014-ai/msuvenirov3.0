@@ -1,35 +1,67 @@
 ---
-// «Подробнее о футболке»: five collapsed sections (<details> — the text stays in the HTML for search engines and
-// opens without JS): colours, fabric and specs, print sizes (a to-scale scheme on an M T-shirt, drawn in cm),
-// adult and kids size charts (with the measuring cat), care. Texts — from 2.0 garments.ts, kids chart — owner's.
+// «Подробнее об изделии»: collapsed sections (<details> — the text stays in the HTML for search engines and opens
+// without JS): colours, fabric and specs, print sizes (a to-scale scheme on the garment's outline, drawn in cm),
+// adult and kids size charts (with the measuring cat), care. A section without data (no colours, no sizes) is left out.
+// Texts come from the page's data file (src/data/garments/<page>.ts).
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
-import { COLOR_MIN, GARMENT_COLORS } from '@/data/pricing';
-import { adultSizes, kidsSizes, printSizes, teeCare, teeSpecs } from '@/data/tshirt';
+import type { GarmentPage } from '@/data/garments/types';
+
+interface Props {
+  page: GarmentPage;
+}
+const { page } = Astro.props;
+const { colors, specs, sizes, care, printSizes, prints } = page;
+const adultSizes = sizes?.adult;
+const kidsSizes = sizes?.kids;
+const measure = page.images.extra?.measure;
 
 const sections: { id: string; icon: IconName; title: string; sub: string }[] = [
-  { id: 'colors', icon: 'palette', title: 'Цвета', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN} шт` },
-  { id: 'specs', icon: 'shirt', title: 'Ткань и характеристики', sub: '100% хлопок, 160–180 г/м², печать DTF' },
-  { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: 'А6, А5, А4 и А3 на футболке' },
-  { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: 'Взрослые XS–3XL, детские 98–164' },
+  ...(colors ? [{ id: 'colors', icon: 'palette' as const, title: 'Цвета', sub: colors.sub }] : []),
+  { id: 'specs', icon: 'shirt', title: 'Ткань и характеристики', sub: page.specsSub },
+  { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: prints.sub },
+  ...(sizes ? [{ id: 'sizes', icon: 'ruler' as const, title: 'Размерный ряд', sub: sizes.sub }] : []),
   { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' },
 ];
 
-// T-shirt outline in centimetres (size M: 52 cm wide, 72 cm long); prints hang from 9 cm below the shoulder line
-const SHIRT = 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z';
-const TOP = 9;
-const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y: TOP }));
+// garment outlines in centimetres; prints hang from `top` cm below the shoulder line, centred on `center`.
+// `dims` — the A / B / C measuring lines and their labels (length, width, sleeve) for the size scheme.
+const SHAPES = {
+  // T-shirt, size M: 52 cm wide, 72 cm long
+  tshirt: {
+    path: 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z',
+    extra: '',
+    center: 26,
+    top: 9,
+    viewBox: '-18 -2 88 76',
+    dims: ['M6 4V71', 'M1 30H51', 'M50.5 6.5L64.5 15'],
+    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 30 }, { l: 'C', x: 57.5, y: 10.8 }],
+  },
+  // Hoodie, size M–L: 54 cm wide, 70 cm long, long sleeves, hood and kangaroo pocket
+  hoodie: {
+    path: 'M14 3L38 3L46 6L66 52L57 56L52 32L52 70L0 70L0 32L-5 56L-14 52L6 6Z',
+    extra: 'M14 3C12 -9 40 -9 38 3C32 8 20 8 14 3ZM9 50L43 50L47 66L5 66Z',
+    center: 26,
+    top: 7,
+    viewBox: '-18 -9 88 82',
+    dims: ['M6 6V69', 'M1 32H51', 'M47 7L61.5 52'],
+    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 32 }, { l: 'C', x: 56, y: 30 }],
+  },
+} as const;
+const shape = SHAPES[prints.shape];
+const SHIRT = shape.path;
+const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p.w / 2, y: shape.top }));
 ---
 
 <section class="section td-sec" aria-labelledby="td-title">
   <div class="wrap">
-    <SectionHead id="td-title" title="Подробнее" accent="о футболке" />
+    <SectionHead id="td-title" title="Подробнее" accent={page.heads.details} />
 
     <div class="td">
       {
         sections.map((s) => (
-          <details class="td-item" id={`tee-${s.id}`}>
+          <details class="td-item" id={`garment-${s.id}`}>
             <summary class="td-q">
               <span class="td-ic">
                 <Icon name={s.icon} size={22} />
@@ -44,9 +76,9 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
             </summary>
 
             <div class="td-a">
-              {s.id === 'colors' && (
+              {s.id === 'colors' && colors && (
                 <ul class="td-colors" role="list">
-                  {GARMENT_COLORS.map((c) => (
+                  {colors.choices.map((c) => (
                     <li class="td-color">
                       <span class="td-swatch" style={`--c: ${c.swatch}`} aria-hidden="true" />
                       <span class="td-color-name">{c.label}</span>
@@ -57,21 +89,30 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
               )}
 
               {s.id === 'specs' && (
-                <dl class="td-specs">
-                  {teeSpecs.map((x) => (
-                    <div class="td-spec">
-                      <dt>{x.label}</dt>
-                      <dd>{x.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <div>
+                  <dl class="td-specs">
+                    {specs.map((x) => (
+                      <div class="td-spec">
+                        <dt>{x.label}</dt>
+                        <dd>{x.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {page.specsTodo && (
+                    <p class="td-note">
+                      <Icon name="info" size={20} />
+                      <span>Характеристики уточняйте у менеджера</span>
+                    </p>
+                  )}
+                </div>
               )}
 
               {s.id === 'prints' && (
                 <div class="td-prints">
                   <figure class="td-scheme">
-                    <svg viewBox="-18 -2 88 76" role="img" aria-labelledby="td-scheme-cap" focusable="false">
+                    <svg viewBox={shape.viewBox} role="img" aria-labelledby="td-scheme-cap" focusable="false">
                       <path class="td-shirt" d={SHIRT} />
+                      {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                       {frames.map((f) => (
                         <g class="td-frame">
                           <rect x={f.x} y={f.y} width={f.w} height={f.h} rx="0.6" />
@@ -81,7 +122,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
                         </g>
                       ))}
                     </svg>
-                    <figcaption id="td-scheme-cap">Рамки принтов на груди футболки размера M — в масштабе</figcaption>
+                    <figcaption id="td-scheme-cap">{prints.caption}</figcaption>
                   </figure>
                   <ul class="td-print-list" role="list">
                     {printSizes.map((p) => (
@@ -97,77 +138,62 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
                 </div>
               )}
 
-              {s.id === 'sizes' && (
+              {s.id === 'sizes' && sizes && (
                 <div class="td-sizes">
                   <div class="td-tables">
-                    <div class="td-table-block">
-                      <h3 class="td-h3">
-                        Взрослые
-                      </h3>
-                      <div class="td-scroll" tabindex="0" role="region" aria-label="Взрослые размеры, прокрутка таблицы">
-                        <table class="td-table">
-                          <thead>
-                            <tr>
-                              {adultSizes.columns.map((c) => (
-                                <th scope="col">{c}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {adultSizes.rows.map((r) => (
-                              <tr>
-                                {r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      {adultSizes.todo && (
-                        <p class="td-note">
-                          <Icon name="info" size={20} />
-                          <span>Размеры ориентировочные — точные мерки уточняйте у менеджера</span>
-                        </p>
-                      )}
-                    </div>
-                    <div class="td-table-block">
-                      <h3 class="td-h3">Детские</h3>
-                      <div class="td-scroll" tabindex="0" role="region" aria-label="Детские размеры, прокрутка таблицы">
-                        <table class="td-table">
-                          <thead>
-                            <tr>
-                              {kidsSizes.columns.map((c) => (
-                                <th scope="col">{c}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {kidsSizes.rows.map((r) => (
-                              <tr>
-                                {r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                    {[
+                      { title: 'Взрослые', table: adultSizes },
+                      { title: 'Детские', table: kidsSizes },
+                    ]
+                      .filter((t) => t.table)
+                      .map(({ title, table }) => (
+                        <div class="td-table-block">
+                          <h3 class="td-h3">{title}</h3>
+                          <div class="td-scroll" tabindex="0" role="region" aria-label={`${title} размеры, прокрутка таблицы`}>
+                            <table class="td-table">
+                              <thead>
+                                <tr>
+                                  {table!.columns.map((c) => (
+                                    <th scope="col">{c}</th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {table!.rows.map((r) => (
+                                  <tr>
+                                    {r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      ))}
+                    {sizes.todo && (
+                      <p class="td-note">
+                        <Icon name="info" size={20} />
+                        <span>Размеры ориентировочные — точные мерки уточняйте у менеджера</span>
+                      </p>
+                    )}
                   </div>
                   <aside class="td-measure" aria-label="Как мерить">
-                    <Pic name="tee-cat-measure" alt="Рыжий кот с сантиметровой лентой на шее" w={800} h={800} fit="contain" label="tee-cat-measure" class="td-cat" />
+                    {measure && <Pic name={measure} alt="Рыжий кот с сантиметровой лентой на шее" w={800} h={800} fit="contain" label={measure} class="td-cat" />}
                     <figure class="td-abc">
-                      <svg viewBox="-18 -2 88 76" aria-hidden="true" focusable="false">
+                      <svg viewBox={shape.viewBox} aria-hidden="true" focusable="false">
                         <path class="td-shirt" d={SHIRT} />
+                        {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                         <g class="td-dim">
-                          <path d="M6 4V71" />
-                          <path d="M1 30H51" />
-                          <path d="M50.5 6.5L64.5 15" />
+                          {shape.dims.map((d) => (
+                            <path d={d} />
+                          ))}
                         </g>
                         <g class="td-dim-label">
-                          <circle cx="6" cy="50" r="3.6" />
-                          <text x="6" y="51.3">A</text>
-                          <circle cx="40" cy="30" r="3.6" />
-                          <text x="40" y="31.3">B</text>
-                          <circle cx="57.5" cy="10.8" r="3.6" />
-                          <text x="57.5" y="12.1">C</text>
+                          {shape.labels.map((x) => (
+                            <>
+                              <circle cx={x.x} cy={x.y} r="3.6" />
+                              <text x={x.x} y={x.y + 1.3}>{x.l}</text>
+                            </>
+                          ))}
                         </g>
                       </svg>
                       <figcaption>
@@ -180,7 +206,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
 
               {s.id === 'care' && (
                 <ul class="td-care" role="list">
-                  {teeCare.map((t) => (
+                  {care.map((t) => (
                     <li>
                       <span class="td-check">
                         <Icon name="check" size={16} />
@@ -380,6 +406,12 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
     stroke-width: 0.5;
     stroke-linejoin: round;
   }
+  .td-shirt-extra {
+    fill: none;
+    stroke: #b9c8e6;
+    stroke-width: 0.5;
+    stroke-linejoin: round;
+  }
   .td-frame rect {
     fill: rgba(21, 87, 255, 0.05);
     stroke: var(--blue);
@@ -451,7 +483,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
     margin-bottom: var(--s-3);
     font-size: var(--fs-lg);
   }
-  /* the adult chart is not confirmed by the owner yet — a clearly visible note right under it */
+  /* sizes or specs not confirmed by the owner (`sizes.todo`, `specsTodo`) — a clearly visible note under them */
   .td-note {
     display: flex;
     align-items: flex-start;

@@ -1,24 +1,33 @@
 ---
-// «Готовые варианты»: four cards (a real work photo, title, note, price «N ₽ за M шт» quoted by pricing.ts).
+// «Готовые варианты» of a clothing page: cards (a real work photo, title, note, price «N ₽ за M шт» quoted by pricing.ts).
 // «Настроить в калькуляторе» sends CALC_APPLY_EVENT with the variant's settings — the calculator fills itself
 // and scrolls into view; «Заказать» opens the order window with the variant's name in the comment.
 import { join } from 'node:path';
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
-import { presetPrice, teePresets } from '@/data/tshirt';
+import Pic from '@/components/ui/Pic.astro';
+import { presetPrice } from '@/data/garments/select';
+import type { GarmentPreset } from '@/data/garments/types';
 import { portfolio } from '@/data/portfolio';
 import { rub } from '@/data/pricing';
 import { imageSize } from '@/lib/pic';
 import type { CalcApplyDetail } from '@/lib/calc-preset';
 
-const cards = teePresets.map((v) => {
-  const size = imageSize(join(process.cwd(), 'public', v.img)) ?? { w: 800, h: 600 };
+interface Props {
+  presets: GarmentPreset[];
+  /** calculator category of the presets' products */
+  category: string;
+}
+const { presets, category } = Astro.props;
+
+const cards = presets.map((v) => {
+  const size = (v.img && imageSize(join(process.cwd(), 'public', v.img))) || { w: 800, h: 600 };
   const detail: CalcApplyDetail = { product: v.product, options: v.options, qty: v.qty };
   return {
     ...v,
     ...size,
-    alt: portfolio.find((w) => w.src === v.img)?.title ?? v.title,
-    price: presetPrice(v),
+    alt: v.pic?.alt ?? portfolio.find((w) => w.src === v.img)?.title ?? v.title,
+    price: presetPrice(v, category),
     detail: JSON.stringify(detail),
   };
 });
@@ -33,7 +42,11 @@ const cards = teePresets.map((v) => {
         cards.map((c) => (
           <li class="tp-card">
             <div class="tp-media">
-              <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
+              {c.pic ? (
+                <Pic name={c.pic.name} alt={c.alt} w={1000} h={1000} label={c.pic.label} />
+              ) : (
+                <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
+              )}
             </div>
             <div class="tp-body">
               <h3 class="tp-title">{c.title}</h3>
@@ -116,6 +129,9 @@ const cards = teePresets.map((v) => {
     height: 100%;
     object-fit: cover;
     transition: transform var(--t) var(--ease);
+  }
+  .tp-media :global(.pic) {
+    height: 100%;
   }
   .tp-card:hover .tp-media img {
     transform: scale(1.03);

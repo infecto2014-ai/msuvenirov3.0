@@ -16,7 +16,7 @@ import {
   type Selection,
 } from '@/data/pricing';
 import { addToEstimate, FILES_EVENT, getOrderFiles, openOrder, setOrderFiles } from '@/lib/estimate';
-import { applyPreset, CALC_APPLY_EVENT, takeCalcPreset, type CalcApplyDetail } from '@/lib/calc-preset';
+import { activeTile, applyPreset, CALC_APPLY_EVENT, takeCalcPreset, tileFromPrice, type CalcApplyDetail, type CalcTile } from '@/lib/calc-preset';
 import { ACCEPT, MAX_FILES, validateFiles } from '@/lib/order';
 import { reachGoal } from '@/lib/metrika';
 import { ProductIcon } from './productIcons';
@@ -37,6 +37,11 @@ interface Props {
   products?: string[];
   /** heading shown above the calculator */
   title?: string;
+  /**
+   * product tiles instead of the product list (T-shirt page: «Футболка унисекс», «Детская», «Своя футболка»).
+   * A tile picks its product and lays its preset over the defaults; the «наша / своя» group (`blank`) is hidden.
+   */
+  tiles?: CalcTile[];
 }
 
 const SLIDER_STEPS = 1000;
@@ -83,9 +88,10 @@ const stepQty = (n: number, dir: 1 | -1, q: QtyConfig) => {
   return list[Math.min(list.length - 1, Math.max(0, (i < 0 ? list.length - 1 : i) + dir))];
 };
 
-const describe = (p: Product, s: Selection): string => {
+const describe = (p: Product, s: Selection, skip: string[] = []): string => {
   const parts: string[] = [];
   for (const g of p.options ?? []) {
+    if (skip.includes(g.id)) continue;
     if (g.hideWhen && s.options[g.hideWhen.group] === g.hideWhen.value) continue;
     if (g.showWhen && s.options[g.showWhen.group] !== g.showWhen.value) continue;
     const v = s.options[g.id];
@@ -137,7 +143,12 @@ const Svg = ({ size = 20, children }: { size?: number; children: ComponentChildr
   </svg>
 );
 
-export default function Calculator({ category, product, only, hideCategories, lockProduct, products, title }: Props) {
+/** groups the tiles take over: «наша / своя» is chosen by a tile */
+const TILE_GROUPS = ['blank'];
+
+export default function Calculator({ category, product, only, hideCategories, lockProduct, products: productsProp, title, tiles }: Props) {
+  // with tiles the product list is the tiles' products
+  const products = tiles?.length ? [...new Set(tiles.map((t) => t.product))] : productsProp;
   const cats: Category[] = useMemo(() => (only ? categories.filter((c) => only.includes(c.id)) : categories), [only]);
   const [catId, setCatId] = useState(() => findCategory(category)?.id ?? cats[0].id);
   const cat = findCategory(catId) ?? cats[0];
@@ -149,7 +160,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
   const list = listOf(cat);
   const [prodId, setProdId] = useState(() => list.find((p) => p.id === product)?.id ?? list[0].id);
   const prod = list.find((p) => p.id === prodId) ?? list[0];
-  const showProducts = list.length > 1 && !lockProduct;
+  const showProducts = (tiles?.length ? tiles.length > 1 : list.length > 1) && !lockProduct;
   const [sel, setSel] = useState<Selection>(() => defaultSelection(prod));
   /** what the customer typed for «Другой цвет»; not part of the price */
   const [otherColor, setOtherColor] = useState('');
@@ -170,8 +181,11 @@ export default function Calculator({ category, product, only, hideCategories, lo
     if (!err) setOrderFiles(next);
   };
   const otherPicked = (prod.options ?? []).some((g) => sel.options[g.id] === 'other');
+  const tile = tiles?.length ? activeTile(tiles, prod.id, sel.options) : undefined;
+  /** what the line is called in the result and the estimate: «Своя футболка» for a tile with a preset */
+  const itemName = tile?.preset && Object.keys(tile.preset).length ? tile.label : prod.name;
   const details = (() => {
-    const d = describe(prod, sel);
+    const d = describe(prod, sel, tiles?.length ? TILE_GROUPS : []);
     const c = otherColor.trim();
     return otherPicked && c ? d.replace('Другой цвет', `Другой цвет: ${c}`) : d;
   })();
@@ -239,6 +253,10 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
 
   const pickProduct = (p: Product) => show(cat, p, defaultSelection(p));
+  const pickTile = (t: CalcTile) => {
+    const p = list.find((x) => x.id === t.product);
+    if (p) show(cat, p, applyPreset(p, { options: t.preset }));
+  };
 
   // the smallest run depends on the selection (coloured garments: 5 pcs; stickers: minimum order sum)
   const qcfg = useMemo(() => (prod.minQty ? { ...prod.qty, min: Math.min(prod.qty.max, prod.minQty(sel)) } : prod.qty), [prod, sel.dims, sel.options]);
@@ -305,7 +323,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
   const add = (thenOrder: boolean) => {
     if (quote.error) return;
     addToEstimate({
-      title: prod.name,
+      title: itemName,
       details,
       qty: sel.qty,
       unitPrice: quote.unit,
@@ -316,13 +334,16 @@ export default function Calculator({ category, product, only, hideCategories, lo
     reachGoal(thenOrder ? 'calc_order' : 'calc_add', { product: prod.id, total: quote.total });
     if (thenOrder) openOrder({ source: 'calculator' });
     else {
-      setToast(`${prod.name} — в смете`);
+      setToast(`${itemName} — в смете`);
       clearTimeout(toastTimer.current);
       toastTimer.current = setTimeout(() => setToast(''), 2600);
     }
   };
 
   const fromLabel = (p: Product) => `от ${rub(p.fromPrice)}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
+  /** a tile's «от»: one base for all tiles (calc-preset tileFromPrice); «своя» — the same without the blank, «печать от» */
+  const tileFrom = (p: Product, t: CalcTile) =>
+    `${t.preset?.blank === 'own' ? 'печать ' : ''}от ${rub(tileFromPrice(p, t))}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
   const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
   const n = (x: number) => x.toLocaleString('ru-RU');
 
@@ -445,19 +466,40 @@ export default function Calculator({ category, product, only, hideCategories, lo
                 <span class="calc-step">1</span>
                 <span class="calc-legend-text">Изделие</span>
               </legend>
-              <div class="calc-products">
-                {list.map((p) => (
-                  <button type="button" class="calc-product" aria-pressed={p.id === prod.id} onClick={() => pickProduct(p)}>
-                    <span class="calc-product-ico" aria-hidden="true">
-                      <ProductIcon id={p.id} cat={cat.id} />
-                    </span>
-                    <span class="calc-product-text">
-                      <span class="calc-product-name">{p.name}</span>
-                      <span class="calc-product-from">{fromLabel(p)}</span>
-                    </span>
-                  </button>
-                ))}
-              </div>
+              {tiles?.length ? (
+                <div class="calc-products calc-tiles" role="radiogroup" aria-label="Изделие" onKeyDown={radioKeys}>
+                  {tiles.map((t, i) => {
+                    const p = list.find((x) => x.id === t.product);
+                    if (!p) return null;
+                    const on = tile?.id === t.id;
+                    return (
+                      <button type="button" role="radio" aria-checked={on} tabIndex={tabOf(on, i, !!tile)} class="calc-product" onClick={() => pickTile(t)}>
+                        <span class="calc-product-ico" aria-hidden="true">
+                          <ProductIcon id={p.id} cat={cat.id} />
+                        </span>
+                        <span class="calc-product-text">
+                          <span class="calc-product-name">{t.label}</span>
+                          <span class="calc-product-from">{tileFrom(p, t)}</span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div class="calc-products">
+                  {list.map((p) => (
+                    <button type="button" class="calc-product" aria-pressed={p.id === prod.id} onClick={() => pickProduct(p)}>
+                      <span class="calc-product-ico" aria-hidden="true">
+                        <ProductIcon id={p.id} cat={cat.id} />
+                      </span>
+                      <span class="calc-product-text">
+                        <span class="calc-product-name">{p.name}</span>
+                        <span class="calc-product-from">{fromLabel(p)}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </fieldset>
           )}
 
@@ -465,6 +507,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
             // extra prints (addable groups) are hidden until the customer adds them; numbering follows the visible groups
             const groups = prod.options ?? [];
             const hidden = (g: OptionGroup) =>
+              (!!tiles?.length && TILE_GROUPS.includes(g.id)) ||
               (!!g.hideWhen && sel.options[g.hideWhen.group] === g.hideWhen.value) || (!!g.showWhen && sel.options[g.showWhen.group] !== g.showWhen.value);
             const isOn = (g: OptionGroup) => !hidden(g) && (!g.addable || (sel.options[g.id] ?? 'none') !== 'none');
             const visible = groups.filter(isOn);
@@ -780,7 +823,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
               <span class="calc-result-ico" aria-hidden="true">
                 <ProductIcon id={prod.id} cat={cat.id} />
               </span>
-              <span class="calc-result-name">{prod.name}</span>
+              <span class="calc-result-name">{itemName}</span>
             </div>
             <p class="calc-result-desc">{details || prod.short}</p>
 
@@ -825,7 +868,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
             ))}
 
             <div class="calc-actions">
-              <button type="button" class="calc-btn calc-btn-light" disabled={!!quote.error} onClick={() => add(true)}>
+              <button type="button" class="calc-btn calc-btn-primary" disabled={!!quote.error} onClick={() => add(true)}>
                 Оформить заявку
                 <Svg size={20}>
                   <path d="M5 12h14M12 5l7 7-7 7" />

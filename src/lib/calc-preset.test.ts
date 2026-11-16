@@ -58,3 +58,37 @@ test('очередь: вариант, нажатый до загрузки ка�
   expect(takeCalcPreset(w)).toEqual(d);
   expect(takeCalcPreset(w)).toBeUndefined();
 });
+
+test('плитка «Своя футболка»: preset blank own даёт только печать', () => {
+  const s = applyPreset(tee, { options: { blank: 'own' } });
+  expect(s.options.blank).toBe('own');
+  const q = tee.quote(s);
+  expect(q.breakdown.every((b) => b.label.startsWith('Печать'))).toBe(true);
+});
+
+test('активная плитка: своя выигрывает у обычной, когда blank own; детская — по продукту', async () => {
+  const { activeTile } = await import('./calc-preset');
+  const tiles = [
+    { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' },
+    { id: 'kids', label: 'Детская', product: 'tshirt-kids' },
+    { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } },
+  ];
+  expect(activeTile(tiles, 'tshirt-unisex', { blank: 'ours' })?.id).toBe('unisex');
+  expect(activeTile(tiles, 'tshirt-unisex', { blank: 'own' })?.id).toBe('own');
+  expect(activeTile(tiles, 'tshirt-kids', {})?.id).toBe('kids');
+  expect(activeTile(tiles, 'hoodie', {})).toBeUndefined();
+});
+
+test('«от» на плитках — одна база: штука при самом выгодном тираже с самым маленьким принтом', async () => {
+  const { tileFromPrice } = await import('./calc-preset');
+  const kids = findProduct('textile', 'tshirt-kids')!;
+  const hoodie = findProduct('textile', 'hoodie')!;
+  // our garment: blank at its cheapest run + A6 at its cheapest run (= the product's «от»)
+  expect(tileFromPrice(tee, { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' })).toBe(tee.fromPrice);
+  expect(tileFromPrice(tee, { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' })).toBe(830);
+  expect(tileFromPrice(kids, { id: 'kids', label: 'Детская', product: 'tshirt-kids' })).toBe(780);
+  expect(tileFromPrice(hoodie, { id: 'hoodie', label: 'Худи', product: 'hoodie' })).toBe(2880);
+  // own garment: the same, only without the blank — so own = ours − the blank's cheapest price
+  expect(tileFromPrice(tee, { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } })).toBe(830 - 550);
+  expect(tileFromPrice(hoodie, { id: 'own', label: 'Своё худи', product: 'hoodie', preset: { blank: 'own' } })).toBe(2880 - 2600);
+});

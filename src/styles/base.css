@@ -207,3 +207,29 @@ summary::-webkit-details-marker {
     scroll-behavior: auto !important;
   }
 }
+
+/* count of estimate lines on a «Заявка» button (filled by scripts/estimate-badge.ts, hidden when 0) */
+[data-estimate-order] {
+  position: relative;
+}
+.est-count {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border: 2px solid var(--white);
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--white);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.est-count[hidden] {
+  display: none;
+}
