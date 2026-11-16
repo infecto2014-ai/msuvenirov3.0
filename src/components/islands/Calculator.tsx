@@ -16,7 +16,7 @@ import {
   type Selection,
 } from '@/data/pricing';
 import { addToEstimate, FILES_EVENT, getOrderFiles, openOrder, setOrderFiles } from '@/lib/estimate';
-import { activeTile, applyPreset, CALC_APPLY_EVENT, takeCalcPreset, tileFromPrice, type CalcApplyDetail, type CalcTile } from '@/lib/calc-preset';
+import { activeTile, applyPreset, CALC_APPLY_EVENT, switchTile, takeCalcPreset, tileFromLabel, tileItemName, tileProducts, type CalcApplyDetail, type CalcTile } from '@/lib/calc-preset';
 import { ACCEPT, MAX_FILES, validateFiles } from '@/lib/order';
 import { reachGoal } from '@/lib/metrika';
 import { ProductIcon } from './productIcons';
@@ -148,7 +148,7 @@ const TILE_GROUPS = ['blank'];
 
 export default function Calculator({ category, product, only, hideCategories, lockProduct, products: productsProp, title, tiles }: Props) {
   // with tiles the product list is the tiles' products
-  const products = tiles?.length ? [...new Set(tiles.map((t) => t.product))] : productsProp;
+  const products = tiles?.length ? tileProducts(tiles) : productsProp;
   const cats: Category[] = useMemo(() => (only ? categories.filter((c) => only.includes(c.id)) : categories), [only]);
   const [catId, setCatId] = useState(() => findCategory(category)?.id ?? cats[0].id);
   const cat = findCategory(catId) ?? cats[0];
@@ -182,8 +182,8 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
   const otherPicked = (prod.options ?? []).some((g) => sel.options[g.id] === 'other');
   const tile = tiles?.length ? activeTile(tiles, prod.id, sel.options) : undefined;
-  /** what the line is called in the result and the estimate: «Своя футболка» for a tile with a preset */
-  const itemName = tile?.preset && Object.keys(tile.preset).length ? tile.label : prod.name;
+  /** what the line is called in the result and the estimate: «Своя футболка» for an `own` tile */
+  const itemName = tileItemName(tile, prod);
   const details = (() => {
     const d = describe(prod, sel, tiles?.length ? TILE_GROUPS : []);
     const c = otherColor.trim();
@@ -253,9 +253,11 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
 
   const pickProduct = (p: Product) => show(cat, p, defaultSelection(p));
+  // the active tile again — nothing is reset; another tile keeps the chosen print sizes
   const pickTile = (t: CalcTile) => {
     const p = list.find((x) => x.id === t.product);
-    if (p) show(cat, p, applyPreset(p, { options: t.preset }));
+    const next = p && switchTile(p, tile, t, sel);
+    if (p && next) show(cat, p, next);
   };
 
   // the smallest run depends on the selection (coloured garments: 5 pcs; stickers: minimum order sum)
@@ -331,7 +333,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
       from: quote.from,
       calc: { cat: cat.id, product: prod.id, sel },
     });
-    reachGoal(thenOrder ? 'calc_order' : 'calc_add', { product: prod.id, total: quote.total });
+    reachGoal(thenOrder ? 'calc_order' : 'calc_add', { product: prod.id, tile: tile?.id, total: quote.total });
     if (thenOrder) openOrder({ source: 'calculator' });
     else {
       setToast(`${itemName} — в смете`);
@@ -341,9 +343,6 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
 
   const fromLabel = (p: Product) => `от ${rub(p.fromPrice)}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
-  /** a tile's «от»: one base for all tiles (calc-preset tileFromPrice); «своя» — the same without the blank, «печать от» */
-  const tileFrom = (p: Product, t: CalcTile) =>
-    `${t.preset?.blank === 'own' ? 'печать ' : ''}от ${rub(tileFromPrice(p, t))}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
   const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
   const n = (x: number) => x.toLocaleString('ru-RU');
 
@@ -479,7 +478,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
                         </span>
                         <span class="calc-product-text">
                           <span class="calc-product-name">{t.label}</span>
-                          <span class="calc-product-from">{tileFrom(p, t)}</span>
+                          <span class="calc-product-from">{tileFromLabel(p, t)}</span>
                         </span>
                       </button>
                     );
@@ -727,7 +726,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
             )}
             {!quote.next && !quote.error && qcfg.individualAbove && ladder.length > 1 && sel.qty >= ladder[ladder.length - 1].from && (
               // the best price is reached: tell about larger runs (clothing: more than 50 pcs is priced individually)
-              <button type="button" class="calc-boost is-ink" data-order={`Индивидуальный расчёт: ${prod.name}, больше ${max} шт`}>
+              <button type="button" class="calc-boost is-ink" data-order={`Индивидуальный расчёт: ${itemName}, больше ${max} шт`}>
                 <span class="calc-boost-badge">{max}+</span>
                 <span class="calc-boost-text">
                   <span>

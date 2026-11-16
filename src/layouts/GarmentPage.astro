@@ -17,8 +17,7 @@ import Works from '@/components/home/Works.astro';
 import Reviews from '@/components/home/Reviews.astro';
 import Faq from '@/components/home/Faq.astro';
 import { site } from '@/data/site';
-import { findProduct } from '@/data/pricing';
-import { garmentFaq, garmentReviews, garmentWorks } from '@/data/garments/select';
+import { garmentFaq, garmentFrom, garmentReviews, garmentWorks } from '@/data/garments/select';
 import type { GarmentPage } from '@/data/garments/types';
 import { breadcrumbs, faqPage, service } from '@/lib/schema';
 
@@ -31,7 +30,7 @@ const { calc, heads } = page;
 const faq = garmentFaq(page);
 // reviews topped up from the home selection are not all about this garment — a neutral heading then
 const reviews = garmentReviews(page);
-const lowPrice = Math.min(...calc.products.map((id) => findProduct(calc.category, id)!.fromPrice));
+const lowPrice = garmentFrom(page);
 const schema = [
   breadcrumbs(page.crumbs.map((c) => ({ name: c.label, href: c.href }))),
   service({ name: page.serviceName, description: page.description, url: page.slug, lowPrice }),
@@ -46,7 +45,7 @@ const schema = [
     <div class="wrap">
       <SectionHead id="g-calc-title" title="Рассчитайте" accent="стоимость" lead={calc.lead} />
       <div class="g-calc">
-        <Calculator client:visible category={calc.category} products={calc.products} tiles={calc.tiles} hideCategories />
+        <Calculator client:visible category={calc.category} tiles={calc.tiles} hideCategories />
       </div>
       <noscript>
         <style>

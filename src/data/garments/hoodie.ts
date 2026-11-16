@@ -2,7 +2,7 @@
 // care. Texts are taken verbatim from msuvenirov 2.0 (src/data/garments.ts); prices are never written here — a
 // variant's price is quoted by the calculator rules in pricing.ts (presetPrice). Specs and sizes are confirmed by
 // the owner (16.11.2026) — no «уточняйте» notes. Colours: white and black only (no grey melange).
-import { extraPrintFactor, GARMENT_COLORS } from '../pricing';
+import { extraPrintFactor } from '../pricing';
 import type { GarmentPage, GarmentPreset, SizeTable } from './types';
 
 /** the calm product photo is not there yet (the neon one of 2.0 does not fit): a labelled slot in public/img/v3 */
@@ -99,23 +99,21 @@ export const hoodie: GarmentPage = {
   hero: { priceLabel: 'Худи с печатью' },
   calc: {
     category: 'textile',
-    products: ['hoodie'],
     // owner, 16.11.2026: every clothing page has a «свой» tile — the customer's own hoodie, only the print
     tiles: [
       { id: 'ours', label: 'Худи', product: 'hoodie' },
-      { id: 'own', label: 'Своё худи', product: 'hoodie', preset: { blank: 'own' } },
+      { id: 'own', label: 'Своё худи', product: 'hoodie', preset: { blank: 'own' }, own: true },
     ],
     lead: 'Выберите худи, цвет и принты — цена за штуку и за тираж посчитается сразу.',
   },
   presets,
   // owner, 16.11.2026: only white and black (the grey melange of 2.0 is not shown)
-  colors: { choices: GARMENT_COLORS.filter((c) => !c.hint), sub: 'Белый и чёрный — в наличии' },
-  specs,
-  specsSub: '80% хлопок, 320 г/м² с начёсом, печать DTF',
+  colors: { product: 'hoodie', sub: 'Белый и чёрный — в наличии' },
+  specs: { items: specs, sub: '80% хлопок, 320 г/м² с начёсом, печать DTF' },
   sizes: { adult: adultSizes, sub: 'Унисекс, от S до 3XL' },
   care,
-  printSizes,
   prints: {
+    sizes: printSizes,
     sub: 'А6, А5, А4 и А3 на худи',
     shape: 'hoodie',
     caption: 'Рамки показаны на груди худи размера M–L в масштабе; на спине — те же размеры, до А3',

@@ -4,7 +4,9 @@ import { garmentFaq, garmentReviews, garmentWorks, presetPrice } from './select'
 import { services } from '../services';
 import { findProduct } from '../pricing';
 
-const { presets, sizes, printSizes, specs, care } = tshirt;
+const { presets, sizes, care } = tshirt;
+const specs = tshirt.specs!.items;
+const printSizes = tshirt.prints!.sizes;
 const works = garmentWorks(tshirt);
 const { items: reviews, topped } = garmentReviews(tshirt);
 const faq = garmentFaq(tshirt);
@@ -56,13 +58,13 @@ test('взрослая сетка, принты, характеристики, �
 
 test('правки владельца 16.11: взрослая сетка верная — без пометки; характеристики без пометки', () => {
   expect(sizes!.todo).toBeFalsy();
-  expect(tshirt.specsTodo).toBeFalsy();
+  expect(tshirt.specs!.todo).toBeFalsy();
 });
 
 test('калькулятор: три плитки — унисекс, детская, своя (только печать)', () => {
-  expect(tshirt.calc.tiles!.map((t) => t.label)).toEqual(['Футболка унисекс', 'Детская', 'Своя футболка']);
-  expect(tshirt.calc.tiles!.find((t) => t.id === 'own')!.preset).toEqual({ blank: 'own' });
-  for (const t of tshirt.calc.tiles!) expect(findProduct(tshirt.calc.category, t.product), t.id).toBeTruthy();
+  expect(tshirt.calc.tiles.map((t) => t.label)).toEqual(['Футболка унисекс', 'Детская', 'Своя футболка']);
+  expect(tshirt.calc.tiles.find((t) => t.id === 'own')!.preset).toEqual({ blank: 'own' });
+  for (const t of tshirt.calc.tiles) expect(findProduct(tshirt.calc.category, t.product), t.id).toBeTruthy();
 });
 
 test('таблица цен: заголовок и подзаголовок владельца, продукты есть в прайсе', () => {
@@ -71,10 +73,11 @@ test('таблица цен: заголовок и подзаголовок вл
   for (const p of tshirt.prices.products) expect(findProduct(tshirt.calc.category, p.id)?.table, p.id).toBeTruthy();
 });
 
-test('цвета: все цвета футболки из pricing.ts, белый и чёрный — в наличии', () => {
-  const ids = tshirt.colors!.choices.map((c) => c.id);
+test('цвета: все цвета футболки из pricing.ts, белый и чёрный — в наличии', async () => {
+  const { garmentColors } = await import('./select');
+  const ids = garmentColors(tshirt).map((c) => c.id);
   expect(ids.slice(0, 2)).toEqual(['white', 'black']);
-  expect(tshirt.colors!.choices.filter((c) => !c.hint).map((c) => c.id)).toEqual(['white', 'black']);
+  expect(garmentColors(tshirt).filter((c) => c.free).map((c) => c.id)).toEqual(['white', 'black']);
 });
 
 test('тексты сайта не спорят с правилами 16.11: худи — цена из прайса, 5 принтов, детская до А3', async () => {
@@ -130,4 +133,23 @@ test('детская футболка в «Печати на одежде»: м�
   const kidsRow = blocks.match(/"Детская футболка","values":\[[^\]]*\]/)![0];
   expect(kidsRow).toContain(`"До ${prints} принтов, каждый до А3"`);
   expect(kidsRow).not.toContain('Грудь, спина, рукав');
+});
+
+test('шаблон: цвета из прайса с пометкой по правилам, цена «от» — по плиткам', async () => {
+  const { garmentColors, garmentFrom } = await import('./select');
+  const colors = garmentColors(tshirt);
+  expect(colors.map((c) => c.id)).toEqual(['white', 'black', 'yellow', 'green', 'brown', 'red', 'orange', 'pink', 'gray', 'blue', 'lilac']);
+  expect(colors.filter((c) => c.free).map((c) => c.note)).toEqual(['в наличии', 'в наличии']);
+  expect(colors.find((c) => c.id === 'red')!.note).toBe('от 5 шт');
+  // the cheapest product of the tiles: the kids T-shirt
+  expect(garmentFrom(tshirt)).toBe(findProduct('textile', 'tshirt-kids')!.fromPrice);
+  expect('products' in tshirt.calc).toBe(false);
+  expect(tshirt.calc.tiles.find((t) => t.id === 'own')!.own).toBe(true);
+});
+
+test('шаблон: разделы «Подробнее» — из данных, характеристики с заголовком по умолчанию', () => {
+  expect(tshirt.specs!.items.length).toBeGreaterThan(5);
+  expect(tshirt.specs!.title).toBeUndefined();
+  expect(tshirt.prints!.sizes).toHaveLength(4);
+  expect(tshirt.care).toHaveLength(5);
 });

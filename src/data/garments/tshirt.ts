@@ -1,7 +1,7 @@
 // «Печать на футболках» (/pechat-na-futbolkah) on the clothing template: ready-made variants, specs, size charts,
 // print sizes, care. Texts are taken verbatim from msuvenirov 2.0 (src/data/garments.ts); prices are never written
 // here — a variant's price is quoted by the calculator rules in pricing.ts (presetPrice), rules use its constants.
-import { COLOR_MIN, extraPrintFactor, GARMENT_COLORS } from '../pricing';
+import { COLOR_MIN, extraPrintFactor } from '../pricing';
 import type { GarmentPage, GarmentPreset, SizeTable } from './types';
 
 const presets: GarmentPreset[] = [
@@ -120,23 +120,20 @@ export const tshirt: GarmentPage = {
   hero: { priceLabel: 'Футболка с\u00a0печатью' },
   calc: {
     category: 'textile',
-    products: ['tshirt-unisex', 'tshirt-kids'],
     // owner, 16.11.2026: three tiles instead of the product list and the «наша / своя» switch
     tiles: [
       { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' },
       { id: 'kids', label: 'Детская', product: 'tshirt-kids' },
-      { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } },
+      { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' }, own: true },
     ],
     lead: 'Выберите футболку, цвет и принты — цена за штуку и за тираж посчитается сразу.',
   },
   presets,
-  colors: { choices: GARMENT_COLORS, sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN} шт` },
-  specs,
-  specsSub: '100% хлопок, 160–180 г/м², печать DTF',
+  colors: { product: 'tshirt-unisex', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN} шт` },
+  specs: { items: specs, sub: '100% хлопок, 160–180 г/м², печать DTF' },
   sizes: { adult: adultSizes, kids: kidsSizes, sub: 'Взрослые XS–3XL, детские 98–164' },
   care,
-  printSizes,
-  prints: { sub: 'А6, А5, А4 и А3 на футболке', shape: 'tshirt', caption: 'Рамки принтов на груди футболки размера M — в масштабе' },
+  prints: { sizes: printSizes, sub: 'А6, А5, А4 и А3 на футболке', shape: 'tshirt', caption: 'Рамки принтов на груди футболки размера M — в масштабе' },
   worksTag: 'futbolki',
   reviewWords: ['футболк'],
   faqSlug: '/pechat-na-futbolkah',

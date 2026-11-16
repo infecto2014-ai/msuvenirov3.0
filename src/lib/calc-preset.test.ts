@@ -92,3 +92,54 @@ test('«от» на плитках — одна база: штука при са
   expect(tileFromPrice(tee, { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } })).toBe(830 - 550);
   expect(tileFromPrice(hoodie, { id: 'own', label: 'Своё худи', product: 'hoodie', preset: { blank: 'own' } })).toBe(2880 - 2600);
 });
+
+// ---- tiles: «свой» by the `own` flag, product list from the tiles, switching tiles (final review 16.11)
+
+const own = { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' }, own: true };
+const unisex = { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' };
+const kids = { id: 'kids', label: 'Детская', product: 'tshirt-kids' };
+/** workwear / sport uniform: the customer's item only, a product without a «наша / своя» group */
+const ownItem = { id: 'own', label: 'Своя спецодежда', product: 'own-item', own: true };
+
+test('«печать от» и название позиции решает флаг own, а не preset', async () => {
+  const { tileFromLabel, tileItemName } = await import('./calc-preset');
+  const item = findProduct('textile', 'own-item')!;
+  expect(tileFromLabel(tee, own)).toBe('печать от 280 ₽');
+  expect(tileFromLabel(tee, unisex)).toBe('от 830 ₽');
+  // own-item has no `blank` group, no preset — still «печать от» and named by the tile
+  expect(tileFromLabel(item, ownItem)).toMatch(/^печать от \d+ ₽$/);
+  expect(tileItemName(ownItem, item)).toBe('Своя спецодежда');
+  expect(tileItemName(own, tee)).toBe('Своя футболка');
+  // an ordinary tile keeps the product's full name in the estimate
+  expect(tileItemName(kids, findProduct('textile', 'tshirt-kids')!)).toBe('Футболка детская');
+  expect(tileItemName(undefined, tee)).toBe('Футболка унисекс');
+});
+
+test('плитка «своя вещь» без preset активна на own-item', async () => {
+  const { activeTile } = await import('./calc-preset');
+  expect(activeTile([ownItem], 'own-item', {})?.id).toBe('own');
+});
+
+test('список изделий страницы — из плиток, без повторов', async () => {
+  const { tileProducts } = await import('./calc-preset');
+  expect(tileProducts([unisex, kids, own])).toEqual(['tshirt-unisex', 'tshirt-kids']);
+});
+
+test('смена плитки: размеры принтов переносятся, повторный выбор той же плитки ничего не сбрасывает', async () => {
+  const { switchTile } = await import('./calc-preset');
+  const cur = applyPreset(tee, { options: { color: 'red', print1: 'a3', print2: 'a6', print5: 'a5' }, qty: 7 });
+  // the same tile again — nothing changes
+  expect(switchTile(tee, unisex, unisex, cur)).toBeUndefined();
+  // to «Детская»: prints carried over, colour and qty back to the defaults
+  const k = switchTile(findProduct('textile', 'tshirt-kids')!, unisex, kids, cur)!;
+  expect([k.options.print1, k.options.print2, k.options.print5]).toEqual(['a3', 'a6', 'a5']);
+  expect(k.options.color).toBe('white');
+  // to «Своя футболка»: prints carried over, the preset wins
+  const o = switchTile(tee, unisex, own, cur)!;
+  expect(o.options.blank).toBe('own');
+  expect(o.options.print1).toBe('a3');
+  // to the hoodie: only 4 places — print5 is dropped, print1 kept
+  const h = switchTile(findProduct('textile', 'hoodie')!, unisex, { id: 'h', label: 'Худи', product: 'hoodie' }, cur)!;
+  expect(h.options.print1).toBe('a3');
+  expect(h.options.print5).toBeUndefined();
+});

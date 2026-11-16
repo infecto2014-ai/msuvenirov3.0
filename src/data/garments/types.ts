@@ -1,8 +1,8 @@
 // One clothing page («Печать на одежде»: футболки, худи, …) is one GarmentPage record; the template
 // src/layouts/GarmentPage.astro draws it. Prices are never written here — they come from pricing.ts.
-import type { Choice } from '../pricing';
 import type { CalcTile } from '@/lib/calc-preset';
 import type { IconName } from '@/components/ui/Icon.astro';
+import type { ShapeId } from './shapes';
 
 /** a ready-made variant: a real work photo, its calculator settings; the price is quoted by pricing.ts */
 export interface GarmentPreset {
@@ -38,19 +38,28 @@ export interface GarmentPage {
   /** name of the Service in JSON-LD */
   serviceName: string;
   hero: { priceLabel: string };
-  calc: { category: string; products: string[]; tiles?: CalcTile[]; lead: string };
+  /**
+   * the calculator: its tiles (a tile with `own` — the customer's item, only the print). The page's products — for
+   * the calculator, the first-screen «от» price and the JSON-LD — are the tiles' products (tileProducts).
+   */
+  calc: { category: string; tiles: CalcTile[]; lead: string };
   presets: GarmentPreset[];
-  /** colours of the garment (from pricing.ts); white and black without a hint are «в наличии» */
-  colors?: { choices: Choice[]; sub: string };
-  specs: { label: string; value: string }[];
-  specsSub: string;
-  /** specs not confirmed by the owner — shown with «уточняйте у менеджера» */
-  specsTodo?: boolean;
+  /*
+   * «Подробнее об изделии»: every section is optional and left out without data, in this order — colours, specs,
+   * print sizes, size charts, care.
+   */
+  /**
+   * colours of `product` from pricing.ts (colorChoices): «в наличии» or «от N шт» by its colour rules, never by
+   * the chip hints
+   */
+  colors?: { product: string; sub: string };
+  /** fabric and specs; title «Ткань и характеристики» and icon `shirt` unless given; `todo` — not confirmed (a note) */
+  specs?: { items: { label: string; value: string }[]; sub: string; title?: string; icon?: IconName; todo?: boolean };
+  /** the measuring scheme next to the charts is drawn on `prints.shape` (none without prints) */
   sizes?: { adult?: SizeTable; kids?: SizeTable; sub: string; /** not confirmed — a visible note */ todo?: boolean };
-  care: string[];
-  /** DTF print sizes on clothing, w×h in cm; `shape` — the outline the to-scale scheme is drawn on */
-  printSizes: { label: string; w: number; h: number }[];
-  prints: { sub: string; shape: 'tshirt' | 'hoodie'; caption: string };
+  care?: string[];
+  /** DTF print sizes (w×h, cm) drawn to scale on the `shape` outline (src/data/garments/shapes.ts) */
+  prints?: { sizes: { label: string; w: number; h: number }[]; sub: string; shape: ShapeId; caption: string };
   /** portfolio tag of the page's works */
   worksTag: string;
   /** lower-case word stems a review must contain to be shown first (e.g. 'футболк') */

@@ -1,10 +1,12 @@
 import { expect, test } from 'vitest';
 import { hoodie } from './hoodie';
-import { garmentFaq, garmentReviews, garmentWorks, presetPrice } from './select';
+import { garmentColors, garmentFaq, garmentReviews, garmentWorks, presetPrice } from './select';
 import { services } from '../services';
 import { findProduct, HOODIE_BLANK } from '../pricing';
 
-const { presets, sizes, printSizes, specs, care } = hoodie;
+const { presets, sizes, care } = hoodie;
+const specs = hoodie.specs!.items;
+const printSizes = hoodie.prints!.sizes;
 const product = findProduct('textile', 'hoodie')!;
 const quote = (o: Record<string, string>, qty = 1) => product.quote({ options: { blank: 'ours', color: 'white', print1: 'none', ...o }, dims: {}, qty });
 
@@ -34,13 +36,13 @@ test('цена худи — точная, без «от»; одна цена п�
 });
 
 test('цвета только белый и чёрный, без серого меланжа и без пометок', () => {
-  expect(hoodie.colors!.choices.map((c) => c.id)).toEqual(['white', 'black']);
-  expect(hoodie.colors!.choices.every((c) => !c.hint)).toBe(true);
+  expect(garmentColors(hoodie).map((c) => c.id)).toEqual(['white', 'black']);
+  expect(garmentColors(hoodie).every((c) => c.free && c.note === 'в наличии')).toBe(true);
   expect(JSON.stringify(hoodie)).not.toMatch(/меланж/i);
 });
 
 test('характеристики и размеры подтверждены — без пометок', () => {
-  expect(hoodie.specsTodo).toBeFalsy();
+  expect(hoodie.specs!.todo).toBeFalsy();
   expect(sizes!.todo).toBeFalsy();
   expect(specs.find((s) => s.label === 'Состав')!.value).toBe('80% хлопок, 20% полиэстер');
   expect(sizes!.adult!.rows).toHaveLength(5);
@@ -51,9 +53,9 @@ test('характеристики и размеры подтверждены �
 });
 
 test('калькулятор: плитки «Худи» и «Своё худи» (только печать)', () => {
-  expect(hoodie.calc.tiles!.map((t) => t.label)).toEqual(['Худи', 'Своё худи']);
-  expect(hoodie.calc.tiles!.find((t) => t.id === 'own')!.preset).toEqual({ blank: 'own' });
-  for (const t of hoodie.calc.tiles!) expect(findProduct(hoodie.calc.category, t.product), t.id).toBeTruthy();
+  expect(hoodie.calc.tiles.map((t) => t.label)).toEqual(['Худи', 'Своё худи']);
+  expect(hoodie.calc.tiles.find((t) => t.id === 'own')).toMatchObject({ preset: { blank: 'own' }, own: true });
+  for (const t of hoodie.calc.tiles) expect(findProduct(hoodie.calc.category, t.product), t.id).toBeTruthy();
   // «своё» — только печать: без цены худи
   expect(quote({ blank: 'own', print1: 'a4' }).breakdown.some((b) => b.amount === HOODIE_BLANK)).toBe(false);
 });
@@ -67,7 +69,7 @@ test('таблица цен «Цена печати на худи»; принт�
 test('картинки котов и схема принтов', () => {
   expect(hoodie.images.hero).toBe('hoodie-hero');
   expect(hoodie.images.heroMobile).toBe('hoodie-hero-mobile');
-  expect(hoodie.prints.shape).toBe('hoodie');
+  expect(hoodie.prints!.shape).toBe('hoodie');
 });
 
 test('фото вариантов: первый — настоящая работа, остальные — слот hoodie-product (не неоновое фото)', () => {
@@ -81,8 +83,8 @@ test('фото вариантов: первый — настоящая рабо�
 });
 
 test('подпись схемы: рамки на груди, на спине те же размеры до А3; без выдуманных советов', () => {
-  expect(hoodie.prints.caption).toContain('на спине — те же размеры, до А3');
-  expect(hoodie.prints.caption).not.toContain('выше кармана');
+  expect(hoodie.prints!.caption).toContain('на спине — те же размеры, до А3');
+  expect(hoodie.prints!.caption).not.toContain('выше кармана');
 });
 
 test('«Наши работы» худи: только с тегом hudi', () => {
