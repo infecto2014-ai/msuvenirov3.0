@@ -1,25 +1,30 @@
 ---
-// T-shirt page first screen — the home Hero's composition: breadcrumbs, h1 with the blue accent and squiggle,
-// subtitle, price «от N ₽» from pricing.ts, two buttons; the cat scene on the right (≤ 900px — a square picture
-// under the text). Until the owner's pictures arrive, Pic shows labelled placeholders in the same slots.
+// First screen of a clothing page — the home Hero's composition: breadcrumbs, h1 with the blue accent and squiggle,
+// subtitle, price «от N ₽» (the cheapest calculator product of the page, from pricing.ts), two buttons; the cat scene
+// on the right (≤ 900px — a square picture under the text). Until the owner's pictures arrive, Pic shows labelled
+// placeholders in the same slots.
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
 import { findProduct, rub } from '@/data/pricing';
+import type { GarmentPage } from '@/data/garments/types';
 
-/** the cheapest T-shirt with a print (unisex or kids) */
-const from = Math.min(...['tshirt-unisex', 'tshirt-kids'].map((id) => findProduct('textile', id)!.fromPrice));
-const alt = 'Рыжий кот в тёмно-синем худи держит белую футболку';
-const crumbs = [
-  { href: '/', label: 'Главная' },
-  { href: '/pechat-na-odezhde', label: 'Печать на одежде' },
-];
+interface Props {
+  page: GarmentPage;
+}
+const { page } = Astro.props;
+
+/** the cheapest garment of the page with a print */
+const from = Math.min(...page.calc.products.map((id) => findProduct(page.calc.category, id)!.fromPrice));
+const alt = page.images.alt;
+const crumbs = page.crumbs.slice(0, -1);
+const current = page.crumbs.at(-1)!.label;
 ---
 
 <section class="th" aria-labelledby="th-title">
   <div class="th-media">
-    <Pic name="tee-hero" alt={alt} w={2400} h={1400} loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label="tee-hero — кот с футболкой" class="th-pic" />
+    <Pic name={page.images.hero} alt={alt} w={2400} h={1400} loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label={`${page.images.hero} — ${page.images.label}`} class="th-pic" />
   </div>
 
   <div class="wrap th-in">
@@ -34,14 +39,14 @@ const crumbs = [
               </li>
             ))
           }
-          <li><span aria-current="page">Футболки</span></li>
+          <li><span aria-current="page">{current}</span></li>
         </ol>
       </nav>
 
       <h1 id="th-title" class="th-title">
-        Печать на&nbsp;футболках в&nbsp;Калининграде{' '}
+        {page.h1}{' '}
         <span class="th-accent">
-          от 1 штуки
+          {page.accent}
           <svg class="th-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
           </svg>
@@ -50,7 +55,7 @@ const crumbs = [
       <p class="th-sub">Сельма, {site.address.place}</p>
 
       <p class="th-price">
-        <span class="th-price-label">Футболка с&nbsp;печатью</span>
+        <span class="th-price-label">{page.hero.priceLabel}</span>
         <span class="th-price-value">от&nbsp;{rub(from)}</span>
       </p>
 
@@ -61,7 +66,7 @@ const crumbs = [
     </div>
 
     <div class="th-mobile">
-      <Pic name="tee-hero-mobile" alt={alt} w={1200} h={1200} loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label="tee-hero-mobile" class="th-mpic" />
+      <Pic name={page.images.heroMobile} alt={alt} w={1200} h={1200} loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label={page.images.heroMobile} class="th-mpic" />
     </div>
   </div>
 </section>

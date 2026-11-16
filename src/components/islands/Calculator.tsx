@@ -16,7 +16,7 @@ import {
   type Selection,
 } from '@/data/pricing';
 import { addToEstimate, FILES_EVENT, getOrderFiles, openOrder, setOrderFiles } from '@/lib/estimate';
-import { activeTile, applyPreset, CALC_APPLY_EVENT, takeCalcPreset, type CalcApplyDetail, type CalcTile } from '@/lib/calc-preset';
+import { activeTile, applyPreset, CALC_APPLY_EVENT, takeCalcPreset, tileFromPrice, type CalcApplyDetail, type CalcTile } from '@/lib/calc-preset';
 import { ACCEPT, MAX_FILES, validateFiles } from '@/lib/order';
 import { reachGoal } from '@/lib/metrika';
 import { ProductIcon } from './productIcons';
@@ -341,16 +341,9 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
 
   const fromLabel = (p: Product) => `от ${rub(p.fromPrice)}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
-  /** a tile's lowest price: a plain tile — the product's «от»; a tile with a preset («своя») — its own cheapest run */
-  const tileFrom = (p: Product, t: CalcTile) => {
-    if (!t.preset || !Object.keys(t.preset).length) return fromLabel(p);
-    const s = applyPreset(p, { options: t.preset });
-    // the cheapest print size for the first place (А6), at the largest run
-    const first = p.options?.find((g) => g.id === 'print1')?.choices.find((c) => c.id !== 'none');
-    if (first) s.options.print1 = first.id;
-    const q = p.quote({ ...s, qty: p.qty.max });
-    return q.error ? fromLabel(p) : `от ${rub(q.unit)}`;
-  };
+  /** a tile's «от»: one base for all tiles (calc-preset tileFromPrice); «своя» — the same without the blank, «печать от» */
+  const tileFrom = (p: Product, t: CalcTile) =>
+    `${t.preset?.blank === 'own' ? 'печать ' : ''}от ${rub(tileFromPrice(p, t))}${p.fromUnit ? `/${p.fromUnit}` : ''}`;
   const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
   const n = (x: number) => x.toLocaleString('ru-RU');
 

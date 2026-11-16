@@ -60,3 +60,16 @@ export const activeTile = (tiles: CalcTile[], productId: string, options: Select
   tiles
     .filter((t) => t.product === productId && Object.entries(t.preset ?? {}).every(([k, v]) => options[k] === v))
     .sort((a, b) => Object.keys(b.preset ?? {}).length - Object.keys(a.preset ?? {}).length)[0];
+
+/**
+ * The «от» price on a tile — one base for every tile: one piece at the largest priced run with the smallest print
+ * (for «наша» garments this is the product's fromPrice; «своя» is the same without the blank, e.g. 830 → 280 ₽).
+ * Falls back to the product's fromPrice if that selection cannot be quoted.
+ */
+export function tileFromPrice(p: Product, t: CalcTile): number {
+  const s = applyPreset(p, { options: t.preset ?? {} });
+  const first = p.options?.find((g) => g.id === 'print1')?.choices.find((c) => c.id !== 'none');
+  if (first) s.options.print1 = first.id;
+  const q = p.quote({ ...s, qty: p.qty.max });
+  return q.error || !q.unit ? p.fromPrice : q.unit;
+}

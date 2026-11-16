@@ -78,3 +78,17 @@ test('активная плитка: своя выигрывает у обычн
   expect(activeTile(tiles, 'tshirt-kids', {})?.id).toBe('kids');
   expect(activeTile(tiles, 'hoodie', {})).toBeUndefined();
 });
+
+test('«от» на плитках — одна база: штука при самом выгодном тираже с самым маленьким принтом', async () => {
+  const { tileFromPrice } = await import('./calc-preset');
+  const kids = findProduct('textile', 'tshirt-kids')!;
+  const hoodie = findProduct('textile', 'hoodie')!;
+  // our garment: blank at its cheapest run + A6 at its cheapest run (= the product's «от»)
+  expect(tileFromPrice(tee, { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' })).toBe(tee.fromPrice);
+  expect(tileFromPrice(tee, { id: 'unisex', label: 'Футболка унисекс', product: 'tshirt-unisex' })).toBe(830);
+  expect(tileFromPrice(kids, { id: 'kids', label: 'Детская', product: 'tshirt-kids' })).toBe(780);
+  expect(tileFromPrice(hoodie, { id: 'hoodie', label: 'Худи', product: 'hoodie' })).toBe(2880);
+  // own garment: the same, only without the blank — so own = ours − the blank's cheapest price
+  expect(tileFromPrice(tee, { id: 'own', label: 'Своя футболка', product: 'tshirt-unisex', preset: { blank: 'own' } })).toBe(830 - 550);
+  expect(tileFromPrice(hoodie, { id: 'own', label: 'Своё худи', product: 'hoodie', preset: { blank: 'own' } })).toBe(2880 - 2600);
+});

@@ -1,32 +1,29 @@
 ---
-// «Цены на печать на футболках»: the last block of the page, always open (no JS needed, indexable).
-// Both tables are the `table` of the calculator products in pricing.ts: blank by run + DTF print A6–A3.
-// Two rules under them: coloured T-shirts from 5 pcs, every next print −30 %.
+// Price table of a clothing page («Цена печати на футболках»): the last block, always open (no JS needed,
+// indexable). The tables are the `table` of the page's calculator products in pricing.ts (blank by run + DTF print
+// A6–A3); the rules under them (colour minimum, every next print −30 %) come from the page's data.
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { COLOR_MIN, extraPrintFactor, findProduct } from '@/data/pricing';
+import { findProduct } from '@/data/pricing';
+import type { GarmentPage } from '@/data/garments/types';
 
-const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
+interface Props {
+  page: GarmentPage;
+}
+const { prices, calc } = Astro.props.page;
 
-const tables = [
-  { id: 'tshirt-unisex', title: 'Взрослая футболка' },
-  { id: 'tshirt-kids', title: 'Детская футболка' },
-].map((t) => ({ ...t, table: findProduct('textile', t.id)!.table! }));
-
-const rules = [
-  { icon: 'palette' as const, text: `Цветные футболки — от ${COLOR_MIN} шт. Белые и чёрные — с 1 шт.` },
-  { icon: 'layers' as const, text: `Каждый следующий принт — со скидкой −${extraOff}%, самый дорогой — по полной цене.` },
-];
+const tables = prices.products.map((t) => ({ ...t, table: findProduct(calc.category, t.id)!.table! }));
+const rules = prices.rules;
 ---
 
 <section class="section tpr-sec" aria-labelledby="tpr-title">
   <div class="wrap">
-    <SectionHead id="tpr-title" title="Цены на печать" accent="на футболках" lead="Цена за одну футболку: сама футболка плюс печать. Чем больше тираж, тем дешевле каждая." />
+    <SectionHead id="tpr-title" title={prices.title} accent={prices.accent} lead={prices.lead} />
 
-    <div class="tpr-tables">
+    <div class:list={['tpr-tables', { 'tpr-one': tables.length === 1 }]}>
       {
-        tables.map(({ id, title, table }) => (
+        tables.map(({ title, table }) => (
           <div class="tpr-block">
             <h3 class="tpr-h3">{title}</h3>
             <div class="tpr-scroll" tabindex="0" role="region" aria-label={`${title}: цены по тиражам, прокрутка таблицы`}>
@@ -82,6 +79,10 @@ const rules = [
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--s-5);
     align-items: start;
+  }
+  /* one product (e.g. only the hoodie): the table takes the whole row */
+  .tpr-tables.tpr-one {
+    grid-template-columns: minmax(0, 1fr);
   }
   .tpr-block {
     padding: var(--s-5);

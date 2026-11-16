@@ -1,0 +1,122 @@
+---
+// Template of a clothing page («Печать на футболках», «Печать на худи», …) in the 3.0 design. One data record
+// (src/data/garments/<page>.ts, type GarmentPage) per page. Order: first screen → calculator (the page's tiles)
+// → ready-made variants → constructor invitation (the home block) → «Подробнее о …» → works → reviews (no rating
+// strip — owner, 16.11.2026: only on the home page) → questions → price table (open, at the very bottom).
+// JSON-LD: breadcrumbs, service with the «от» price, FAQPage.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import GarmentHero from '@/components/garment/GarmentHero.astro';
+import GarmentPresets from '@/components/garment/GarmentPresets.astro';
+import GarmentDetails from '@/components/garment/GarmentDetails.astro';
+import GarmentPrices from '@/components/garment/GarmentPrices.astro';
+import ConstructorBanner from '@/components/home/ConstructorBanner.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Calculator from '@/components/islands/Calculator';
+import Works from '@/components/home/Works.astro';
+import Reviews from '@/components/home/Reviews.astro';
+import Faq from '@/components/home/Faq.astro';
+import { site } from '@/data/site';
+import { findProduct } from '@/data/pricing';
+import { garmentFaq, garmentReviews, garmentWorks } from '@/data/garments/select';
+import type { GarmentPage } from '@/data/garments/types';
+import { breadcrumbs, faqPage, service } from '@/lib/schema';
+
+interface Props {
+  page: GarmentPage;
+}
+const { page } = Astro.props;
+const { calc, heads } = page;
+
+const faq = garmentFaq(page);
+const lowPrice = Math.min(...calc.products.map((id) => findProduct(calc.category, id)!.fromPrice));
+const schema = [
+  breadcrumbs(page.crumbs.map((c) => ({ name: c.label, href: c.href }))),
+  service({ name: page.serviceName, description: page.description, url: page.slug, lowPrice }),
+  ...(faq.length ? [faqPage(faq)] : []),
+];
+---
+
+<BaseLayout title={page.title} description={page.description} path={page.slug} schema={schema}>
+  <GarmentHero page={page} />
+
+  <section class="section g-calc-sec" aria-labelledby="g-calc-title">
+    <div class="wrap">
+      <SectionHead id="g-calc-title" title="Рассчитайте" accent="стоимость" lead={calc.lead} />
+      <div class="g-calc">
+        <Calculator client:visible category={calc.category} products={calc.products} tiles={calc.tiles} hideCategories />
+      </div>
+      <noscript>
+        <style>
+          .g-calc {
+            display: none;
+          }
+        </style>
+        <div class="g-nojs">
+          <p>
+            Калькулятор работает при включённом JavaScript. Позвоните или напишите нам — посчитаем стоимость за пару минут.
+          </p>
+          <div class="g-nojs-actions">
+            <Button href={site.phoneHref} icon="phone">{site.phone}</Button>
+            <Button href={site.social.telegram} variant="ghost" icon="send" target="_blank" rel="noopener">Написать в Telegram</Button>
+          </div>
+        </div>
+      </noscript>
+    </div>
+  </section>
+
+  <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>
+  <div class="g-cb"><ConstructorBanner /></div>
+  <GarmentDetails page={page} />
+  <div class="band-sky">
+    <Works works={garmentWorks(page)} title="Наши работы" accent={heads.works} lead={heads.worksLead} />
+  </div>
+  <Reviews items={garmentReviews(page)} title="Отзывы" accent={heads.reviews} showRatings={false} />
+  <div class="band-sky">
+    <Faq items={faq} title="Вопросы" accent={heads.faq} />
+  </div>
+  <GarmentPrices page={page} />
+</BaseLayout>
+
+<style>
+  .band-sky {
+    background: var(--sky-2);
+  }
+  .g-calc-sec {
+    padding-top: var(--s-7);
+  }
+  /* the home banner sits right under a section there; here it follows the light-blue band */
+  .g-cb :global(.cb-sec) {
+    padding-top: var(--s-8);
+  }
+  .g-nojs {
+    padding: var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .g-nojs p {
+    max-width: 40rem;
+    font-size: var(--fs-lg);
+  }
+  .g-nojs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-4);
+    margin-top: var(--s-5);
+  }
+  @media (max-width: 900px) {
+    .g-cb :global(.cb-sec) {
+      padding-top: var(--s-7);
+    }
+  }
+  @media (max-width: 560px) {
+    .g-nojs {
+      padding: var(--s-5) var(--s-4);
+    }
+    .g-nojs-actions :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

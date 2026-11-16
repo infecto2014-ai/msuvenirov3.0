@@ -539,6 +539,9 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   };
 }
 
+/** a hoodie without print, any run (owner, 16.11.2026) — also quoted in the texts (faq.ts, services.ts) */
+export const HOODIE_BLANK = 2600;
+
 const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные футболки' } };
 
 const textile: Category = {
@@ -575,7 +578,7 @@ const textile: Category = {
       short: 'белое или чёрное',
       image: '/img/showcase/hoodie.webp',
       // owner, 16.11.2026: 2 600 ₽ at any run (was «от 2 000 ₽, уточняйте наличие»), only white and black, no minimum
-      blank: tiers([1], [2600]),
+      blank: tiers([1], [HOODIE_BLANK]),
       formats: ['a6', 'a5', 'a4', 'a3'],
       places: 4,
       colorSet: { choices: GARMENT_COLORS.filter((c) => COLOR_FREE.includes(c.id)), otherMin: 0, what: '' },

@@ -11,8 +11,10 @@ interface Props {
   items?: Review[];
   title?: string;
   accent?: string;
+  /** the platform ratings strip — only on the home page (owner, 16.11.2026) */
+  showRatings?: boolean;
 }
-const { items = homeReviews, title = 'Отзывы', accent = 'клиентов' } = Astro.props;
+const { items = homeReviews, title = 'Отзывы', accent = 'клиентов', showRatings = true } = Astro.props;
 
 const score = (n: number) => n.toFixed(1).replace('.', ',');
 ---
@@ -25,6 +27,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
       </a>
     </SectionHead>
 
+    {showRatings && (
     <ul class="rv-ratings" role="list" aria-label="Оценки на площадках">
       {
         site.ratings.map((r) => (
@@ -47,6 +50,7 @@ const score = (n: number) => n.toFixed(1).replace('.', ',');
         ))
       }
     </ul>
+    )}
 
     <ul class="rv-list" role="list">
       {
