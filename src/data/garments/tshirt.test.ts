@@ -123,3 +123,11 @@ test('отзывы футболок: все про футболки, не доб
   for (const r of reviews) expect(r.text.toLowerCase()).toContain('футболк');
   expect(topped).toBe(false);
 });
+
+test('детская футболка в «Печати на одежде»: места печати не выдумываем — «До 5 принтов, каждый до А3»', () => {
+  const prints = findProduct('textile', 'tshirt-kids')!.options!.filter((g) => /^print\d$/.test(g.id)).length;
+  const blocks = JSON.stringify(services.find((s) => s.slug === '/pechat-na-odezhde')!.blocks);
+  const kidsRow = blocks.match(/"Детская футболка","values":\[[^\]]*\]/)![0];
+  expect(kidsRow).toContain(`"До ${prints} принтов, каждый до А3"`);
+  expect(kidsRow).not.toContain('Грудь, спина, рукав');
+});
