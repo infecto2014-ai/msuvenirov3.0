@@ -20,6 +20,51 @@ dialog.order {
 dialog.order::backdrop {
   background: rgba(11, 26, 63, 0.45);
 }
+
+/* Opening and closing. The values on [open] are the opening transition, the values on :not([open]) the closing one.
+   Transitions (not keyframes) so a fast open-close-open turns around from wherever it is.
+   Browsers without @starting-style simply show the dialog at once. */
+dialog.order {
+  transition-property: opacity, transform;
+  transition-duration: 250ms;
+  transition-timing-function: var(--ease-out);
+}
+dialog.order:not([open]) {
+  opacity: 0;
+  transform: scale(0.96);
+  /* a closing dialog no longer takes clicks */
+  pointer-events: none;
+  transition-duration: 180ms;
+}
+@starting-style {
+  dialog.order[open] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+dialog.order::backdrop {
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: var(--ease-out);
+}
+dialog.order:not([open])::backdrop {
+  opacity: 0;
+  transition-duration: 180ms;
+}
+@starting-style {
+  dialog.order[open]::backdrop {
+    opacity: 0;
+  }
+}
+/* the closing transition needs the dialog kept in the top layer (`overlay`) and displayed until it ends;
+   where `overlay` is not supported the dialog closes at once instead of fading out of place */
+@supports (overlay: auto) {
+  dialog.order,
+  dialog.order::backdrop {
+    transition-property: opacity, transform, overlay, display;
+    transition-behavior: allow-discrete;
+  }
+}
 .order-box {
   position: relative;
   max-height: min(92dvh, 860px);
@@ -518,5 +563,53 @@ textarea.order-input {
     grid-column: 2;
     grid-row: 1;
     margin: -8px -8px 0 0;
+  }
+}
+
+/* phones: the sheet slides up from the bottom edge and goes back down; no fade, no scale */
+@media (max-width: 560px) {
+  dialog.order {
+    transition-duration: 350ms;
+    transition-timing-function: var(--ease-drawer);
+  }
+  dialog.order:not([open]) {
+    opacity: 1;
+    transform: translateY(100%);
+    transition-duration: 250ms;
+  }
+  @starting-style {
+    dialog.order[open] {
+      opacity: 1;
+      transform: translateY(100%);
+    }
+  }
+}
+
+/* reduced motion: no scale and no slide, only the fade (250ms in, 180ms out; backdrop 200ms in).
+   base.css cuts every duration to 0.01ms with !important, so a more specific !important gives the fade its time back. */
+@media (prefers-reduced-motion: reduce) {
+  dialog.order,
+  dialog.order:not([open]) {
+    transform: none;
+    transition-timing-function: var(--ease-out);
+  }
+  dialog.order {
+    transition-duration: 250ms !important;
+  }
+  dialog.order:not([open]) {
+    opacity: 0;
+    transition-duration: 180ms !important;
+  }
+  @starting-style {
+    dialog.order[open] {
+      opacity: 0;
+      transform: none;
+    }
+  }
+  dialog.order::backdrop {
+    transition-duration: 200ms !important;
+  }
+  dialog.order:not([open])::backdrop {
+    transition-duration: 180ms !important;
   }
 }

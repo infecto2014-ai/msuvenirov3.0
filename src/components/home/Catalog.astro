@@ -101,6 +101,26 @@ import { rub } from '@/data/pricing';
     border-color: #c4d6f5;
     box-shadow: var(--shadow-card), 0 18px 40px rgba(21, 87, 255, 0.1);
   }
+  /* press: the card gives a little under the finger or the mouse, 160ms */
+  .card:active {
+    transform: scale(0.98);
+    transition:
+      box-shadow var(--t) var(--ease),
+      transform 160ms var(--ease-out),
+      border-color var(--t-fast) ease;
+  }
+  .card:hover:active {
+    transform: translateY(-4px) scale(0.98);
+  }
+  /* reduced motion: no scale on press */
+  @media (prefers-reduced-motion: reduce) {
+    .card:active {
+      transform: none;
+    }
+    .card:hover:active {
+      transform: translateY(-4px);
+    }
+  }
   .card-media {
     position: relative;
     display: block;

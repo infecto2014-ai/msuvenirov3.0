@@ -105,6 +105,30 @@ import { homeFaq } from '@/data/home';
     padding: 0 var(--s-5) var(--s-5);
     color: var(--muted);
   }
+  /* the answer opens by height and fades in; closing is instant. Without ::details-content / interpolate-size
+     the answer simply opens at once. */
+  .faq-item {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+    transition:
+      block-size 250ms var(--ease-out),
+      opacity 250ms var(--ease-out);
+  }
+  /* reduced motion: no height change, only the fade (base.css cuts durations to 0.01ms with !important) */
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item[open]::details-content {
+      transition: opacity 250ms var(--ease-out);
+      transition-duration: 250ms !important;
+    }
+  }
   @media (max-width: 900px) {
     .faq {
       grid-template-columns: minmax(0, 1fr);
