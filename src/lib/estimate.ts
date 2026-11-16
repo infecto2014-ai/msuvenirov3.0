@@ -22,12 +22,26 @@ const KEY = ESTIMATE_KEY;
 export { ESTIMATE_EVENT };
 export const ORDER_OPEN_EVENT = 'order:open';
 
+/** an old or broken `calc` (no options object, no numeric qty) is dropped; the line itself stays */
+const sane = (i: EstimateItem): EstimateItem => {
+  const c = i.calc as unknown as { cat?: unknown; product?: unknown; sel?: { options?: unknown; qty?: unknown } } | undefined;
+  const ok =
+    !!c && typeof c === 'object' && typeof c.cat === 'string' && typeof c.product === 'string' &&
+    !!c.sel && typeof c.sel === 'object' && !!c.sel.options && typeof c.sel.options === 'object' && typeof c.sel.qty === 'number';
+  if (ok || i.calc === undefined) return i;
+  const { calc: _drop, ...rest } = i;
+  return rest;
+};
+
 const read = (): EstimateItem[] => {
   try {
     const raw = localStorage.getItem(KEY);
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed)
-      ? parsed.filter((i): i is EstimateItem => !!i && typeof i === 'object' && typeof i.id === 'string').slice(0, 30)
+      ? parsed
+          .filter((i): i is EstimateItem => !!i && typeof i === 'object' && typeof i.id === 'string')
+          .map(sane)
+          .slice(0, 30)
       : [];
   } catch {
     return [];
@@ -75,8 +89,9 @@ export const setEstimateQty = (id: string, qty: number) => {
   if (!it?.calc) return;
   const p: Product | undefined = findProduct(it.calc.cat, it.calc.product);
   if (!p) return;
-  const q = Math.round(qty);
-  if (!(q >= Math.max(p.qty.min, p.minQty?.(it.calc.sel) ?? 0))) return;
+  if (!Number.isFinite(qty)) return;
+  // below the smallest run for this selection — raise to it
+  const q = Math.max(Math.round(qty), p.qty.min, p.minQty?.(it.calc.sel) ?? 0);
   const sel = { ...it.calc.sel, qty: q };
   const quote = q > p.qty.max ? undefined : p.quote(sel);
   const next: EstimateItem = quote && !quote.error

@@ -173,6 +173,13 @@ describe('pricing', () => {
     expect(p.minQty!(s)).toBe(1);
   });
 
+  it('old estimate colour «other» or an unknown colour is treated as coloured: from 5 pcs', () => {
+    for (const color of ['other', 'zzz']) {
+      const { p, s } = sel('textile', 'tshirt-unisex', { options: { color } });
+      expect(p.minQty!(s), color).toBe(5);
+    }
+  });
+
   it('t-shirt colours: 11 in the owner order, no «другой цвет», «от 5 шт» on coloured', () => {
     expect(GARMENT_COLORS.map((c) => c.id)).toEqual(['white', 'black', 'yellow', 'green', 'brown', 'red', 'orange', 'pink', 'gray', 'blue', 'lilac']);
     expect(GARMENT_COLORS.map((c) => c.swatch)).toEqual(['#ffffff', '#1b1b1d', '#ffe000', '#0a7d4a', '#7e4e2a', '#e31e36', '#ff6a2a', '#f2bccb', '#8c8c8c', '#2e5fd8', '#6a64a8']);
@@ -308,7 +315,7 @@ describe('pricing', () => {
     expect(note('tshirt-unisex', { color: 'red' })).toBe('Цветные футболки — от 5 шт');
     expect(note('tshirt-unisex', { color: 'white' })).toBeUndefined();
     expect(note('tshirt-unisex', { color: 'red', blank: 'own' })).toBeUndefined();
-    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём — под заказ от 20 шт');
+    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём под заказ — от 20 шт');
     expect(note('shopper', { color: 'light' })).toBeUndefined();
   });
 

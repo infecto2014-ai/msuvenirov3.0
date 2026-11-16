@@ -55,3 +55,32 @@ test('stepQty и setEstimateQty: цветная футболка не опуск
   m.setEstimateQty('w1', 1);
   expect(m.getEstimate()[0].qty).toBe(1);
 });
+
+test('getEstimate: старая или битая calc — позиция остаётся, calc отбрасывается', async () => {
+  const base = { title: 'Футболка', details: '', qty: 3, unitPrice: 750, total: 2250 };
+  const good = { cat: 'textile', product: 'tshirt-unisex', sel: { qty: 3, options: {} } };
+  const stored = [
+    { ...base, id: 'o1', calc: { cat: 'textile', product: 'tshirt-unisex' } },
+    { ...base, id: 'o2', calc: { ...good, sel: { qty: 3 } } },
+    { ...base, id: 'o3', calc: { ...good, sel: { options: {} } } },
+    { ...base, id: 'o4', calc: { ...good, sel: { qty: '3', options: {} } } },
+    { ...base, id: 'o5', calc: 'x' },
+    { ...base, id: 'o6', calc: good },
+  ];
+  const { getEstimate } = await load(JSON.stringify(stored));
+  const list = getEstimate();
+  expect(list.map((i) => i.id)).toEqual(['o1', 'o2', 'o3', 'o4', 'o5', 'o6']);
+  expect(list.slice(0, 5).every((i) => i.calc === undefined)).toBe(true);
+  expect(list[5].calc).toEqual(good);
+});
+
+test('setEstimateQty: количество ниже минимума поднимается до минимума', async () => {
+  const { findProduct, defaultSelection } = await import('@/data/pricing');
+  const p = findProduct('textile', 'tshirt-unisex')!;
+  const sel = { ...defaultSelection(p), qty: 7, options: { ...defaultSelection(p).options, color: 'red' } };
+  const item = { id: 'c1', title: 'Футболка', details: '', qty: 7, unitPrice: 1, total: 7, calc: { cat: 'textile', product: 'tshirt-unisex', sel } };
+  const { setEstimateQty, getEstimate } = await load(JSON.stringify([item]));
+  setEstimateQty('c1', 2);
+  expect(getEstimate()[0].qty).toBe(5);
+  expect(getEstimate()[0].calc!.sel.qty).toBe(5);
+});

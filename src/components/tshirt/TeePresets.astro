@@ -59,30 +59,28 @@ const cards = teePresets.map((v) => {
 </section>
 
 <script>
-  import { CALC_APPLY_EVENT } from '@/lib/calc-preset';
+  import { CALC_APPLY_EVENT, queueCalcPreset, type CalcApplyDetail } from '@/lib/calc-preset';
 
-  // The calculator is hydrated when it comes into view (client:visible). If it is not ready yet, bring it into view
-  // first and send the settings once its island has hydrated (Astro removes the island's `ssr` attribute then).
-  const send = (detail: unknown) => window.dispatchEvent(new CustomEvent(CALC_APPLY_EVENT, { detail }));
-
+  // The calculator is hydrated when it comes into view (client:visible). If it is not ready yet, the settings wait
+  // in a queue (the calculator takes them as soon as it hydrates) and the page scrolls to it, which hydrates it.
   document.addEventListener('click', (e) => {
     const btn = (e.target as Element | null)?.closest<HTMLElement>('[data-calc-apply]');
     if (!btn) return;
-    let detail: unknown;
+    let detail: CalcApplyDetail;
     try {
       detail = JSON.parse(btn.dataset.calcApply ?? '');
     } catch {
       return;
     }
-    const island = document.getElementById('calc')?.closest('astro-island');
-    if (!island || !island.hasAttribute('ssr')) return send(detail);
-    const mo = new MutationObserver(() => {
-      if (island.hasAttribute('ssr')) return;
-      mo.disconnect();
-      send(detail);
-    });
-    mo.observe(island, { attributes: true, attributeFilter: ['ssr'] });
-    island.scrollIntoView({ block: 'start' });
+    const calc = document.getElementById('calc');
+    const island = calc?.closest('astro-island');
+    if (!calc || !island || !island.hasAttribute('ssr')) {
+      window.dispatchEvent(new CustomEvent(CALC_APPLY_EVENT, { detail }));
+      return;
+    }
+    queueCalcPreset(window, detail);
+    // astro-island itself is display: contents (no box), so scroll to the calculator inside it
+    calc.scrollIntoView({ block: 'start' });
   });
 </script>
 

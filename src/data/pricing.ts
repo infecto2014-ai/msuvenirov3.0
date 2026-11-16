@@ -402,7 +402,8 @@ function garment(args: {
   const colourRule = (sel: Selection): { min: number; note: string } | undefined => {
     if (!colorSet || isOwn(sel)) return undefined;
     const color = one(sel, 'color', colorSet.choices[0].id);
-    if (color === 'other') return colorSet.otherMin ? { min: colorSet.otherMin, note: `${colorSet.what} — под заказ от ${colorSet.otherMin} шт` } : undefined;
+    if (color === 'other' && colorSet.otherMin) return { min: colorSet.otherMin, note: `${colorSet.what} — от ${colorSet.otherMin} шт` };
+    // any colour outside `free` (also «other» and unknown ones from old estimate lines) counts as coloured
     const cm = colorSet.colorMin;
     return cm && !cm.free.includes(color) ? { min: cm.min, note: `${cm.noun} — от ${cm.min} шт` } : undefined;
   };
@@ -453,7 +454,7 @@ function garment(args: {
       const nb = breakpoints(sel).find((t) => t.from > qty && t.price < unit);
       let error: string | undefined;
       if (colorSet && !isOwn(sel) && one(sel, 'color', colorSet.choices[0].id) === 'other' && qty < colorSet.otherMin) {
-        error = `${colorSet.what} — под заказ от ${colorSet.otherMin} шт.`;
+        error = `${colorSet.what} — от ${colorSet.otherMin} шт.`;
       }
       if (colorSet?.colorMin && qty < minQtyOf(sel)) error = `${colorSet.colorMin.noun} — от ${colorSet.colorMin.min} шт`;
       if (args.blankFrom && !isOwn(sel)) notes.push('Наличие и точную цену изделия уточнит менеджер.');
@@ -629,7 +630,7 @@ const textile: Category = {
       formats: ['a6', 'a5', 'a4'],
       places: 2,
       // owner, 05.11.2026: light (linen-like) and black in stock, any other colour sewn to order from 20 pcs
-      colorSet: { choices: [{ id: 'light', label: 'Светлый', hint: 'как лён' }, { id: 'black', label: 'Чёрный' }], otherMin: 20, what: 'Шопперы другого цвета шьём' },
+      colorSet: { choices: [{ id: 'light', label: 'Светлый', hint: 'как лён' }, { id: 'black', label: 'Чёрный' }], otherMin: 20, what: 'Шопперы другого цвета шьём под заказ' },
     }),
     // owner, 05.11.2026: light linen shopper for sublimation, from 10 pcs
     sublimated({

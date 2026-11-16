@@ -227,7 +227,7 @@ export default function OrderDialog() {
                 <div class="order-items">
                   {items.map((i) => {
                     const p = i.calc ? findProduct(i.calc.cat, i.calc.product) : undefined;
-                    const minQty = p && i.calc ? p.minQty?.(i.calc.sel) : undefined;
+                    const minQty = p && i.calc?.sel?.options ? p.minQty?.(i.calc.sel) : undefined;
                     return (
                       <div class="order-item">
                         <div class="order-item-text">
