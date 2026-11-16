@@ -1556,3 +1556,19 @@ export const defaultSelection = (p: Product): Selection => {
   return { options, dims, qty: p.qty.default };
 };
 
+
+/**
+ * The colours of a product (its `color` group, «Другой цвет» included) with the smallest run of each, taken from the
+ * pricing rules (colorMin / otherMin via minQty), not from the chip hints: the shopper's «как лён» is a description.
+ * Empty for an unknown product or one without colours.
+ */
+export function colorChoices(categoryId: string, productId: string): (Choice & { min: number })[] {
+  const p = findCategory(categoryId)?.products.find((x) => x.id === productId);
+  const g = p?.options?.find((x) => x.id === 'color');
+  if (!p || !g) return [];
+  return g.choices.map((c) => {
+    const s = defaultSelection(p);
+    s.options.color = c.id;
+    return { ...c, min: Math.max(p.qty.min, p.minQty?.(s) ?? 1) };
+  });
+}

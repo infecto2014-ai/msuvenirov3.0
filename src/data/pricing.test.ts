@@ -410,3 +410,24 @@ describe('pricing', () => {
     expect(rub(1100).replace(/\s/g, ' ')).toBe('1 100 ₽');
   });
 });
+
+describe('colorChoices: цвета изделия и их минимум — из правил прайса, не из подсказок', async () => {
+  const { colorChoices } = await import('./pricing');
+  it('футболка: белый и чёрный с 1 шт, остальные — от COLOR_MIN', () => {
+    const c = colorChoices('textile', 'tshirt-unisex');
+    expect(c.map((x) => x.id)).toEqual(GARMENT_COLORS.map((x) => x.id));
+    expect(c.filter((x) => x.min === 1).map((x) => x.id)).toEqual(['white', 'black']);
+    expect(c.filter((x) => x.min > 1).every((x) => x.min === COLOR_MIN)).toBe(true);
+  });
+  it('худи: белый и чёрный, без минимума', () => {
+    expect(colorChoices('textile', 'hoodie').map((x) => [x.id, x.min])).toEqual([['white', 1], ['black', 1]]);
+  });
+  it('шоппер: «как лён» — описание, а не минимум; другой цвет — от 20 шт', () => {
+    const c = colorChoices('textile', 'shopper');
+    expect(c.find((x) => x.id === 'light')!.min).toBe(1);
+    expect(c.find((x) => x.id === 'other')!.min).toBe(20);
+  });
+  it('у изделия без цветов — пусто', () => {
+    expect(colorChoices('textile', 'own-item')).toEqual([]);
+  });
+});
