@@ -631,6 +631,9 @@ const textile: Category = {
       places: 2,
       // owner, 16.11.2026: all 11 colours, white and black from 1 pc, coloured from 10 pcs (was: light / black, other sewn from 20)
       colors: { min: COLOR_MIN.shopper, noun: 'Цветные шопперы' },
+      // spec 2026-11-16-shoppers-caps: the «Свой шоппер» tile — the customer's shopper, only the print
+      own: 'шоппер',
+      ownForms: { ours: 'Наш шоппер', own: 'Свой шоппер', it: 'его', onIt: 'нём' },
     }),
     // owner, 05.11.2026: light linen shopper for sublimation, from 10 pcs
     sublimated({

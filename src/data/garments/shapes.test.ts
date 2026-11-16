@@ -13,3 +13,7 @@ test('футболка и худи: A — длина, B — ширина, C — 
   for (const s of [SHAPES.tshirt, SHAPES.hoodie])
     expect(s.labels.map((x) => `${x.l} — ${x.what}`)).toEqual(['A — длина изделия', 'B — ширина изделия', 'C — длина рукава']);
 });
+
+test('шоппер: A — высота, B — ширина, C — высота ручек (без рукава)', () => {
+  expect(SHAPES.shopper.labels.map((x) => `${x.l} — ${x.what}`)).toEqual(['A — высота сумки', 'B — ширина сумки', 'C — высота ручек']);
+});

@@ -293,7 +293,7 @@ export const services: ServicePage[] = [
   {
     slug: '/pechat-na-shopperah',
     name: 'Печать на шопперах',
-    // the page itself is src/pages/pechat-na-shopperah.astro (content — src/data/shoppersPage.ts); this entry is for menus and sitemap
+    // the page itself is src/pages/pechat-na-shopperah.astro (content — src/data/garments/shopper.ts); this entry gives its questions, menus and sitemap
     title: 'Печать на шопперах в Калининграде — шоппер с логотипом',
     description:
       'Печать на шопперах в Калининграде: шоппер с принтом от 1 шт (DTF) и светлые шопперы с сублимацией от 10 шт. Эко-сумки с логотипом оптом, счёт без НДС.',
