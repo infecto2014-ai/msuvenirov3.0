@@ -276,6 +276,10 @@ describe('pricing', () => {
       });
     }
     expect(findProduct('textile', 'shopper-sub')!.table!.columns).toContain('50–99 шт');
+    // the table starts at the minimum order, not «1–10 шт»
+    expect(findProduct('textile', 'shopper-sub')!.table!.columns[0]).toBe('10 шт');
+    expect(findProduct('textile', 'tshirt-sub')!.table!.columns[0]).toBe('10 шт');
+    expect(findProduct('textile', 'sub-print')!.table!.columns[0]).toBe('1–10 шт');
   });
 
   it('clothing is priced up to 50 pcs, more — individually', () => {

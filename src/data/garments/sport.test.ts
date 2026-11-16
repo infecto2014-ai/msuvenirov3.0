@@ -38,8 +38,10 @@ test('до 5 принтов, фамилия и номер — один прин�
   expect(sport.prices.products.map((p) => p.id)).toEqual(['own-item', 'tshirt-sub', 'tshirt-unisex']);
   expect(`${sport.prices.title} ${sport.prices.accent}`).toBe('Цена печати на форме');
   const rules = sport.prices.rules.map((r) => r.text).join(' | ');
-  expect(rules).toContain('До 5 принтов на одной вещи, каждый до А3');
-  expect(rules).toContain(`Каждый следующий принт — −${extraOff}%`);
+  expect(rules).toContain('На вашей форме и на хлопковых футболках — до 5 принтов, каждый до А3');
+  expect(rules).toContain(`каждый следующий −${extraOff}%`);
+  // sublimation T-shirt: two sides, each at full price — no −30% promise for it
+  expect(rules).toContain('каждая сторона по полной цене');
   expect(rules).toContain('Фамилия и номер на спине — один принт');
   expect(rules).toContain('без доплаты');
   expect(JSON.stringify(sport)).not.toMatch(/до 3 принтов|до трёх|Второй принт|халат|вышив|шелкограф|доставк/i);
@@ -100,7 +102,7 @@ test('вопросы: девять, цены из pricing.ts, правила 16.
   const extra = faq.find((f) => f.q === 'Есть доплата за разные фамилии и номера?')!;
   expect(extra.a).toMatch(/^Нет/);
   const kit = faq.find((f) => f.q === 'Есть ли у вас своя форма?')!;
-  expect(kit.a).toContain('Да, форму можно подобрать и заказать — от 10 штук');
+  expect(kit.a).toContain('Подберём и закажем — от 10 штук');
   expect(kit.a).toContain('1–2 дня');
   expect(kit.a).toContain('Цену формы назовём после подбора');
   expect(kit.a).toContain(`от ${sub.qty.min} штук`);
