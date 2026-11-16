@@ -169,3 +169,14 @@ test('тексты: число принтов как в прайсе — худ�
   expect(rows).toMatch(/"Худи","values":\[[^\]]*"Грудь, спина, рукав; до 5 принтов, каждый до А3"\]/);
   expect(rows).toMatch(/"Кепка","values":\[[^\]]*"Спереди, сзади, сбоку; до 4 принтов, каждый до А6"\]/);
 });
+
+test('тексты: каждый принт на худи до А3 (без советов «выше кармана»), шоппер — до А4, кепка — до 4 принтов', () => {
+  const svc = (slug: string) => services.find((s) => s.slug === slug)!;
+  const h = JSON.stringify(svc('/pechat-na-hudi'));
+  expect(h).not.toMatch(/выше кармана|А6–А4|Спина до А3/);
+  expect(svc('/pechat-na-hudi').highlights).toContain('Принты до А3');
+  expect(h).toContain('Каждый принт на худи — до формата А3 (28×38 см): на груди, на спине и на рукаве.');
+  expect(svc('/pechat-na-shopperah').highlights).toContain('Принт до А4');
+  expect(svc('/pechat-na-shopperah').highlights).not.toContain('Принт до А3');
+  expect(svc('/pechat-na-kepkah').highlights).toEqual(expect.arrayContaining(['Спереди, сбоку и сзади', 'До 4 принтов']));
+});

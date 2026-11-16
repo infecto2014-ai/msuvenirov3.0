@@ -88,7 +88,8 @@ test('тексты сайта не спорят с правилами 16.11: х�
   const general = JSON.stringify(generalFaq);
   expect(general).toContain(`Худи — ${rub(HOODIE_BLANK)} за штуку при любом количестве, плюс печать; белые и чёрные — от 1 штуки, цветные — от 5.`);
   expect(all).not.toMatch(/худи[^"]{0,40}уточняйте наличие/i);
-  expect(all).not.toContain('До 4 принтов');
+  // «До 4 принтов» is right for the cap now — the T-shirt and the hoodie must not say it
+  for (const slug of ['/pechat-na-futbolkah', '/pechat-na-hudi']) expect(JSON.stringify(services.find((s) => s.slug === slug)), slug).not.toContain('До 4 принтов');
   expect(all).toContain(`${rub(HOODIE_BLANK)} за штуку при любом количестве`);
   expect(findProduct('textile', 'hoodie')!.quote({ options: { blank: 'ours', color: 'white', print1: 'none' }, dims: {}, qty: 1 }).breakdown[0].amount).toBe(HOODIE_BLANK);
   const tee = services.find((s) => s.slug === '/pechat-na-futbolkah')!;

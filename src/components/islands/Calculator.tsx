@@ -162,8 +162,6 @@ export default function Calculator({ category, product, only, hideCategories, lo
   const prod = list.find((p) => p.id === prodId) ?? list[0];
   const showProducts = (tiles?.length ? tiles.length > 1 : list.length > 1) && !lockProduct;
   const [sel, setSel] = useState<Selection>(() => defaultSelection(prod));
-  /** what the customer typed for «Другой цвет»; not part of the price */
-  const [otherColor, setOtherColor] = useState('');
   /** files attached right here; the order form gets the same list */
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState('');
@@ -180,15 +178,10 @@ export default function Calculator({ category, product, only, hideCategories, lo
     setFileError(err ?? '');
     if (!err) setOrderFiles(next);
   };
-  const otherPicked = (prod.options ?? []).some((g) => sel.options[g.id] === 'other');
   const tile = tiles?.length ? activeTile(tiles, prod.id, sel.options) : undefined;
   /** what the line is called in the result and the estimate: «Своя футболка» for an `own` tile */
   const itemName = tileItemName(tile, prod);
-  const details = (() => {
-    const d = describe(prod, sel, tiles?.length ? TILE_GROUPS : []);
-    const c = otherColor.trim();
-    return otherPicked && c ? d.replace('Другой цвет', `Другой цвет: ${c}`) : d;
-  })();
+  const details = describe(prod, sel, tiles?.length ? TILE_GROUPS : []);
   const [qtyText, setQtyText] = useState(String(sel.qty));
   const [toast, setToast] = useState('');
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
@@ -209,7 +202,6 @@ export default function Calculator({ category, product, only, hideCategories, lo
     setProdId(p.id);
     setSel(s);
     setQtyText(String(s.qty));
-    setOtherColor('');
   };
 
   // read ?calc=category:product from the URL (links from cards and landing pages)
@@ -545,19 +537,6 @@ export default function Calculator({ category, product, only, hideCategories, lo
                         )}
                       </legend>
                       {choicesOf(g)}
-                      {sel.options[g.id] === 'other' && (
-                        <label class="calc-other">
-                          <span>Какой цвет нужен?</span>
-                          <input
-                            class="calc-input"
-                            type="text"
-                            maxLength={60}
-                            placeholder="например, бордовый или как на фото"
-                            value={otherColor}
-                            onInput={(e) => setOtherColor((e.target as HTMLInputElement).value)}
-                          />
-                        </label>
-                      )}
                     </fieldset>
                   );
                 })}
