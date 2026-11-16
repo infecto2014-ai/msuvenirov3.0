@@ -1,6 +1,6 @@
 ---
-// Site header: logo · «Каталог» (service groups) + main links · phone, «Смета», «Заявка».
-// ≤ 900px: logo, «Смета», «Меню» (full-screen sheet). Panels are <details>: they work without JS;
+// Site header: logo · «Каталог» (service groups) + main links · phone, «Заявка» (with the estimate count).
+// ≤ 900px: logo, «Меню» (full-screen sheet). Panels are <details>: they work without JS;
 // the small script below only adds Esc / click-outside closing and the scroll shadow.
 import { mainNav, serviceNav, site, type NavLink } from '@/data/site';
 import Logo from './Logo.astro';
@@ -93,11 +93,9 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
         <Icon name="phone" size={20} class="hdr-phone-ic" />
         <span class="hdr-phone-num" aria-hidden="true">{site.phone}</span>
       </a>
-      <button class="hdr-est" type="button" data-estimate-open aria-label="Смета">
-        <Icon name="clipboard-list" size={22} />
-        <span class="hdr-est-count" data-estimate-count aria-hidden="true" hidden>0</span>
-      </button>
-      <Button class="btn-sm hdr-order" data-order="">Заявка</Button>
+      <Button class="btn-sm hdr-order" data-order="" data-estimate-order="Заявка">
+        Заявка<span class="est-count" data-estimate-count aria-hidden="true" hidden>0</span>
+      </Button>
 
       <details class="mnav" data-dismiss>
         <summary class="mnav-btn" aria-label="Меню">
@@ -165,7 +163,9 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
               {site.phone}
             </a>
             <p class="mnav-hours">{site.hours} · {site.address.place}</p>
-            <Button class="btn-block" data-order="" arrow>Оставить заявку</Button>
+            <Button class="btn-block" data-order="" data-estimate-order="Оставить заявку" arrow>
+              Оставить заявку<span class="est-count" data-estimate-count aria-hidden="true" hidden>0</span>
+            </Button>
           </div>
         </div>
       </details>
@@ -462,44 +462,6 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     flex: none;
     color: var(--blue);
   }
-  .hdr-est {
-    position: relative;
-    display: inline-grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--ink);
-    transition:
-      background-color var(--t-fast) ease,
-      color var(--t-fast) ease;
-  }
-  .hdr-est:hover {
-    background: var(--sky);
-    color: var(--blue-hover);
-  }
-  /* the badge sits on the button's top-right corner, clear of the clipboard icon */
-  .hdr-est-count {
-    position: absolute;
-    top: -2px;
-    right: -6px;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    border: 2px solid var(--white);
-    border-radius: var(--radius-pill);
-    background: var(--blue);
-    color: var(--white);
-    font-size: var(--fs-xs);
-    font-weight: 700;
-    line-height: 16px;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-  }
-
   /* mobile menu (≤ 900px) */
   .mnav {
     display: none;

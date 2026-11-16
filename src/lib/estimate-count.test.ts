@@ -1,16 +1,19 @@
 import { expect, test } from 'vitest';
-import { countStored, estimateLabel, ESTIMATE_EVENT, ESTIMATE_KEY, pluralLines } from './estimate-count';
+import { countStored, orderLabel, ESTIMATE_EVENT, ESTIMATE_KEY, pluralLines } from './estimate-count';
 
 test('pluralLines: русские формы', () => {
   const f: Record<number, string> = { 1: 'позиция', 2: 'позиции', 4: 'позиции', 5: 'позиций', 11: 'позиций', 12: 'позиций', 14: 'позиций', 21: 'позиция', 22: 'позиции', 25: 'позиций', 30: 'позиций' };
   for (const [n, w] of Object.entries(f)) expect(pluralLines(Number(n))).toBe(w);
 });
 
-test('estimateLabel: без позиций просто «Смета»', () => {
-  expect(estimateLabel(0)).toBe('Смета');
-  expect(estimateLabel(1)).toBe('Смета, 1 позиция');
-  expect(estimateLabel(3)).toBe('Смета, 3 позиции');
-  expect(estimateLabel(7)).toBe('Смета, 7 позиций');
+test('orderLabel: без позиций просто «Заявка», с позициями — сколько в смете', () => {
+  expect(orderLabel(0)).toBe('Заявка');
+  expect(orderLabel(1)).toBe('Заявка, в смете 1 позиция');
+  expect(orderLabel(3)).toBe('Заявка, в смете 3 позиции');
+  expect(orderLabel(7)).toBe('Заявка, в смете 7 позиций');
+  expect(orderLabel(11)).toBe('Заявка, в смете 11 позиций');
+  expect(orderLabel(0, 'Оставить заявку')).toBe('Оставить заявку');
+  expect(orderLabel(2, 'Оставить заявку')).toBe('Оставить заявку, в смете 2 позиции');
 });
 
 test('countStored: считает как estimate.ts, мусор даёт 0', () => {

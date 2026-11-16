@@ -117,12 +117,6 @@ export default function OrderDialog() {
     };
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const est = target.closest('[data-estimate-open]');
-      if (est) {
-        e.preventDefault();
-        onOpen(est);
-        return;
-      }
       const el = target.closest<HTMLElement>('[data-order]');
       if (el) {
         e.preventDefault();
