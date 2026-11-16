@@ -1,0 +1,94 @@
+---
+// «Печать на футболках» in the 3.0 design: first screen → calculator (T-shirts only) → ready-made variants →
+// constructor invitation (the home block) → «Подробнее о футболке». Works, reviews, FAQ, price table and
+// JSON-LD follow in the next step.
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TeeHero from '@/components/tshirt/TeeHero.astro';
+import TeePresets from '@/components/tshirt/TeePresets.astro';
+import TeeDetails from '@/components/tshirt/TeeDetails.astro';
+import ConstructorBanner from '@/components/home/ConstructorBanner.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Calculator from '@/components/islands/Calculator';
+import { site } from '@/data/site';
+---
+
+<BaseLayout
+  title="Печать на футболках в Калининграде — от 1 штуки | Мастерская сувениров"
+  description="Печать на белых, чёрных и цветных футболках в ТЦ «Экватор»: DTF-печать от А6 до А3, взрослые и детские размеры, от 1 штуки. Рассчитайте цену онлайн и оставьте заявку."
+  path="/pechat-na-futbolkah"
+>
+  <TeeHero />
+
+  <section class="section tee-calc-sec" aria-labelledby="tee-calc-title">
+    <div class="wrap">
+      <SectionHead id="tee-calc-title" title="Рассчитайте" accent="стоимость" lead="Выберите футболку, цвет и принты — цена за штуку и за тираж посчитается сразу." />
+      <div class="tee-calc">
+        <Calculator client:visible category="textile" products={['tshirt-unisex', 'tshirt-kids']} hideCategories />
+      </div>
+      <noscript>
+        <style>
+          .tee-calc {
+            display: none;
+          }
+        </style>
+        <div class="tee-nojs">
+          <p>
+            Калькулятор работает при включённом JavaScript. Позвоните или напишите нам — посчитаем стоимость за пару минут.
+          </p>
+          <div class="tee-nojs-actions">
+            <Button href={site.phoneHref} icon="phone">{site.phone}</Button>
+            <Button href={site.social.telegram} variant="ghost" icon="send" target="_blank" rel="noopener">Написать в Telegram</Button>
+          </div>
+        </div>
+      </noscript>
+    </div>
+  </section>
+
+  <div class="band-sky"><TeePresets /></div>
+  <div class="tee-cb"><ConstructorBanner /></div>
+  <TeeDetails />
+</BaseLayout>
+
+<style>
+  .band-sky {
+    background: var(--sky-2);
+  }
+  .tee-calc-sec {
+    padding-top: var(--s-7);
+  }
+  /* the home banner sits right under a section there; here it follows the light-blue band */
+  .tee-cb :global(.cb-sec) {
+    padding-top: var(--s-8);
+  }
+  .tee-nojs {
+    padding: var(--s-6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-panel);
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+  }
+  .tee-nojs p {
+    max-width: 40rem;
+    font-size: var(--fs-lg);
+  }
+  .tee-nojs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-4);
+    margin-top: var(--s-5);
+  }
+  @media (max-width: 900px) {
+    .tee-cb :global(.cb-sec) {
+      padding-top: var(--s-7);
+    }
+  }
+  @media (max-width: 560px) {
+    .tee-nojs {
+      padding: var(--s-5) var(--s-4);
+    }
+    .tee-nojs-actions :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

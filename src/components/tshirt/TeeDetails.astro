@@ -1,0 +1,600 @@
+---
+// «Подробнее о футболке»: five collapsed sections (<details> — the text stays in the HTML for search engines and
+// opens without JS): colours, fabric and specs, print sizes (a to-scale scheme on an M T-shirt, drawn in cm),
+// adult and kids size charts (with the measuring cat), care. Texts — from 2.0 garments.ts, kids chart — owner's.
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+import Pic from '@/components/ui/Pic.astro';
+import { GARMENT_COLORS } from '@/data/pricing';
+import { adultSizes, kidsSizes, printSizes, teeCare, teeSpecs } from '@/data/tshirt';
+
+const sections: { id: string; icon: IconName; title: string; sub: string }[] = [
+  { id: 'colors', icon: 'palette', title: 'Цвета', sub: 'Белый и чёрный — в наличии, остальные — от 5 шт' },
+  { id: 'specs', icon: 'shirt', title: 'Ткань и характеристики', sub: '100% хлопок, 160–180 г/м², печать DTF' },
+  { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: 'А6, А5, А4 и А3 на футболке' },
+  { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: 'Взрослые XS–3XL, детские 98–164' },
+  { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' },
+];
+
+// T-shirt outline in centimetres (size M: 52 cm wide, 72 cm long); prints hang from 9 cm below the shoulder line
+const SHIRT = 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z';
+const TOP = 9;
+const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y: TOP }));
+---
+
+<section class="section td-sec" aria-labelledby="td-title">
+  <div class="wrap">
+    <SectionHead id="td-title" title="Подробнее" accent="о футболке" />
+
+    <div class="td">
+      {
+        sections.map((s) => (
+          <details class="td-item" id={`tee-${s.id}`}>
+            <summary class="td-q">
+              <span class="td-ic">
+                <Icon name={s.icon} size={22} />
+              </span>
+              <span class="td-q-text">
+                <span class="td-q-title">{s.title}</span>
+                <span class="td-q-sub">{s.sub}</span>
+              </span>
+              <span class="td-chev">
+                <Icon name="chevron-down" size={20} />
+              </span>
+            </summary>
+
+            <div class="td-a">
+              {s.id === 'colors' && (
+                <ul class="td-colors" role="list">
+                  {GARMENT_COLORS.map((c) => (
+                    <li class="td-color">
+                      <span class="td-swatch" style={`--c: ${c.swatch}`} aria-hidden="true" />
+                      <span class="td-color-name">{c.label}</span>
+                      <span class:list={['td-color-mark', { 'td-color-mark-free': !c.hint }]}>{c.hint ?? 'в наличии'}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {s.id === 'specs' && (
+                <dl class="td-specs">
+                  {teeSpecs.map((x) => (
+                    <div class="td-spec">
+                      <dt>{x.label}</dt>
+                      <dd>{x.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
+              {s.id === 'prints' && (
+                <div class="td-prints">
+                  <figure class="td-scheme">
+                    <svg viewBox="-18 -2 88 76" role="img" aria-labelledby="td-scheme-cap" focusable="false">
+                      <path class="td-shirt" d={SHIRT} />
+                      {frames.map((f) => (
+                        <g class="td-frame">
+                          <rect x={f.x} y={f.y} width={f.w} height={f.h} rx="0.6" />
+                          <text x={f.x + f.w - 0.9} y={f.y + f.h - 1}>
+                            {f.label}
+                          </text>
+                        </g>
+                      ))}
+                    </svg>
+                    <figcaption id="td-scheme-cap">Рамки принтов на груди футболки размера M — в масштабе</figcaption>
+                  </figure>
+                  <ul class="td-print-list" role="list">
+                    {printSizes.map((p) => (
+                      <li>
+                        <span class="td-print-box" style={`--w: ${p.w}; --h: ${p.h}`} aria-hidden="true" />
+                        <span class="td-print-label">{p.label}</span>
+                        <span class="td-print-size">
+                          {p.w}×{p.h} см
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {s.id === 'sizes' && (
+                <div class="td-sizes">
+                  <div class="td-tables">
+                    <div class="td-table-block">
+                      <h3 class="td-h3">
+                        Взрослые{adultSizes.todo && <small class="td-todo">уточняйте у менеджера</small>}
+                      </h3>
+                      <div class="td-scroll" tabindex="0" role="region" aria-label="Взрослые размеры, прокрутка таблицы">
+                        <table class="td-table">
+                          <thead>
+                            <tr>
+                              {adultSizes.columns.map((c) => (
+                                <th scope="col">{c}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {adultSizes.rows.map((r) => (
+                              <tr>
+                                {r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="td-table-block">
+                      <h3 class="td-h3">Детские</h3>
+                      <div class="td-scroll" tabindex="0" role="region" aria-label="Детские размеры, прокрутка таблицы">
+                        <table class="td-table">
+                          <thead>
+                            <tr>
+                              {kidsSizes.columns.map((c) => (
+                                <th scope="col">{c}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {kidsSizes.rows.map((r) => (
+                              <tr>
+                                {r.map((cell, i) => (i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <aside class="td-measure" aria-label="Как мерить">
+                    <Pic name="tee-cat-measure" alt="Рыжий кот с сантиметровой лентой на шее" w={800} h={800} fit="contain" label="tee-cat-measure" class="td-cat" />
+                    <figure class="td-abc">
+                      <svg viewBox="-18 -2 88 76" aria-hidden="true" focusable="false">
+                        <path class="td-shirt" d={SHIRT} />
+                        <g class="td-dim">
+                          <path d="M6 4V71" />
+                          <path d="M1 30H51" />
+                          <path d="M50.5 6.5L64.5 15" />
+                        </g>
+                        <g class="td-dim-label">
+                          <circle cx="6" cy="50" r="3.6" />
+                          <text x="6" y="51.3">A</text>
+                          <circle cx="40" cy="30" r="3.6" />
+                          <text x="40" y="31.3">B</text>
+                          <circle cx="57.5" cy="10.8" r="3.6" />
+                          <text x="57.5" y="12.1">C</text>
+                        </g>
+                      </svg>
+                      <figcaption>
+                        <b>A</b> — длина изделия, <b>B</b> — ширина изделия, <b>C</b> — длина рукава
+                      </figcaption>
+                    </figure>
+                  </aside>
+                </div>
+              )}
+
+              {s.id === 'care' && (
+                <ul class="td-care" role="list">
+                  {teeCare.map((t) => (
+                    <li>
+                      <span class="td-check">
+                        <Icon name="check" size={16} />
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .td {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .td-item {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    transition:
+      border-color var(--t-fast) ease,
+      box-shadow var(--t) var(--ease);
+  }
+  .td-item:hover,
+  .td-item[open] {
+    border-color: #c4d6f5;
+    box-shadow: var(--shadow-card);
+  }
+  .td-q {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 76px;
+    padding: var(--s-3) var(--s-4) var(--s-3) var(--s-4);
+    border-radius: var(--radius-card);
+  }
+  .td-ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: var(--sky);
+    color: var(--blue);
+  }
+  .td-q-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+    gap: 2px;
+  }
+  .td-q-title {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .td-q-sub {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .td-chev {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+    transition:
+      transform var(--t) var(--ease),
+      background-color var(--t-fast) ease,
+      color var(--t-fast) ease;
+  }
+  .td-item[open] .td-chev {
+    transform: rotate(180deg);
+    background: var(--blue);
+    color: var(--white);
+  }
+  .td-a {
+    padding: var(--s-2) var(--s-5) var(--s-5) calc(var(--s-4) + 48px + var(--s-4));
+  }
+  /* opens by height and fades in (as the home FAQ); reduced motion — fade only */
+  .td-item {
+    interpolate-size: allow-keywords;
+  }
+  .td-item::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+  }
+  .td-item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+    transition:
+      block-size 250ms var(--ease-out),
+      opacity 250ms var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .td-item[open]::details-content {
+      transition: opacity 250ms var(--ease-out);
+      transition-duration: 250ms !important;
+    }
+  }
+
+  /* colours */
+  .td-colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--s-2) var(--s-4);
+  }
+  .td-color {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 44px;
+  }
+  .td-swatch {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: inset 0 0 0 1px rgba(11, 26, 63, 0.18);
+  }
+  .td-color-name {
+    font-weight: 600;
+  }
+  .td-color-mark {
+    padding: 2px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--sky-2);
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .td-color-mark-free {
+    background: var(--sky);
+    color: var(--blue-hover);
+  }
+
+  /* specs */
+  .td-specs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--s-6);
+    margin: 0;
+  }
+  .td-spec {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .td-spec dt {
+    color: var(--muted);
+  }
+  .td-spec dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* print sizes */
+  .td-prints {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--s-6);
+  }
+  .td-scheme {
+    margin: 0;
+    padding: var(--s-4);
+    border-radius: var(--radius-card);
+    background: var(--sky-2);
+  }
+  .td-scheme svg,
+  .td-abc svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .td-shirt {
+    fill: var(--white);
+    stroke: #b9c8e6;
+    stroke-width: 0.5;
+    stroke-linejoin: round;
+  }
+  .td-frame rect {
+    fill: rgba(21, 87, 255, 0.05);
+    stroke: var(--blue);
+    stroke-width: 0.35;
+    stroke-dasharray: 1.2 0.8;
+  }
+  .td-frame text {
+    fill: var(--blue-hover);
+    font-size: 2.4px;
+    font-weight: 700;
+    text-anchor: end;
+  }
+  .td-scheme figcaption,
+  .td-abc figcaption {
+    margin-top: var(--s-3);
+    color: var(--muted);
+    font-size: var(--fs-sm);
+    text-align: center;
+  }
+  .td-print-list {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .td-print-list li {
+    display: grid;
+    grid-template-columns: 48px auto 1fr;
+    align-items: center;
+    gap: var(--s-4);
+    min-height: 56px;
+    padding: var(--s-2) var(--s-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  /* mini sheets to the same scale: 1 cm = 1.15px */
+  .td-print-box {
+    justify-self: center;
+    width: calc(var(--w) * 1.15px);
+    height: calc(var(--h) * 1.15px);
+    border: 2px solid var(--blue);
+    border-radius: 3px;
+    background: var(--sky);
+  }
+  .td-print-label {
+    font-size: var(--fs-lg);
+    font-weight: 800;
+  }
+  .td-print-size {
+    justify-self: end;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* size charts */
+  .td-sizes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: var(--s-6);
+    align-items: start;
+  }
+  .td-tables {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .td-h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-1) var(--s-3);
+    margin-bottom: var(--s-3);
+    font-size: var(--fs-lg);
+  }
+  .td-todo {
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  .td-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  .td-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .td-table th,
+  .td-table td {
+    padding: 10px var(--s-4);
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+  .td-table thead th {
+    background: var(--sky-2);
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    vertical-align: bottom;
+  }
+  .td-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  .td-table tbody th {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .td-table tbody tr:hover > * {
+    background: var(--sky-2);
+  }
+  .td-measure {
+    display: grid;
+    gap: var(--s-4);
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-4));
+  }
+  .td-measure :global(.td-cat) {
+    border-radius: var(--radius-card);
+  }
+  .td-abc {
+    margin: 0;
+    padding: var(--s-4);
+    border-radius: var(--radius-card);
+    background: var(--sky-2);
+  }
+  .td-dim path {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 0.6;
+    stroke-dasharray: 1.4 1;
+  }
+  .td-dim-label circle {
+    fill: var(--blue);
+  }
+  .td-dim-label text {
+    fill: var(--white);
+    font-size: 3.6px;
+    font-weight: 800;
+    text-anchor: middle;
+  }
+
+  /* care */
+  .td-care {
+    display: grid;
+    gap: var(--s-3);
+  }
+  .td-care li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+  .td-check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: var(--sky);
+    color: var(--blue);
+  }
+
+  @media (max-width: 900px) {
+    .td-a {
+      padding: var(--s-1) var(--s-4) var(--s-5);
+    }
+    .td-specs {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .td-prints {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .td-scheme {
+      max-width: 460px;
+    }
+    .td-sizes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .td-measure {
+      position: static;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      max-width: 560px;
+    }
+  }
+  @media (max-width: 560px) {
+    .td-q {
+      min-height: 64px;
+      gap: var(--s-3);
+      padding-inline: var(--s-3);
+    }
+    .td-ic {
+      width: 40px;
+      height: 40px;
+    }
+    .td-q-title {
+      font-size: var(--fs-base);
+    }
+    .td-q-sub {
+      font-size: var(--fs-xs);
+    }
+    .td-a {
+      padding: var(--s-1) var(--s-3) var(--s-4);
+    }
+    .td-colors {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .td-color-mark {
+      margin-left: auto;
+    }
+    .td-table th,
+    .td-table td {
+      padding: 8px var(--s-3);
+    }
+    .td-measure {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .td-measure :global(.td-cat) {
+      max-width: 240px;
+      margin-inline: auto;
+    }
+  }
+</style>

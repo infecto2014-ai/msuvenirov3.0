@@ -1,0 +1,190 @@
+---
+// «Готовые варианты»: four cards (a real work photo, title, note, price «N ₽ за M шт» quoted by pricing.ts).
+// «Настроить в калькуляторе» sends CALC_APPLY_EVENT with the variant's settings — the calculator fills itself
+// and scrolls into view; «Заказать» opens the order window with the variant's name in the comment.
+import { join } from 'node:path';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { presetPrice, teePresets } from '@/data/tshirt';
+import { portfolio } from '@/data/portfolio';
+import { rub } from '@/data/pricing';
+import { imageSize } from '@/lib/pic';
+import type { CalcApplyDetail } from '@/lib/calc-preset';
+
+const cards = teePresets.map((v) => {
+  const size = imageSize(join(process.cwd(), 'public', v.img)) ?? { w: 800, h: 600 };
+  const detail: CalcApplyDetail = { product: v.product, options: v.options, qty: v.qty };
+  return {
+    ...v,
+    ...size,
+    alt: portfolio.find((w) => w.src === v.img)?.title ?? v.title,
+    price: presetPrice(v),
+    detail: JSON.stringify(detail),
+  };
+});
+---
+
+<section class="section tp-sec" aria-labelledby="tp-title">
+  <div class="wrap">
+    <SectionHead id="tp-title" title="Готовые" accent="варианты" lead="Выберите похожий заказ — калькулятор заполнится сам, останется поправить мелочи." />
+
+    <ul class="tp" role="list">
+      {
+        cards.map((c) => (
+          <li class="tp-card">
+            <div class="tp-media">
+              <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
+            </div>
+            <div class="tp-body">
+              <h3 class="tp-title">{c.title}</h3>
+              <p class="tp-note">{c.note}</p>
+              <p class="tp-price">
+                <strong>{rub(c.price.total)}</strong> за&nbsp;{c.qty}&nbsp;шт
+                <span class="tp-unit">{c.qty > 1 && `${rub(c.price.unit)} / шт`}</span>
+              </p>
+              <div class="tp-actions">
+                <Button class="btn-sm btn-block" data-calc-apply={c.detail} icon="calculator">
+                  Настроить в калькуляторе
+                </Button>
+                <Button class="btn-sm btn-block" variant="ghost" data-order={c.title}>
+                  Заказать
+                </Button>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { CALC_APPLY_EVENT } from '@/lib/calc-preset';
+
+  // The calculator is hydrated when it comes into view (client:visible). If it is not ready yet, bring it into view
+  // first and send the settings once its island has hydrated (Astro removes the island's `ssr` attribute then).
+  const send = (detail: unknown) => window.dispatchEvent(new CustomEvent(CALC_APPLY_EVENT, { detail }));
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element | null)?.closest<HTMLElement>('[data-calc-apply]');
+    if (!btn) return;
+    let detail: unknown;
+    try {
+      detail = JSON.parse(btn.dataset.calcApply ?? '');
+    } catch {
+      return;
+    }
+    const island = document.getElementById('calc')?.closest('astro-island');
+    if (!island || !island.hasAttribute('ssr')) return send(detail);
+    const mo = new MutationObserver(() => {
+      if (island.hasAttribute('ssr')) return;
+      mo.disconnect();
+      send(detail);
+    });
+    mo.observe(island, { attributes: true, attributeFilter: ['ssr'] });
+    island.scrollIntoView({ block: 'start' });
+  });
+</script>
+
+<style>
+  .tp {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-4);
+  }
+  .tp-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--white);
+    transition:
+      border-color var(--t-fast) ease,
+      box-shadow var(--t) var(--ease);
+  }
+  .tp-card:hover {
+    border-color: #c4d6f5;
+    box-shadow: var(--shadow-card);
+  }
+  .tp-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--sky);
+  }
+  .tp-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--t) var(--ease);
+  }
+  .tp-card:hover .tp-media img {
+    transform: scale(1.03);
+  }
+  .tp-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--s-5);
+  }
+  .tp-title {
+    font-size: var(--fs-h3);
+    line-height: 1.25;
+  }
+  .tp-note {
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .tp-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--s-2);
+    margin-top: auto;
+    padding-top: var(--s-3);
+    color: var(--muted);
+    font-size: var(--fs-sm);
+  }
+  .tp-price strong {
+    color: var(--ink);
+    font-size: 1.375rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  /* always one line high, so prices and buttons line up across the cards */
+  .tp-unit {
+    flex-basis: 100%;
+    min-height: 1.5em;
+    font-size: var(--fs-xs);
+  }
+  .tp-actions {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tp-card:hover .tp-media img {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .tp {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .tp {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-3);
+    }
+    .tp-media {
+      aspect-ratio: 16 / 10;
+    }
+    .tp-body {
+      padding: var(--s-4);
+    }
+  }
+</style>
