@@ -274,7 +274,9 @@ export const sublimation: GarmentPage = {
   },
   images: {
     hero: 'sub-hero',
+    heroSize: { w: 1254, h: 1249 },
     heroMobile: 'sub-hero-mobile',
+    heroMobileSize: { w: 900, h: 896 },
     alt: 'Рыжий кот у термопресса с яркой футболкой',
     label: 'кот у термопресса с яркой синтетической футболкой',
   },

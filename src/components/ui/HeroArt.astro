@@ -1,0 +1,150 @@
+---
+// The cat on the blob — one standard for every first screen (home and all clothing pages, owner 16.11.2026,
+// spec docs/superpowers/specs/2026-11-16-home-hero-mockup-design.md): a lilac-blue blob, a crown top right,
+// three strokes top left, a soft shadow, and the owner's cut-out cat standing on the shadow. The cut-outs are
+// tight (no empty margins), portrait or landscape: the picture is fitted (contain) into the box and aligned to
+// the bottom centre, so it is never cropped. Two files — desktop and phone (≤ 900px); only one is displayed at
+// any width (Pic `hiddenMedia`), so assistive tech gets exactly one picture with the alt.
+import Pic from '@/components/ui/Pic.astro';
+
+interface Props {
+  /** desktop picture in public/img/v3 and its size */
+  name: string;
+  w: number;
+  h: number;
+  /** phone picture (≤ 900px) and its size */
+  mobileName: string;
+  mw: number;
+  mh: number;
+  alt: string;
+  /** placeholder caption while a file is missing */
+  label?: string;
+  class?: string;
+}
+const { name, w, h, mobileName, mw, mh, alt, label, class: cls } = Astro.props;
+---
+
+<div class:list={['hero-art', cls]}>
+  <svg class="art-blob" viewBox="0 0 600 520" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="hero-art-blob-g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#d7dcfd"></stop>
+        <stop offset="1" stop-color="#aeb8f6"></stop>
+      </linearGradient>
+    </defs>
+    <path
+      fill="url(#hero-art-blob-g)"
+      d="M395 18C500 30 590 110 596 228C602 340 548 452 430 496C320 537 186 512 104 446C24 382 -12 278 26 190C62 106 152 82 228 52C284 30 334 11 395 18Z"
+    ></path>
+  </svg>
+  <svg class="art-crown" viewBox="0 0 64 52" aria-hidden="true" focusable="false">
+    <path d="M6 14l13 12 13-20 13 20 13-12-6 32H12z"></path>
+    <circle cx="25" cy="34" r="1.8"></circle><circle cx="39" cy="34" r="1.8"></circle>
+  </svg>
+  <svg class="art-strokes" viewBox="0 0 60 70" aria-hidden="true" focusable="false">
+    <path d="M34 4l12 20"></path><path d="M8 30l26 12"></path><path d="M2 64h26"></path>
+  </svg>
+  <span class="art-shadow" aria-hidden="true"></span>
+  <div class="art-pic art-desk">
+    <Pic name={name} alt={alt} w={w} h={h} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label={label ? `${name} — ${label}` : name} class="art-img" />
+  </div>
+  <div class="art-pic art-mobile">
+    <Pic name={mobileName} alt={alt} w={mw} h={mh} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label={mobileName} class="art-img" />
+  </div>
+</div>
+
+<style>
+  .hero-art {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 6 / 5;
+    animation: hero-art-settle 600ms var(--ease-out) both;
+  }
+  .art-blob {
+    position: absolute;
+    inset: 0 0 4% 6%;
+    width: 94%;
+    height: 96%;
+  }
+  .art-crown {
+    position: absolute;
+    top: 8%;
+    right: 4%;
+    width: 13%;
+    fill: #fff;
+    stroke: var(--blue);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    transform: rotate(18deg);
+  }
+  .art-crown circle {
+    fill: var(--blue);
+    stroke: none;
+  }
+  .art-strokes {
+    position: absolute;
+    top: 0;
+    left: 6%;
+    width: 9%;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+  .art-shadow {
+    position: absolute;
+    left: 14%;
+    right: 4%;
+    bottom: 3%;
+    height: 8%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(11, 26, 63, 0.22), transparent);
+  }
+  /* the picture box: the cat stands on the shadow, fitted whole (portrait or landscape), centred */
+  .art-pic {
+    position: absolute;
+    inset: 3% 2% 5% 6%;
+  }
+  .art-mobile {
+    display: none;
+  }
+  .art-pic :global(.art-img) {
+    width: 100%;
+    height: 100%;
+    object-position: 50% 100%;
+  }
+  .art-pic :global(.pic-ph) {
+    aspect-ratio: auto !important;
+    border-radius: var(--radius-panel);
+  }
+
+  @keyframes hero-art-settle {
+    from {
+      opacity: 0;
+      transform: scale(1.02);
+    }
+  }
+  @keyframes hero-art-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-art {
+      animation-name: hero-art-fade;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero-art {
+      max-width: 620px;
+      margin-inline: auto;
+    }
+    .art-desk {
+      display: none;
+    }
+    .art-mobile {
+      display: block;
+    }
+  }
+</style>

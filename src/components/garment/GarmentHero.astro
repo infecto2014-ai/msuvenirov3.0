@@ -1,11 +1,12 @@
 ---
-// First screen of a clothing page — the home Hero's composition: breadcrumbs, h1 with the blue accent and squiggle,
-// subtitle, price «от N ₽» (the cheapest calculator product of the page, from pricing.ts), two buttons; the cat scene
-// on the right (≤ 900px — a square picture under the text). Until the owner's pictures arrive, Pic shows labelled
-// placeholders in the same slots.
+// First screen of a clothing page — the home Hero's standard (owner 16.11.2026, spec
+// docs/superpowers/specs/2026-11-16-home-hero-mockup-design.md, «второй макет»): one grid, text on the left
+// (breadcrumbs, h1 with the blue accent and squiggle, price «от N ₽» — the cheapest calculator product of the page,
+// from pricing.ts — two buttons, the address), the shared cat art (HeroArt) spanning the right column.
+// ≤ 900px one column: breadcrumbs → h1 → cat → price → buttons full width → address centred.
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import Pic from '@/components/ui/Pic.astro';
+import HeroArt from '@/components/ui/HeroArt.astro';
 import { site } from '@/data/site';
 import { rub } from '@/data/pricing';
 import { garmentFrom } from '@/data/garments/select';
@@ -18,126 +19,140 @@ const { page } = Astro.props;
 
 /** the cheapest garment of the page's tiles with a print */
 const from = garmentFrom(page);
-const alt = page.images.alt;
+const img = page.images;
 const crumbs = page.crumbs.slice(0, -1);
 const current = page.crumbs.at(-1)!.label;
 ---
 
 <section class="th" aria-labelledby="th-title">
-  <div class="th-media">
-    <Pic name={page.images.hero} alt={alt} w={2400} h={1400} loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label={`${page.images.hero} — ${page.images.label}`} class="th-pic" />
-  </div>
+  <svg class="th-waves" viewBox="0 0 1440 640" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="w1" d="M0 250C180 190 300 330 470 380C640 430 760 560 900 640H0Z" />
+    <path class="w2" d="M0 420C200 360 360 470 560 560C620 590 680 620 720 640H0Z" />
+    <path class="w3" d="M1440 120C1300 170 1220 300 1260 430C1290 520 1370 590 1440 610Z" />
+  </svg>
 
   <div class="wrap th-in">
-    <div class="th-text">
-      <nav class="th-crumbs" aria-label="Хлебные крошки">
-        <ol role="list">
-          {
-            crumbs.map((c) => (
-              <li>
-                <a href={c.href}>{c.label}</a>
-                <Icon name="chevron-right" size={16} />
-              </li>
-            ))
-          }
-          <li><span aria-current="page">{current}</span></li>
-        </ol>
-      </nav>
+    <nav class="th-crumbs" aria-label="Хлебные крошки">
+      <ol role="list">
+        {
+          crumbs.map((c) => (
+            <li>
+              <a href={c.href}>{c.label}</a>
+              <Icon name="chevron-right" size={16} />
+            </li>
+          ))
+        }
+        <li><span aria-current="page">{current}</span></li>
+      </ol>
+    </nav>
 
-      <h1 id="th-title" class="th-title">
-        {page.h1}{' '}
-        <span class="th-accent">
-          {page.accent}
-          <svg class="th-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
-          </svg>
-        </span>
-      </h1>
-      <p class="th-sub">Сельма, {site.address.place}</p>
+    <h1 id="th-title" class="th-title">
+      {page.h1}{' '}
+      <span class="th-accent">
+        {page.accent}
+        <svg class="th-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
+        </svg>
+      </span>
+    </h1>
 
-      <p class="th-price">
-        <span class="th-price-label">{page.hero.priceLabel}</span>
-        <span class="th-price-value">от&nbsp;{rub(from)}</span>
-      </p>
+    <HeroArt
+      name={img.hero}
+      w={img.heroSize.w}
+      h={img.heroSize.h}
+      mobileName={img.heroMobile}
+      mw={img.heroMobileSize.w}
+      mh={img.heroMobileSize.h}
+      alt={img.alt}
+      label={img.label}
+      class="th-cat"
+    />
 
-      <div class="th-actions">
-        <Button href="#calc" icon="calculator">Рассчитать стоимость</Button>
-        <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
-      </div>
+    <p class="th-price">
+      <span class="th-price-label">{page.hero.priceLabel}</span>
+      <span class="th-price-value">от&nbsp;{rub(from)}</span>
+    </p>
+
+    <div class="th-actions">
+      <Button href="#calc" icon="calculator">Рассчитать стоимость</Button>
+      <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
     </div>
 
-    <div class="th-mobile">
-      <Pic name={page.images.heroMobile} alt={alt} w={1200} h={1200} loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label={page.images.heroMobile} class="th-mpic" />
-    </div>
+    <p class="th-sub"><Icon name="map-pin" size={20} /> Сельма, {site.address.place}</p>
   </div>
 </section>
 
 <style>
   .th {
-    --text-max: 38rem;
-    --text-edge: calc(max((100vw - var(--wrap)) / 2, var(--gutter)) + var(--text-max) + var(--s-5));
     position: relative;
     isolation: isolate;
     padding-block: var(--s-6) var(--s-8);
-    background:
-      radial-gradient(42rem 26rem at 78% 40%, rgba(21, 87, 255, 0.1), transparent 70%),
-      linear-gradient(180deg, var(--sky-2), var(--sky) 70%, rgba(234, 242, 255, 0));
+    background: linear-gradient(180deg, var(--sky-2), #eef0ff 70%, rgba(238, 240, 255, 0));
     overflow: hidden;
   }
-  .th-in {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    min-height: 460px;
-  }
-  .th-text {
-    max-width: var(--text-max);
-  }
-
-  /* the 2400×1400 scene, anchored bottom-right like the home hero; its empty left part may go under the text */
-  .th-media {
+  /* the same soft lilac hills as the home first screen */
+  .th-waves {
     position: absolute;
-    z-index: 0;
-    right: max(0px, calc((100vw - var(--wrap)) / 2 - var(--s-8)));
-    bottom: 0;
-    height: min(100%, calc(2 * (100vw - var(--text-edge)) * 1400 / 2400));
-    aspect-ratio: 2400 / 1400;
-    -webkit-mask-image:
-      linear-gradient(90deg, transparent 0, #000 22%, #000 92%, transparent 100%),
-      linear-gradient(0deg, transparent 0, #000 16%),
-      linear-gradient(180deg, transparent 0, #000 5%);
-    -webkit-mask-composite: source-in, source-in;
-    mask-image:
-      linear-gradient(90deg, transparent 0, #000 22%, #000 92%, transparent 100%),
-      linear-gradient(0deg, transparent 0, #000 16%),
-      linear-gradient(180deg, transparent 0, #000 5%);
-    mask-composite: intersect;
-  }
-  .th-media :global(.th-pic) {
+    inset: 0;
+    z-index: -1;
     width: 100%;
     height: 100%;
-    object-position: right center;
+    /* no facts strip below (unlike the home): the hills melt into the page instead of ending on a hard line */
+    -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
   }
-  /* no picture yet: the placeholder keeps to the right half, never under the text, and is not masked away */
-  .th-media:has(.pic-ph) {
-    -webkit-mask-image: none;
-    mask-image: none;
-    top: var(--s-6);
-    bottom: var(--s-8);
-    height: auto;
+  .th-waves .w1 {
+    fill: rgba(170, 182, 246, 0.22);
   }
-  .th-media :global(.pic-ph) {
-    width: 48%;
-    height: 100%;
-    margin-left: auto;
-    aspect-ratio: auto !important;
-    border-radius: var(--radius-panel);
+  .th-waves .w2 {
+    fill: rgba(150, 164, 244, 0.18);
+  }
+  .th-waves .w3 {
+    fill: rgba(170, 182, 246, 0.2);
+  }
+
+  /* the home grid: text centred vertically by the 1fr rows, the cat spans the right column */
+  .th-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto auto auto auto 1fr;
+    grid-template-areas:
+      '. art'
+      'crumbs art'
+      'title art'
+      'price art'
+      'actions art'
+      'sub art'
+      '. art';
+    column-gap: var(--s-6);
+  }
+  .th-crumbs {
+    grid-area: crumbs;
+  }
+  .th-title {
+    grid-area: title;
+  }
+  .th-in > :global(.th-cat) {
+    grid-area: art;
+    align-self: center;
+    /* keeps the first screen compact for portrait cats too */
+    max-width: 600px;
+    justify-self: center;
+  }
+  .th-price {
+    grid-area: price;
+    justify-self: start;
+  }
+  .th-actions {
+    grid-area: actions;
+  }
+  .th-sub {
+    grid-area: sub;
   }
 
   /* breadcrumbs: Главная › Печать на одежде › Футболки */
   .th-crumbs {
-    margin-bottom: var(--s-5);
+    margin-bottom: var(--s-4);
     font-size: var(--fs-sm);
   }
   .th-crumbs ol {
@@ -197,11 +212,6 @@ const current = page.crumbs.at(-1)!.label;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
   }
-  .th-sub {
-    margin-top: var(--s-6);
-    color: var(--muted);
-    font-size: var(--fs-lg);
-  }
 
   /* price plate: a white pill with the label and the big «от N ₽» */
   .th-price {
@@ -209,7 +219,7 @@ const current = page.crumbs.at(-1)!.label;
     align-items: baseline;
     flex-wrap: wrap;
     gap: var(--s-1) var(--s-3);
-    margin-top: var(--s-5);
+    margin-top: var(--s-7);
     padding: var(--s-3) var(--s-5);
     border-radius: var(--radius-pill);
     background: var(--white);
@@ -233,83 +243,81 @@ const current = page.crumbs.at(-1)!.label;
     gap: var(--s-3) var(--s-4);
     margin-top: var(--s-6);
   }
-
-  .th-mobile {
-    display: none;
+  .th-sub {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    color: var(--muted);
+    font-size: var(--fs-base);
   }
 
-  /* once, on load: text fades in without moving, the scene settles (same as the home hero) */
+  /* once, on load: the text fades in without moving (the cat settles inside HeroArt) */
   .th-title,
-  .th-sub,
   .th-price,
-  .th-actions {
+  .th-actions,
+  .th-sub {
     animation: th-fade 400ms var(--ease-out) both;
   }
-  .th-sub,
-  .th-price {
+  .th-price,
+  .th-sub {
     animation-delay: 60ms;
   }
   .th-actions {
     animation-delay: 120ms;
-  }
-  .th-media,
-  .th-mobile {
-    animation: th-settle 600ms var(--ease-out) both;
   }
   @keyframes th-fade {
     from {
       opacity: 0;
     }
   }
-  @keyframes th-settle {
-    from {
-      opacity: 0;
-      transform: scale(1.02);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     .th-title,
-    .th-sub,
     .th-price,
     .th-actions,
-    .th-media,
-    .th-mobile {
-      animation: th-fade 400ms var(--ease-out) both;
+    .th-sub {
       animation-delay: 0ms;
-      animation-duration: 400ms !important;
     }
   }
 
-  @media (max-width: 1100px) {
-    .th {
-      /* both buttons on one line at 1024 */
-      --text-max: 34rem;
+  @media (max-width: 1180px) and (min-width: 901px) {
+    .th-in {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      column-gap: var(--s-5);
     }
   }
 
+  /* phone: breadcrumbs → h1 → cat → price → buttons full width → address centred */
   @media (max-width: 900px) {
     .th {
-      --text-max: 40rem;
       padding-block: var(--s-5) var(--s-7);
     }
-    .th-media {
-      display: none;
-    }
     .th-in {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--s-6);
-      min-height: 0;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas: 'crumbs' 'title' 'art' 'price' 'actions' 'sub';
     }
-    .th-mobile {
-      display: block;
-      width: 100%;
+    .th-in > :global(.th-cat) {
+      margin-top: var(--s-5);
       max-width: 520px;
-      margin-inline: auto;
-      border-radius: var(--radius-panel);
+      justify-self: stretch;
     }
-    .th-mobile :global(.pic-ph) {
-      border-radius: var(--radius-panel);
+    .th-price {
+      justify-self: center;
+      margin-top: var(--s-4);
+    }
+    .th-actions {
+      flex-direction: column;
+      max-width: 620px;
+      width: 100%;
+      margin-inline: auto;
+    }
+    .th-actions :global(.btn) {
+      width: 100%;
+    }
+    .th-sub {
+      justify-content: center;
+      text-align: center;
     }
   }
 
@@ -317,21 +325,11 @@ const current = page.crumbs.at(-1)!.label;
     .th-crumbs {
       margin-bottom: var(--s-3);
     }
-    .th-sub {
-      margin-top: var(--s-5);
-      font-size: var(--fs-base);
-    }
     .th-price {
       padding: var(--s-3) var(--s-4);
     }
     .th-price-value {
       font-size: 1.25rem;
-    }
-    .th-actions {
-      flex-direction: column;
-    }
-    .th-actions :global(.btn) {
-      width: 100%;
     }
   }
 </style>
