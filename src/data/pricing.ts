@@ -508,9 +508,9 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   const unitAt = (sel: Selection, qty: number) =>
     round((args.blank ? tierPrice(args.blank, qty) : 0) + prints(sel).reduce((a, f) => a + tierPrice(subPrint[f].tiers, qty), 0));
   const breaks = [...new Set([args.min, ...subTierFrom.filter((t) => t > args.min), ...(args.blank ?? []).map((t) => t.from)])].sort((a, b) => a - b);
-  // price table columns: the print tiers plus the blank's own steps above the minimum (shopper-sub: 230 ₽ from 50 pcs),
-  // so every cell is the price the calculator quotes at its column's first quantity
-  const cols = [...new Set([...subTierFrom, ...(args.blank ?? []).map((t) => t.from).filter((f) => f > args.min)])].sort((a, b) => a - b);
+  // price table columns = the quote's steps: from the minimum (tshirt-sub: «10 шт», not «1–10 шт»), the print tiers above
+  // it and the blank's own steps (shopper-sub: 230 ₽ from 50 pcs) — every cell is the price at its column's first quantity
+  const cols = breaks;
   return {
     id: args.id,
     name: args.name,
@@ -686,7 +686,8 @@ const textile: Category = {
       name: 'Печать на вашем изделии',
       short: 'принесите свою вещь',
       formats: ['a6', 'a5', 'a4', 'a3'],
-      places: 3,
+      // owner, 16.11.2026: print on the customer's own item — up to 5 prints (was 3), every next −30%
+      places: 5,
     }),
   ],
 };

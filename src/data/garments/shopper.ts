@@ -18,7 +18,8 @@ const presets: GarmentPreset[] = [
     note: 'хлопковый, рисунок или фото А4 с одной стороны',
     product: 'shopper',
     qty: 1,
-    options: { color: 'white', print1: 'a4', print2: 'none' },
+    // the photo shows black shoppers — the variant follows the photo (as «30 кепок для персонала»)
+    options: { color: 'black', print1: 'a4', print2: 'none' },
     img: '/portfolio/shopper-bags.webp',
   },
   {
