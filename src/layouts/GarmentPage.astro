@@ -67,7 +67,7 @@ const schema = [
     </div>
   </section>
 
-  <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>
+  {page.presets.length > 0 && <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>}
   <div class="g-cb"><ConstructorBanner /></div>
   <GarmentDetails page={page} />
   <div class="band-sky">

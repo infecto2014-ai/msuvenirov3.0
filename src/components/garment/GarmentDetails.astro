@@ -94,7 +94,7 @@ const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p,
                   {s.cards.map((c) => (
                     <li class="td-card">
                       <h3 class="td-card-title">
-                        {c.title}
+                        {c.href ? <a class="td-card-link" href={c.href}>{c.title}</a> : c.title}
                         {c.tag && <span class="td-card-tag">{c.tag}</span>}
                       </h3>
                       {c.rows && (
@@ -148,7 +148,7 @@ const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p,
                         <span class="td-print-box" style={`--w: ${p.w}; --h: ${p.h}`} aria-hidden="true" />
                         <span class="td-print-label">{p.label}</span>
                         <span class="td-print-size">
-                          {p.w}×{p.h} см
+                          {String(p.w).replace(".", ",")}×{String(p.h).replace(".", ",")} см
                         </span>
                       </li>
                     ))}
@@ -426,6 +426,20 @@ const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p,
     align-items: center;
     gap: var(--s-2) var(--s-3);
     font-size: var(--fs-lg);
+  }
+  .td-card-link {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: #b9c8e6;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition:
+      color var(--t-fast) ease,
+      text-decoration-color var(--t-fast) ease;
+  }
+  .td-card-link:hover {
+    color: var(--blue);
+    text-decoration-color: var(--blue);
   }
   .td-card-tag {
     padding: 2px 10px;
