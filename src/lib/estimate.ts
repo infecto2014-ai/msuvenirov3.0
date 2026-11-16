@@ -57,14 +57,15 @@ export const addToEstimate = (item: Omit<EstimateItem, 'id'>) => {
   write([...getEstimate(), { ...item, id }].slice(-30));
 };
 
-/** next allowed quantity up (dir = 1) or down (dir = -1), following presets where the product has them */
-export const stepQty = (q: QtyConfig, cur: number, dir: 1 | -1): number => {
+/** next allowed quantity up (dir = 1) or down (dir = -1), following presets where the product has them;
+ * `min` — smallest run for the current selection (Product.minQty), default q.min */
+export const stepQty = (q: QtyConfig, cur: number, dir: 1 | -1, min: number = q.min): number => {
   if (q.presets && (!q.freeFrom || cur + dir < q.freeFrom)) {
     const list = q.freeFrom ? [...q.presets.filter((x) => x < q.freeFrom!), q.freeFrom] : q.presets;
     if (dir > 0) return list.find((x) => x > cur) ?? (q.freeFrom ? cur + 1 : cur);
     return [...list].reverse().find((x) => x < cur) ?? cur;
   }
-  return Math.min(q.max, Math.max(q.min, cur + dir));
+  return Math.min(q.max, Math.max(min, cur + dir));
 };
 
 /** Change the quantity of one line and recalculate its price with the same rules as the calculator. */
@@ -75,7 +76,7 @@ export const setEstimateQty = (id: string, qty: number) => {
   const p: Product | undefined = findProduct(it.calc.cat, it.calc.product);
   if (!p) return;
   const q = Math.round(qty);
-  if (!(q >= p.qty.min)) return;
+  if (!(q >= Math.max(p.qty.min, p.minQty?.(it.calc.sel) ?? 0))) return;
   const sel = { ...it.calc.sel, qty: q };
   const quote = q > p.qty.max ? undefined : p.quote(sel);
   const next: EstimateItem = quote && !quote.error
