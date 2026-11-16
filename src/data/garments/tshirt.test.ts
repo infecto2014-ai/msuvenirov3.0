@@ -32,7 +32,7 @@ test('«Для команды» — 20 синих футболок', () => {
 
 test('фото вариантов — настоящие работы, не portfolio-14', () => {
   for (const v of presets) {
-    expect(v.img.startsWith('/portfolio/')).toBe(true);
+    expect(v.img!.startsWith('/portfolio/')).toBe(true);
     expect(v.img).not.toContain('portfolio-14');
   }
 });

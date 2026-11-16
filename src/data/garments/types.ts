@@ -13,8 +13,10 @@ export interface GarmentPreset {
   qty: number;
   /** calculator options: color, print1…print5 ('a6' | 'a5' | 'a4' | 'a3' | 'none'), blank… */
   options: Record<string, string>;
-  /** a real work of the workshop (/portfolio/…) or the product picture */
-  img: string;
+  /** a real work of the workshop (/portfolio/…) */
+  img?: string;
+  /** or a picture slot of public/img/v3 (Pic name, 1000×1000): the product photo, a labelled placeholder until it arrives */
+  pic?: { name: string; label: string; alt: string };
 }
 
 export interface SizeTable {

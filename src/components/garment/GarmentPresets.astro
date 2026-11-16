@@ -5,6 +5,7 @@
 import { join } from 'node:path';
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
+import Pic from '@/components/ui/Pic.astro';
 import { presetPrice } from '@/data/garments/select';
 import type { GarmentPreset } from '@/data/garments/types';
 import { portfolio } from '@/data/portfolio';
@@ -20,12 +21,12 @@ interface Props {
 const { presets, category } = Astro.props;
 
 const cards = presets.map((v) => {
-  const size = imageSize(join(process.cwd(), 'public', v.img)) ?? { w: 800, h: 600 };
+  const size = (v.img && imageSize(join(process.cwd(), 'public', v.img))) || { w: 800, h: 600 };
   const detail: CalcApplyDetail = { product: v.product, options: v.options, qty: v.qty };
   return {
     ...v,
     ...size,
-    alt: portfolio.find((w) => w.src === v.img)?.title ?? v.title,
+    alt: v.pic?.alt ?? portfolio.find((w) => w.src === v.img)?.title ?? v.title,
     price: presetPrice(v, category),
     detail: JSON.stringify(detail),
   };
@@ -41,7 +42,11 @@ const cards = presets.map((v) => {
         cards.map((c) => (
           <li class="tp-card">
             <div class="tp-media">
-              <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
+              {c.pic ? (
+                <Pic name={c.pic.name} alt={c.alt} w={1000} h={1000} label={c.pic.label} />
+              ) : (
+                <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
+              )}
             </div>
             <div class="tp-body">
               <h3 class="tp-title">{c.title}</h3>
@@ -124,6 +129,9 @@ const cards = presets.map((v) => {
     height: 100%;
     object-fit: cover;
     transition: transform var(--t) var(--ease);
+  }
+  .tp-media :global(.pic) {
+    height: 100%;
   }
   .tp-card:hover .tp-media img {
     transform: scale(1.03);

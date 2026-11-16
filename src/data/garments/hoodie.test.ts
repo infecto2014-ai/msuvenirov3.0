@@ -70,12 +70,19 @@ test('картинки котов и схема принтов', () => {
   expect(hoodie.prints.shape).toBe('hoodie');
 });
 
-test('фото вариантов — настоящие работы или фото худи, не portfolio-14', () => {
-  for (const v of presets) {
-    expect(v.img.startsWith('/portfolio/') || v.img === '/img/showcase/hoodie.webp', v.img).toBe(true);
-    expect(v.img).not.toContain('portfolio-14');
-  }
+test('фото вариантов: первый — настоящая работа, остальные — слот hoodie-product (не неоновое фото)', () => {
   expect(presets[0].img).toBe('/portfolio/portfolio-5.webp');
+  for (const v of presets.slice(1)) {
+    expect(v.pic?.name).toBe('hoodie-product');
+    expect(v.img).toBeUndefined();
+  }
+  expect(JSON.stringify(hoodie)).not.toContain('showcase/hoodie');
+  expect(JSON.stringify(hoodie)).not.toContain('portfolio-14');
+});
+
+test('подпись схемы: рамки на груди, на спине те же размеры до А3; без выдуманных советов', () => {
+  expect(hoodie.prints.caption).toContain('на спине — те же размеры, до А3');
+  expect(hoodie.prints.caption).not.toContain('выше кармана');
 });
 
 test('«Наши работы» худи: только с тегом hudi', () => {

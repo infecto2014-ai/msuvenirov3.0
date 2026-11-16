@@ -5,7 +5,8 @@
 import { extraPrintFactor, GARMENT_COLORS } from '../pricing';
 import type { GarmentPage, GarmentPreset, SizeTable } from './types';
 
-const HOODIE_PHOTO = '/img/showcase/hoodie.webp';
+/** the calm product photo is not there yet (the neon one of 2.0 does not fit): a labelled slot in public/img/v3 */
+const HOODIE_PRODUCT = { name: 'hoodie-product', label: 'hoodie-product — худи', alt: 'Худи с принтом' };
 
 const presets: GarmentPreset[] = [
   {
@@ -22,7 +23,7 @@ const presets: GarmentPreset[] = [
     product: 'hoodie',
     qty: 1,
     options: { color: 'white', print1: 'a6', print2: 'a3', print3: 'none' },
-    img: HOODIE_PHOTO,
+    pic: HOODIE_PRODUCT,
   },
   {
     title: 'Грудь, спина и рукав',
@@ -30,7 +31,7 @@ const presets: GarmentPreset[] = [
     product: 'hoodie',
     qty: 1,
     options: { color: 'black', print1: 'a6', print2: 'a3', print3: 'a6' },
-    img: HOODIE_PHOTO,
+    pic: HOODIE_PRODUCT,
   },
   {
     title: 'Для класса или команды',
@@ -38,7 +39,7 @@ const presets: GarmentPreset[] = [
     product: 'hoodie',
     qty: 20,
     options: { color: 'black', print1: 'a6', print2: 'a4', print3: 'none' },
-    img: HOODIE_PHOTO,
+    pic: HOODIE_PRODUCT,
   },
 ];
 
@@ -117,7 +118,7 @@ export const hoodie: GarmentPage = {
   prints: {
     sub: 'А6, А5, А4 и А3 на худи',
     shape: 'hoodie',
-    caption: 'Рамки принтов на худи размера M–L — в масштабе; на груди принт лучше держать выше кармана',
+    caption: 'Рамки показаны на груди худи размера M–L в масштабе; на спине — те же размеры, до А3',
   },
   worksTag: 'hudi',
   reviewWords: ['худи'],
