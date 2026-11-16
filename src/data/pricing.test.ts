@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { categories, defaultSelection, findProduct, rangeLabels, rub, type Selection } from './pricing';
+import { COLOR_MIN, GARMENT_COLORS, categories, defaultSelection, extraPrintFactor, findProduct, rangeLabels, rub, type Selection } from './pricing';
 
 const sel = (categoryId: string, productId: string, patch: Partial<Selection> & { options?: Selection['options'] } = {}) => {
   const p = findProduct(categoryId, productId)!;
@@ -119,27 +119,27 @@ describe('pricing', () => {
     expect([1, 5, 10, 30].map((q) => at(sub, q, 'a4'))).toEqual([110, 90, 75, 60]);
   });
 
-  it('t-shirt = blank + DTF print, extra prints at 70% and 50%', () => {
+  it('t-shirt = blank + DTF print, every extra print at 70%', () => {
     const { p, s } = sel('textile', 'tshirt-unisex', { options: { print1: 'a4', print2: 'a6', print3: 'a6' }, qty: 1 });
-    // 750 + 800 + 600*0.7 + 600*0.5
-    expect(p.quote(s).unit).toBe(750 + 800 + 420 + 300);
+    // 750 + 800 + 600*0.7 + 600*0.7
+    expect(p.quote(s).unit).toBe(750 + 800 + 420 + 420);
     const q20 = p.quote({ ...s, options: { ...s.options, print2: 'none', print3: 'none' }, qty: 20 });
     expect(q20.unit).toBe(550 + 450);
     expect(q20.total).toBe(20 * 1000);
   });
 
-  it('several prints are ranked by price: the dearest full, next −30%, rest −50%', () => {
+  it('several prints are ranked by price: the dearest full, every next −30%', () => {
     const { p, s } = sel('textile', 'own-item', { qty: 1, options: { print1: 'a6', print2: 'a3', print3: 'a4' } });
     const { p: p2, s: s2 } = sel('textile', 'own-item', { qty: 1, options: { print1: 'a3', print2: 'a4', print3: 'a6' } });
-    // owner's example: 1100 + 800 −30% + 600 −50%
-    expect(p.quote(s).total).toBe(1100 + 560 + 300);
+    // 1100 + 800 −30% + 600 −30%
+    expect(p.quote(s).total).toBe(1100 + 560 + 420);
     expect(p.quote(s).total).toBe(p2.quote(s2).total);
-    expect(p.quote(s).breakdown.map((b) => b.label)).toEqual(['Печать DTF А3', 'Печать DTF А4 (−30%)', 'Печать DTF А6 (−50%)']);
+    expect(p.quote(s).breakdown.map((b) => b.label)).toEqual(['Печать DTF А3', 'Печать DTF А4 (−30%)', 'Печать DTF А6 (−30%)']);
   });
 
-  it('t-shirt and hoodie take up to 4 prints, the 4th also at −50%', () => {
+  it('t-shirt and hoodie take up to 4 prints, the 4th also at −30%', () => {
     const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a6', print2: 'a3', print3: 'a6', print4: 'a4' } });
-    expect(p.quote(s).total).toBe(750 + 1100 + 800 * 0.7 + 600 * 0.5 + 600 * 0.5);
+    expect(p.quote(s).total).toBe(750 + 1100 + 800 * 0.7 + 600 * 0.7 + 600 * 0.7);
     expect(findProduct('textile', 'hoodie')!.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(4);
     expect(findProduct('textile', 'cap')!.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(3);
   });
@@ -153,17 +153,69 @@ describe('pricing', () => {
   });
 
   it('own t-shirt: only the print is charged, colour does not matter', () => {
-    const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { blank: 'own', color: 'other', print1: 'a4' } });
+    const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { blank: 'own', color: 'red', print1: 'a4' } });
     const q = p.quote(s);
     expect(q.total).toBe(800);
     expect(q.error).toBeUndefined();
     expect(q.breakdown.map((b) => b.label)).toEqual(['Печать DTF А4']);
   });
 
-  it('coloured t-shirts need at least 10 pcs', () => {
-    const { p, s } = sel('textile', 'tshirt-unisex', { options: { color: 'other' }, qty: 5 });
-    expect(p.quote(s).error).toBeTruthy();
-    expect(p.quote({ ...s, qty: 10 }).error).toBeUndefined();
+  it('coloured t-shirts: white and black from 1 pc, other colours from 5 pcs', () => {
+    expect(COLOR_MIN).toBe(5);
+    for (const id of ['tshirt-unisex', 'tshirt-kids']) {
+      const at = (color: string, blank?: string) => {
+        const { p, s } = sel('textile', id, { options: { color, ...(blank ? { blank } : {}) } });
+        return p.minQty!(s);
+      };
+      expect([at('white'), at('black'), at('red'), at('lilac')], id).toEqual([1, 1, 5, 5]);
+    }
+    const { p, s } = sel('textile', 'tshirt-unisex', { options: { color: 'red', blank: 'own' } });
+    expect(p.minQty!(s)).toBe(1);
+  });
+
+  it('t-shirt colours: 11 in the owner order, no «другой цвет», «от 5 шт» on coloured', () => {
+    expect(GARMENT_COLORS.map((c) => c.id)).toEqual(['white', 'black', 'yellow', 'green', 'brown', 'red', 'orange', 'pink', 'gray', 'blue', 'lilac']);
+    expect(GARMENT_COLORS.map((c) => c.swatch)).toEqual(['#ffffff', '#1b1b1d', '#ffe000', '#0a7d4a', '#7e4e2a', '#e31e36', '#ff6a2a', '#f2bccb', '#8c8c8c', '#2e5fd8', '#6a64a8']);
+    expect(GARMENT_COLORS.map((c) => c.hint)).toEqual([undefined, undefined, ...Array(9).fill('от 5 шт')]);
+    for (const id of ['tshirt-unisex', 'tshirt-kids']) {
+      const ch = findProduct('textile', id)!.options!.find((g) => g.id === 'color')!.choices;
+      expect(ch).toHaveLength(11);
+      expect(ch.some((c) => c.id === 'other')).toBe(false);
+    }
+  });
+
+  it('cap: white and black from 1 pc, other colours from 5 pcs', () => {
+    const m = (color: string) => {
+      const { p, s } = sel('textile', 'cap', { options: { color } });
+      return p.minQty!(s);
+    };
+    expect([m('white'), m('black'), m('red'), m('khaki')]).toEqual([1, 1, 5, 5]);
+    const ch = findProduct('textile', 'cap')!.options!.find((g) => g.id === 'color')!.choices;
+    expect(ch.filter((c) => c.hint === 'от 5 шт').map((c) => c.id)).toEqual(['red', 'blue', 'yellow', 'green', 'khaki']);
+  });
+
+  it('coloured below the minimum: no price, error with the product wording', () => {
+    const err = (id: string, color: string, qty: number, blank?: string) => {
+      const { p, s } = sel('textile', id, { qty, options: { color, ...(blank ? { blank } : {}) } });
+      return p.quote(s).error;
+    };
+    expect(err('tshirt-unisex', 'red', 1)).toBe('Цветные футболки — от 5 шт');
+    expect(err('tshirt-kids', 'red', 4)).toBe('Цветные футболки — от 5 шт');
+    expect(err('tshirt-unisex', 'red', 5)).toBeUndefined();
+    expect(err('tshirt-unisex', 'white', 1)).toBeUndefined();
+    expect(err('tshirt-unisex', 'red', 1, 'own')).toBeUndefined();
+    expect(err('cap', 'red', 1)).toBe('Цветные бейсболки — от 5 шт');
+    expect(err('cap', 'red', 5)).toBeUndefined();
+    expect(err('cap', 'black', 1)).toBeUndefined();
+  });
+
+  it('every extra print is −30%, note says so', () => {
+    expect(extraPrintFactor).toEqual([1, 0.7, 0.7]);
+    const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a4', print2: 'a4' } });
+    expect(p.quote(s).unit).toBe(750 + 800 + 560);
+    expect(p.quote(s).notes.join(' ')).toContain('каждый следующий −30%');
+    const three = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a3', print2: 'a4', print3: 'a6' } });
+    expect(three.p.quote(three.s).unit).toBe(750 + 1100 + 800 * 0.7 + 600 * 0.7);
   });
 
   it('hints the next cheaper tier', () => {
@@ -238,6 +290,26 @@ describe('pricing', () => {
     expect(p.quote(s).error).toContain('от 20 шт');
     expect(p.quote({ ...s, qty: 20 }).error).toBeUndefined();
     expect(p.quote({ ...s, options: { ...s.options, color: 'black' } }).error).toBeUndefined();
+  });
+
+  it('cotton shopper: «другой цвет» lifts the smallest run to 20, listed colours from 1', () => {
+    const m = (color: string) => {
+      const { p, s } = sel('textile', 'shopper', { options: { color } });
+      return p.minQty!(s);
+    };
+    expect([m('light'), m('black'), m('other')]).toEqual([1, 1, 20]);
+  });
+
+  it('minimum-run note: the wording of the product, nothing without a minimum', () => {
+    const note = (id: string, options: Record<string, string>) => {
+      const { p, s } = sel('textile', id, { options });
+      return p.minQtyNote?.(s);
+    };
+    expect(note('tshirt-unisex', { color: 'red' })).toBe('Цветные футболки — от 5 шт');
+    expect(note('tshirt-unisex', { color: 'white' })).toBeUndefined();
+    expect(note('tshirt-unisex', { color: 'red', blank: 'own' })).toBeUndefined();
+    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём — под заказ от 20 шт');
+    expect(note('shopper', { color: 'light' })).toBeUndefined();
   });
 
   it('cap: 650 / 550 / 450 by run + DTF A6, up to 100 pcs, 7 colours', () => {

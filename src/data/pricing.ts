@@ -90,6 +90,8 @@ export interface Product {
   quote: (sel: Selection) => Quote;
   /** smallest run for this selection when it depends on the size (stickers: minimum order sum); default qty.min */
   minQty?: (sel: Selection) => number;
+  /** why the smallest run is above 1 for this selection («Цветные футболки — от 5 шт»); undefined without a minimum */
+  minQtyNote?: (sel: Selection) => string | undefined;
   /** static price table for the HTML price list (always visible, indexable) */
   table?: PriceTable;
   /** lowest possible price per piece, for "от N ₽" labels */
@@ -277,11 +279,32 @@ export const dtfPrint: Record<'a6' | 'a5' | 'a4' | 'a3', { label: string; size: 
 type Format = keyof typeof dtfPrint;
 
 /**
- * Several prints on one item: the most expensive print is charged in full, the next one at 70%,
- * the rest at 50% (owner, 01.11.2026). Prints are ranked by price, not by the order they were picked:
- * A6 + A3 + A4 = A3 + A4 −30% + A6 −50%.
+ * Several prints on one item: the most expensive print is charged in full, every next one at 70%
+ * (owner, 16.11.2026; before: third and later −50%). Prints are ranked by price, not by the order they were picked:
+ * A6 + A3 + A4 = A3 + A4 −30% + A6 −30%.
  */
-export const extraPrintFactor = [1, 0.7, 0.5];
+export const extraPrintFactor = [1, 0.7, 0.7];
+
+/** Coloured garments (anything but white and black) are ordered from this many pcs (owner, 16.11.2026). */
+export const COLOR_MIN = 5;
+const COLOR_HINT = `от ${COLOR_MIN} шт`;
+/** colours that are in stock and have no minimum */
+const COLOR_FREE = ['white', 'black'];
+
+/** T-shirt colours (unisex and kids), swatches from the owner's list; white and black from 1 pc, the rest from 5. */
+export const GARMENT_COLORS: Choice[] = [
+  { id: 'white', label: 'Белый', swatch: '#ffffff' },
+  { id: 'black', label: 'Чёрный', swatch: '#1b1b1d' },
+  { id: 'yellow', label: 'Жёлтый', swatch: '#ffe000' },
+  { id: 'green', label: 'Зелёный', swatch: '#0a7d4a' },
+  { id: 'brown', label: 'Коричневый', swatch: '#7e4e2a' },
+  { id: 'red', label: 'Красный', swatch: '#e31e36' },
+  { id: 'orange', label: 'Оранжевый', swatch: '#ff6a2a' },
+  { id: 'pink', label: 'Розовый', swatch: '#f2bccb' },
+  { id: 'gray', label: 'Серый', swatch: '#8c8c8c' },
+  { id: 'blue', label: 'Синий', swatch: '#2e5fd8' },
+  { id: 'lilac', label: 'Сиреневый', swatch: '#6a64a8' },
+].map((c) => (COLOR_FREE.includes(c.id) ? c : { ...c, hint: COLOR_HINT }));
 
 const formatChoices = (formats: Format[], withNone: boolean): Choice[] => [
   ...(withNone ? [{ id: 'none', label: 'Нет' }] : []),
@@ -303,9 +326,11 @@ function garment(args: {
   formats: Format[];
   /** max number of print places */
   places: number;
-  colors?: boolean;
-  /** own colour set instead of white/black/other-from-10 (e.g. shopper: light, black, other from 20) */
-  colorSet?: { choices: Choice[]; otherMin: number; what: string };
+  /**
+   * colour choices. `otherMin` > 0 adds «Другой цвет» that is sewn to order from that many pcs (shopper: 20);
+   * `colorMin` — the listed colours except `free` ones are ordered from `min` pcs (T-shirts, caps).
+   */
+  colorSet?: { choices: Choice[]; otherMin: number; what: string; colorMin?: { min: number; free: string[]; noun: string } };
   /** priced up to this quantity, more — individually (default GARMENT_MAX) */
   max?: number;
   /** offer «своя вещь»: e.g. 'футболка' → choice «Своя футболка», only the print is charged */
@@ -327,7 +352,7 @@ function garment(args: {
     });
   }
   const isOwn = (sel: Selection) => !!args.own && one(sel, 'blank', 'ours') === 'own';
-  const colorSet = args.colorSet ?? (args.colors ? { choices: [{ id: 'white', label: 'Белый' }, { id: 'black', label: 'Чёрный' }], otherMin: 10, what: 'Футболки других цветов (кроме белого и чёрного)' } : undefined);
+  const colorSet = args.colorSet;
   if (colorSet) {
     options.push({
       ...(args.own ? { hideWhen: { group: 'blank', value: 'own' } } : {}),
@@ -373,6 +398,16 @@ function garment(args: {
     args.blank?.forEach((t) => set.add(t.from));
     return [...set].sort((a, b) => a - b).map((from) => ({ from, price: unitAt(sel, from) }));
   };
+  /** the colour's own minimum: «другой цвет» is sewn from otherMin (shopper: 20), coloured garments from colorMin.min */
+  const colourRule = (sel: Selection): { min: number; note: string } | undefined => {
+    if (!colorSet || isOwn(sel)) return undefined;
+    const color = one(sel, 'color', colorSet.choices[0].id);
+    if (color === 'other') return colorSet.otherMin ? { min: colorSet.otherMin, note: `${colorSet.what} — под заказ от ${colorSet.otherMin} шт` } : undefined;
+    const cm = colorSet.colorMin;
+    return cm && !cm.free.includes(color) ? { min: cm.min, note: `${cm.noun} — от ${cm.min} шт` } : undefined;
+  };
+  /** smallest run for the selected colour; 1 without a colour minimum */
+  const minQtyOf = (sel: Selection): number => colourRule(sel)?.min ?? 1;
   const blankMin = args.blank ? minPrice(args.blank) : 0;
   const maxQty = args.max ?? GARMENT_MAX;
   // price table columns: DTF tiers plus the blank's own tiers (caps: 1 / 10 / 30)
@@ -397,6 +432,7 @@ function garment(args: {
       note: `Больше ${maxQty} шт — цена рассчитывается индивидуально.`,
     },
     ladder: breakpoints,
+    ...(colorSet?.colorMin || colorSet?.otherMin ? { minQty: minQtyOf, minQtyNote: (sel: Selection) => colourRule(sel)?.note } : {}),
     quote: (sel) => {
       const qty = sel.qty;
       const breakdown: Quote['breakdown'] = [];
@@ -412,13 +448,14 @@ function garment(args: {
           per: 'шт',
         });
       }
-      if (rp.length > 1) notes.push('Несколько принтов: самый дорогой — по полной цене, следующий −30%, остальные −50%.');
+      if (rp.length > 1) notes.push('Несколько принтов: самый дорогой — по полной цене, каждый следующий −30%.');
       const unit = unitAt(sel, qty);
       const nb = breakpoints(sel).find((t) => t.from > qty && t.price < unit);
       let error: string | undefined;
       if (colorSet && !isOwn(sel) && one(sel, 'color', colorSet.choices[0].id) === 'other' && qty < colorSet.otherMin) {
         error = `${colorSet.what} — под заказ от ${colorSet.otherMin} шт.`;
       }
+      if (colorSet?.colorMin && qty < minQtyOf(sel)) error = `${colorSet.colorMin.noun} — от ${colorSet.colorMin.min} шт`;
       if (args.blankFrom && !isOwn(sel)) notes.push('Наличие и точную цену изделия уточнит менеджер.');
       if (isOwn(sel)) notes.push(`${cap(`своя ${args.own}`)}: принесите её в мастерскую, напечатаем на ней. Подойдут хлопок, смесовые ткани, синтетика.`);
       if (!args.blank) notes.push('Печать на вашем изделии. Подойдут хлопок, смесовые ткани, синтетика.');
@@ -498,6 +535,8 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   };
 }
 
+const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные футболки' } };
+
 const textile: Category = {
   id: 'textile',
   name: 'Одежда и текстиль',
@@ -511,7 +550,7 @@ const textile: Category = {
       blank: tiers([1, 5, 20], [750, 650, 550]),
       formats: ['a6', 'a5', 'a4', 'a3'],
       places: 4,
-      colors: true,
+      colorSet: tshirtColors,
       own: 'футболка',
     }),
     garment({
@@ -522,7 +561,7 @@ const textile: Category = {
       blank: tiers([1, 5, 20], [750, 550, 500]),
       formats: ['a6', 'a5', 'a4'],
       places: 2,
-      colors: true,
+      colorSet: tshirtColors,
     }),
     garment({
       id: 'hoodie',
@@ -570,14 +609,15 @@ const textile: Category = {
         choices: [
           { id: 'black', label: 'Чёрный', swatch: '#111111' },
           { id: 'white', label: 'Белый', swatch: '#ffffff' },
-          { id: 'red', label: 'Красный', swatch: '#e10f0f' },
-          { id: 'blue', label: 'Синий', swatch: '#2a5be8' },
-          { id: 'yellow', label: 'Жёлтый', swatch: '#ffee00' },
-          { id: 'green', label: 'Зелёный', swatch: '#0f8a0f' },
-          { id: 'khaki', label: 'Хаки', swatch: '#7d6a2c' },
+          { id: 'red', label: 'Красный', swatch: '#e10f0f', hint: COLOR_HINT },
+          { id: 'blue', label: 'Синий', swatch: '#2a5be8', hint: COLOR_HINT },
+          { id: 'yellow', label: 'Жёлтый', swatch: '#ffee00', hint: COLOR_HINT },
+          { id: 'green', label: 'Зелёный', swatch: '#0f8a0f', hint: COLOR_HINT },
+          { id: 'khaki', label: 'Хаки', swatch: '#7d6a2c', hint: COLOR_HINT },
         ],
         otherMin: 0,
         what: '',
+        colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные бейсболки' },
       },
     }),
     garment({

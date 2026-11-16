@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { homeWorks, workLabel } from '@/data/home';
+import type { PortfolioItem } from '@/data/types';
 import { resolvePic } from '@/lib/pic';
 
 const labelIcon: Record<string, IconName> = {
@@ -25,6 +26,15 @@ const labelIcon: Record<string, IconName> = {
   Подарки: 'gift',
   Свадьба: 'gift',
 };
+interface Props {
+  /** the works of the strip; the home page shows the mixed selection */
+  works?: PortfolioItem[];
+  eyebrow?: string;
+  title?: string;
+  accent?: string;
+  lead?: string;
+}
+const { works = homeWorks, eyebrow = 'Портфолио', title = 'Наши', accent = 'работы', lead = 'Настоящие заказы наших клиентов' } = Astro.props;
 // the owner's cat picture has not arrived yet: then a compact placeholder that never covers the cards
 const catReady = 'src' in resolvePic('cat-peek');
 ---
@@ -32,7 +42,7 @@ const catReady = 'src' in resolvePic('cat-peek');
 <section class="section works" aria-labelledby="works-title" data-works>
   <div class="wrap">
     <div class="wk-head">
-      <SectionHead id="works-title" eyebrow="Портфолио" title="Наши" accent="работы" lead="Настоящие заказы наших клиентов">
+      <SectionHead id="works-title" eyebrow={eyebrow} title={title} accent={accent} lead={lead}>
         <div slot="action" class="wk-action">
           <div class:list={['wk-cat', { 'wk-cat-ph': !catReady }]}>
             <Pic name="cat-peek" alt="" w={1400} h={900} fit="contain" label="cat-peek" />
@@ -45,7 +55,7 @@ const catReady = 'src' in resolvePic('cat-peek');
     <div class="wk-stage">
       <ul class="wk-track" role="list" tabindex="0" aria-label="Работы мастерской, лента листается" data-works-track>
         {
-          homeWorks.map((w) => {
+          works.map((w) => {
             const label = workLabel(w.tags);
             return (
               <li class="wk-item">

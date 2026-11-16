@@ -3,18 +3,26 @@
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { homeFaq } from '@/data/home';
+import type { Faq } from '@/data/types';
+
+interface Props {
+  items?: Faq[];
+  title?: string;
+  accent?: string;
+}
+const { items = homeFaq, title = 'Частые', accent = 'вопросы' } = Astro.props;
 ---
 
 <section class="section faq-sec" aria-labelledby="faq-title">
   <div class="wrap">
-    <SectionHead id="faq-title" title="Частые" accent="вопросы">
+    <SectionHead id="faq-title" title={title} accent={accent}>
       <a slot="action" class="faq-all" href="/faq">
         Все вопросы <Icon name="arrow-right" size={20} />
       </a>
     </SectionHead>
     <div class="faq">
       {
-        homeFaq.map((f) => (
+        items.map((f) => (
           <details class="faq-item">
             <summary class="faq-q">
               <span>{f.q}</span>

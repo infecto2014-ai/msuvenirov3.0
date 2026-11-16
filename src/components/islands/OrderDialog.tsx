@@ -227,6 +227,7 @@ export default function OrderDialog() {
                 <div class="order-items">
                   {items.map((i) => {
                     const p = i.calc ? findProduct(i.calc.cat, i.calc.product) : undefined;
+                    const minQty = p && i.calc ? p.minQty?.(i.calc.sel) : undefined;
                     return (
                       <div class="order-item">
                         <div class="order-item-text">
@@ -239,13 +240,13 @@ export default function OrderDialog() {
                           {i.note && <span class="order-item-note">{i.note}</span>}
                           {p && (
                             <span class="order-qty" role="group" aria-label={`Количество: ${i.title}`}>
-                              <button type="button" aria-label="Меньше" disabled={stepQty(p.qty, i.qty, -1) === i.qty} onClick={() => setEstimateQty(i.id, stepQty(p.qty, i.qty, -1))}>
+                              <button type="button" aria-label="Меньше" disabled={stepQty(p.qty, i.qty, -1, minQty) === i.qty} onClick={() => setEstimateQty(i.id, stepQty(p.qty, i.qty, -1, minQty))}>
                                 −
                               </button>
                               <input
                                 type="number"
                                 inputMode="numeric"
-                                min={p.qty.min}
+                                min={minQty ?? p.qty.min}
                                 value={i.qty}
                                 aria-label="Количество, шт"
                                 onChange={(e) => setEstimateQty(i.id, Number((e.target as HTMLInputElement).value))}

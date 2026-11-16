@@ -35,3 +35,23 @@ test('getEstimate: нормальная позиция сохраняется', 
   const { getEstimate } = await load(JSON.stringify([item, { foo: 1 }]));
   expect(getEstimate()).toEqual([item]);
 });
+
+test('stepQty и setEstimateQty: цветная футболка не опускается ниже 5 шт', async () => {
+  const { findProduct, defaultSelection } = await import('@/data/pricing');
+  const p = findProduct('textile', 'tshirt-unisex')!;
+  const sel = { ...defaultSelection(p), qty: 5, options: { ...defaultSelection(p).options, color: 'red' } };
+  const item = { id: 'c1', title: 'Футболка', details: '', qty: 5, unitPrice: 1, total: 5, calc: { cat: 'textile', product: 'tshirt-unisex', sel } };
+  const { stepQty, setEstimateQty, getEstimate } = await load(JSON.stringify([item]));
+  expect(stepQty(p.qty, 5, -1, p.minQty!(sel))).toBe(5);
+  expect(stepQty(p.qty, 6, -1, p.minQty!(sel))).toBe(5);
+  expect(stepQty(p.qty, 1, 1)).toBe(2);
+  setEstimateQty('c1', 3);
+  expect(getEstimate()[0].qty).toBe(5);
+  setEstimateQty('c1', 7);
+  expect(getEstimate()[0].qty).toBe(7);
+  // белая — с 1 шт
+  const white = { ...item, id: 'w1', qty: 5, calc: { ...item.calc, sel: { ...sel, options: { ...sel.options, color: 'white' } } } };
+  const m = await load(JSON.stringify([white]));
+  m.setEstimateQty('w1', 1);
+  expect(m.getEstimate()[0].qty).toBe(1);
+});
