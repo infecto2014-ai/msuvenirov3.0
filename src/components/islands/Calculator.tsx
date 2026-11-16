@@ -158,7 +158,11 @@ export default function Calculator({ category, product, only, hideCategories, lo
     return l.length ? l : c.products;
   };
   const list = listOf(cat);
-  const [prodId, setProdId] = useState(() => list.find((p) => p.id === product)?.id ?? list[0].id);
+  const [prodId, setProdId] = useState(() => {
+    // without `product` a tiled calculator opens on its first tile (list order is the catalogue's, not the tiles')
+    const first = product ?? tiles?.[0]?.product;
+    return list.find((p) => p.id === first)?.id ?? list[0].id;
+  });
   const prod = list.find((p) => p.id === prodId) ?? list[0];
   const showProducts = (tiles?.length ? tiles.length > 1 : list.length > 1) && !lockProduct;
   const [sel, setSel] = useState<Selection>(() => defaultSelection(prod));

@@ -14,4 +14,5 @@ test('страницы нового дизайна — не заглушки', (
   expect(REAL_PAGES).toContain('pechat-na-shopperah');
   expect(REAL_PAGES).toContain('pechat-na-kepkah');
   expect(REAL_PAGES).toContain('pechat-na-specodezhde');
+  expect(REAL_PAGES).toContain('pechat-na-sportivnoy-forme');
 });
