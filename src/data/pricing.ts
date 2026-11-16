@@ -508,6 +508,9 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   const unitAt = (sel: Selection, qty: number) =>
     round((args.blank ? tierPrice(args.blank, qty) : 0) + prints(sel).reduce((a, f) => a + tierPrice(subPrint[f].tiers, qty), 0));
   const breaks = [...new Set([args.min, ...subTierFrom.filter((t) => t > args.min), ...(args.blank ?? []).map((t) => t.from)])].sort((a, b) => a - b);
+  // price table columns: the print tiers plus the blank's own steps above the minimum (shopper-sub: 230 ₽ from 50 pcs),
+  // so every cell is the price the calculator quotes at its column's first quantity
+  const cols = [...new Set([...subTierFrom, ...(args.blank ?? []).map((t) => t.from).filter((f) => f > args.min)])].sort((a, b) => a - b);
   return {
     id: args.id,
     name: args.name,
@@ -517,10 +520,10 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
     options,
     fromPrice: (args.blank ? minPrice(args.blank) : 0) + Math.min(...args.formats.map((f) => minPrice(subPrint[f].tiers))),
     table: {
-      columns: rangeLabels(subTierFrom),
+      columns: rangeLabels(cols),
       rows: [
-        ...(args.blank ? [{ label: args.name, cells: subTierFrom.map((q) => rub(tierPrice(args.blank!, Math.max(q, args.min)))) }] : []),
-        ...args.formats.map((f) => ({ label: `+ сублимация ${subPrint[f].label}`, cells: subPrint[f].tiers.map((t) => `+${rub(t.price)}`) })),
+        ...(args.blank ? [{ label: args.name, cells: cols.map((q) => rub(tierPrice(args.blank!, Math.max(q, args.min)))) }] : []),
+        ...args.formats.map((f) => ({ label: `+ сублимация ${subPrint[f].label}`, cells: cols.map((q) => `+${rub(tierPrice(subPrint[f].tiers, Math.max(q, args.min)))}`) })),
       ],
     },
     ladder: (sel) => breaks.map((from) => ({ from, price: unitAt(sel, from) })),
@@ -631,6 +634,9 @@ const textile: Category = {
       places: 2,
       // owner, 16.11.2026: all 11 colours, white and black from 1 pc, coloured from 10 pcs (was: light / black, other sewn from 20)
       colors: { min: COLOR_MIN.shopper, noun: 'Цветные шопперы' },
+      // spec 2026-11-16-shoppers-caps: the «Свой шоппер» tile — the customer's shopper, only the print
+      own: 'шоппер',
+      ownForms: { ours: 'Наш шоппер', own: 'Свой шоппер', it: 'его', onIt: 'нём' },
     }),
     // owner, 05.11.2026: light linen shopper for sublimation, from 10 pcs
     sublimated({

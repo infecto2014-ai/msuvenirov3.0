@@ -37,7 +37,7 @@ const cards = presets.map((v) => {
   <div class="wrap">
     <SectionHead id="tp-title" title="Готовые" accent="варианты" lead="Выберите похожий заказ — калькулятор заполнится сам, останется поправить мелочи." />
 
-    <ul class="tp" role="list">
+    <ul class:list={['tp', { 'tp-n5': cards.length === 5 }]} role="list">
       {
         cards.map((c) => (
           <li class="tp-card">
@@ -102,6 +102,16 @@ const cards = presets.map((v) => {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--s-4);
+  }
+  /* five variants (shoppers): 3 + 2, the second row centred; 2 + 2 + 1 centred ≤ 1100px */
+  .tp-n5 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .tp-n5 > li {
+    grid-column: span 2;
+  }
+  .tp-n5 > li:nth-child(4) {
+    grid-column: 2 / span 2;
   }
   .tp-card {
     display: flex;
@@ -189,11 +199,23 @@ const cards = presets.map((v) => {
     .tp {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .tp-n5 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .tp-n5 > li:nth-child(4) {
+      grid-column: span 2;
+    }
+    .tp-n5 > li:nth-child(5) {
+      grid-column: 2 / span 2;
+    }
   }
   @media (max-width: 560px) {
     .tp {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--s-3);
+    }
+    .tp-n5 > li:nth-child(n) {
+      grid-column: auto;
     }
     .tp-media {
       aspect-ratio: 16 / 10;

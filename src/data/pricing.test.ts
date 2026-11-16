@@ -228,6 +228,42 @@ describe('pricing', () => {
     expect(t.p.quote(t.s).notes.join(' ')).toContain('Своя футболка: принесите её в мастерскую, напечатаем на ней.');
   });
 
+  // spec 2026-11-16-shoppers-caps: the «Свой шоппер» tile — the customer's shopper, only the DTF print
+  it('own shopper: «Наш шоппер / Свой шоппер», only the DTF print, colour hidden, no minimum', () => {
+    const p = findProduct('textile', 'shopper')!;
+    const blank = p.options!.find((g) => g.id === 'blank')!;
+    expect(blank.choices.map((c) => c.label)).toEqual(['Наш шоппер', 'Свой шоппер']);
+    expect(p.options!.find((g) => g.id === 'color')!.hideWhen).toEqual({ group: 'blank', value: 'own' });
+    const { s } = sel('textile', 'shopper', { qty: 1, options: { blank: 'own', color: 'red', print1: 'a4' } });
+    const q = p.quote(s);
+    expect(q.total).toBe(800);
+    expect(q.error).toBeUndefined();
+    expect(q.breakdown.map((b) => b.label)).toEqual(['Печать DTF А4']);
+    expect(q.notes.join(' ')).toContain('Свой шоппер: принесите его в мастерскую, напечатаем на нём.');
+    expect(p.minQty!(s)).toBe(1);
+    // ours stays as it was: 450 + A4 800
+    expect(p.quote(sel('textile', 'shopper', { qty: 1, options: { print1: 'a4' } }).s).total).toBe(1250);
+  });
+
+  // review 16.11.2026: the shopper-sub table showed 250 ₽ in «21–99 шт» while from 50 pcs it is 230 ₽
+  it('sublimation tables: every cell equals what the calculator quotes at the column start', () => {
+    for (const id of ['shopper-sub', 'tshirt-sub', 'sub-print']) {
+      const p = findProduct('textile', id)!;
+      const t = p.table!;
+      t.columns.forEach((col, ci) => {
+        const qty = Math.max(Number(col.match(/\d+/)![0]), p.qty.min);
+        t.rows.forEach((row) => {
+          const f = row.label.match(/сублимация (А\d)/)?.[1];
+          const fid = f ? { А6: 'a6', А5: 'a5', А4: 'a4', А3: 'a3' }[f]! : 'a6';
+          const q = p.quote({ ...defaultSelection(p), options: { ...defaultSelection(p).options, print1: fid }, qty });
+          const want = f ? q.breakdown.find((b) => b.label.startsWith(`Сублимация ${f}`))!.amount : q.breakdown[0].amount;
+          expect(row.cells[ci], `${id} ${row.label} @ ${col}`).toBe(`${f ? '+' : ''}${rub(want)}`);
+        });
+      });
+    }
+    expect(findProduct('textile', 'shopper-sub')!.table!.columns).toContain('50–99 шт');
+  });
+
   it('clothing is priced up to 50 pcs, more — individually', () => {
     const p = findProduct('textile', 'tshirt-unisex')!;
     expect(p.qty.max).toBe(50);

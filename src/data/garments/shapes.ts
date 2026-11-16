@@ -47,6 +47,21 @@ export const SHAPES = {
       { l: 'C', x: 56, y: 30, what: SLEEVE },
     ],
   },
+  // Cotton shopper TEXTILLER: 38 cm wide, 42 cm high, handles 35 cm high and 3 cm wide (one handle drawn, the
+  // other one is behind it); a hem line 3 cm under the top
+  shopper: {
+    path: 'M0 0H38V42H0ZM8 0C8 -46.7 30 -46.7 30 0H27C27 -42.7 11 -42.7 11 0Z',
+    extra: 'M0 3H38',
+    center: 19,
+    top: 7,
+    viewBox: '-6 -38 50 83',
+    dims: ['M3 1V41', 'M1 38H37', 'M34 -1V-34'],
+    labels: [
+      { l: 'A', x: 3, y: 22, what: 'высота сумки' },
+      { l: 'B', x: 19, y: 38, what: 'ширина сумки' },
+      { l: 'C', x: 34, y: -17, what: 'высота ручек' },
+    ],
+  },
 } satisfies Record<string, GarmentShape>;
 
 export type ShapeId = keyof typeof SHAPES;

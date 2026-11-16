@@ -24,6 +24,28 @@ export interface SizeTable {
   rows: string[][];
 }
 
+/** a card of an extra «Подробнее» section: two kinds of a product, two technologies… */
+export interface DetailCard {
+  title: string;
+  /** a small pill next to the title («от 1 штуки», «хлопковый шоппер») */
+  tag?: string;
+  /** label — value lines (as the specs) */
+  rows?: { label: string; value: string }[];
+  /** a checked list */
+  points?: string[];
+  /** a closing line under the rows / points */
+  text?: string;
+}
+
+/** an extra «Подробнее» section of cards, drawn after the specs and before the print sizes */
+export interface DetailExtra {
+  id: string;
+  title: string;
+  icon: IconName;
+  sub: string;
+  cards: DetailCard[];
+}
+
 export interface GarmentPage {
   /** page address, also the services.ts entry with the page's questions unless faqSlug says otherwise */
   slug: string;
@@ -58,6 +80,8 @@ export interface GarmentPage {
   /** the measuring scheme next to the charts is drawn on `prints.shape` (none without prints) */
   sizes?: { adult?: SizeTable; kids?: SizeTable; sub: string; /** not confirmed — a visible note */ todo?: boolean };
   care?: string[];
+  /** extra card sections (two kinds of shopper, «DTF или сублимация»…), after the specs, before the print sizes */
+  extra?: DetailExtra[];
   /** DTF print sizes (w×h, cm) drawn to scale on the `shape` outline (src/data/garments/shapes.ts) */
   prints?: { sizes: { label: string; w: number; h: number }[]; sub: string; shape: ShapeId; caption: string };
   /** portfolio tag of the page's works */

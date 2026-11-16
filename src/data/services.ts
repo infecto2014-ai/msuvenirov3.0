@@ -293,7 +293,7 @@ export const services: ServicePage[] = [
   {
     slug: '/pechat-na-shopperah',
     name: 'Печать на шопперах',
-    // the page itself is src/pages/pechat-na-shopperah.astro (content — src/data/shoppersPage.ts); this entry is for menus and sitemap
+    // the page itself is src/pages/pechat-na-shopperah.astro (content — src/data/garments/shopper.ts); this entry gives its questions, menus and sitemap
     title: 'Печать на шопперах в Калининграде — шоппер с логотипом',
     description:
       'Печать на шопперах в Калининграде: шоппер с принтом от 1 шт (DTF) и светлые шопперы с сублимацией от 10 шт. Эко-сумки с логотипом оптом, счёт без НДС.',
@@ -361,7 +361,7 @@ export const services: ServicePage[] = [
   {
     slug: '/pechat-na-kepkah',
     name: 'Печать на кепках',
-    // own page: src/pages/pechat-na-kepkah.astro (content — src/data/capsPage.ts); this entry is for menus and sitemap
+    // the page itself is src/pages/pechat-na-kepkah.astro (content — src/data/garments/cap.ts); this entry gives its questions, menus and sitemap
     title: 'Печать на кепках в Калининграде — бейсболка с логотипом',
     description:
       'Печать на кепках и бейсболках в Калининграде от 1 шт: логотип, имя или надпись DTF. Хлопковые бейсболки 11 цветов, кепки с логотипом оптом, счёт без НДС.',
