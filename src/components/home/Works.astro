@@ -119,24 +119,14 @@ const catReady = 'src' in resolvePic('cat-peek');
     transform-origin: 50% 100%;
     pointer-events: none;
   }
-  /* a soft white ledge in front of the picture's bottom: it hides the flat cut of the hoodie hem and the paws rest on it;
-     it rotates together with the cat as one group */
-  .wk-cat:not(.wk-cat-ph)::after {
-    content: '';
-    position: absolute;
-    z-index: 2;
-    left: -5%;
-    right: -3%;
-    bottom: calc(var(--cw) * -0.012);
-    height: calc(var(--cw) * 0.085);
-    border-radius: 50% 50% 46% 46% / 60% 60% 40% 40%;
-    background: linear-gradient(180deg, #fff 0%, #f6f9ff 100%);
-    box-shadow:
-      0 8px 18px rgba(21, 87, 255, 0.09),
-      0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  /* the picture's flat bottom cut (the hoodie hem) melts into the background instead of standing on a white
+     ledge (owner, 16.11.2026: «под котом белая полоса не очень выглядит»); the fade turns together with the cat */
+  .wk-cat:not(.wk-cat-ph) {
+    -webkit-mask-image: linear-gradient(0deg, transparent 0, transparent 4%, #000 22%);
+    mask-image: linear-gradient(0deg, transparent 0, transparent 4%, #000 22%);
   }
-  /* The cat peeks out once, when the block first comes into view (works-cat.ts): the cat and its ledge fade in,
-     the cat rises 12px from behind the ledge and sways ±3° around its bottom edge, then stays still.
+  /* The cat peeks out once, when the block first comes into view (works-cat.ts): the cat fades in,
+     the cat rises 12px and sways ±3° around its bottom edge, then stays still.
      Without JS (or with reduced motion) the script never sets data-cat and the cat simply sits in place. */
   .wk-cat[data-cat='wait'] {
     opacity: 0;
