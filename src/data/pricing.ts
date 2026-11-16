@@ -686,7 +686,8 @@ const textile: Category = {
       name: 'Печать на вашем изделии',
       short: 'принесите свою вещь',
       formats: ['a6', 'a5', 'a4', 'a3'],
-      places: 3,
+      // owner, 16.11.2026: print on the customer's own item — up to 5 prints (was 3), every next −30%
+      places: 5,
     }),
   ],
 };

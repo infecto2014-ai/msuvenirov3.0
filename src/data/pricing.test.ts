@@ -158,6 +158,20 @@ describe('pricing', () => {
     expect(c.p.quote(c.s).total).toBe(650 + 600 + 3 * 420);
   });
 
+  // owner, 16.11.2026 (workwear and sport pages): print on the customer's own item — up to 5 prints, each А6–А3
+  it('own-item: 5 prints А6–А3, the 5th also −30%; an old line with 3 places still quotes', () => {
+    const places = findProduct('textile', 'own-item')!.options!.filter((g) => /^print\d$/.test(g.id));
+    expect(places).toHaveLength(5);
+    expect(places[0].choices.map((c) => c.id)).toEqual(['a6', 'a5', 'a4', 'a3']);
+    const o = sel('textile', 'own-item', { qty: 1, options: { print1: 'a3', print2: 'a3', print3: 'a6', print4: 'a6', print5: 'a6' } });
+    expect(o.p.quote(o.s).total).toBe(1100 + 1100 * 0.7 + 3 * 600 * 0.7);
+    expect(o.p.quote(o.s).breakdown.filter((b) => b.label.includes('(−30%)'))).toHaveLength(4);
+    const old = sel('textile', 'own-item', { qty: 1, options: { print1: 'a6', print2: 'a6', print3: 'a6' } });
+    delete (old.s.options as Record<string, unknown>).print4;
+    delete (old.s.options as Record<string, unknown>).print5;
+    expect(old.p.quote(old.s).total).toBe(600 + 2 * 420);
+  });
+
   it('old estimate lines: hoodie with 4 places, cap with 3 places still quote', () => {
     const h = sel('textile', 'hoodie', { qty: 1, options: { print1: 'a4', print2: 'a6', print3: 'none', print4: 'a6' } });
     delete (h.s.options as Record<string, unknown>).print5;

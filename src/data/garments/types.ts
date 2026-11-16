@@ -3,6 +3,7 @@
 import type { CalcTile } from '@/lib/calc-preset';
 import type { IconName } from '@/components/ui/Icon.astro';
 import type { ShapeId } from './shapes';
+import type { Faq } from '../types';
 
 /** a ready-made variant: a real work photo, its calculator settings; the price is quoted by pricing.ts */
 export interface GarmentPreset {
@@ -90,6 +91,10 @@ export interface GarmentPage {
   reviewWords: string[];
   /** services.ts entry with the questions */
   faqSlug: string;
+  /** the page's own questions — used instead of the services.ts entry when given (pages without an entry there) */
+  faq?: Faq[];
+  /** works to show: files of /portfolio in this order (instead of the `worksTag` selection) */
+  works?: string[];
   prices: {
     title: string;
     accent: string;
