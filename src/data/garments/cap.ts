@@ -43,7 +43,7 @@ const presets: GarmentPreset[] = [
     note: 'логотип компании спереди — для зала, курьеров, выездной команды',
     product: 'cap',
     qty: 30,
-    options: { color: 'white', print1: 'a6', print2: 'none' },
+    options: { color: 'black', print1: 'a6', print2: 'none' },
     img: '/portfolio/branded-caps.webp',
   },
   {
