@@ -5,11 +5,11 @@
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
-import { GARMENT_COLORS } from '@/data/pricing';
+import { COLOR_MIN, GARMENT_COLORS } from '@/data/pricing';
 import { adultSizes, kidsSizes, printSizes, teeCare, teeSpecs } from '@/data/tshirt';
 
 const sections: { id: string; icon: IconName; title: string; sub: string }[] = [
-  { id: 'colors', icon: 'palette', title: 'Цвета', sub: 'Белый и чёрный — в наличии, остальные — от 5 шт' },
+  { id: 'colors', icon: 'palette', title: 'Цвета', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN} шт` },
   { id: 'specs', icon: 'shirt', title: 'Ткань и характеристики', sub: '100% хлопок, 160–180 г/м², печать DTF' },
   { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: 'А6, А5, А4 и А3 на футболке' },
   { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: 'Взрослые XS–3XL, детские 98–164' },

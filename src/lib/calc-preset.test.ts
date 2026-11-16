@@ -48,3 +48,13 @@ test('шоппер другого цвета из готового вариан�
   expect(s.qty).toBe(20);
   expect(shopper.quote(s).error).toBeUndefined();
 });
+
+test('очередь: вариант, нажатый до загрузки калькулятора, ждёт и выдаётся один раз', async () => {
+  const { queueCalcPreset, takeCalcPreset } = await import('./calc-preset');
+  const w: Record<string, unknown> = {};
+  const d = { product: 'tshirt-unisex', options: { color: 'blue' }, qty: 20 };
+  expect(takeCalcPreset(w)).toBeUndefined();
+  queueCalcPreset(w, d);
+  expect(takeCalcPreset(w)).toEqual(d);
+  expect(takeCalcPreset(w)).toBeUndefined();
+});

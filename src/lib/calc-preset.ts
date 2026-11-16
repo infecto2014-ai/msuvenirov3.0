@@ -31,3 +31,18 @@ export function applyPreset(p: Product, preset: CalcPreset): Selection {
   sel.qty = Math.min(p.qty.max, Math.round(want));
   return sel;
 }
+
+/**
+ * A button pressed before the calculator island has hydrated (phones hydrate it only when it scrolls into view)
+ * leaves its settings here; the calculator takes them right after it attaches its CALC_APPLY_EVENT listener.
+ */
+const PENDING = '__calcPending';
+export const queueCalcPreset = (w: object, d: CalcApplyDetail) => {
+  (w as Record<string, unknown>)[PENDING] = d;
+};
+export const takeCalcPreset = (w: object): CalcApplyDetail | undefined => {
+  const rec = w as Record<string, CalcApplyDetail | undefined>;
+  const d = rec[PENDING];
+  delete rec[PENDING];
+  return d;
+};

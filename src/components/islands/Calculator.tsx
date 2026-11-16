@@ -16,7 +16,7 @@ import {
   type Selection,
 } from '@/data/pricing';
 import { addToEstimate, FILES_EVENT, getOrderFiles, openOrder, setOrderFiles } from '@/lib/estimate';
-import { applyPreset, CALC_APPLY_EVENT, type CalcApplyDetail } from '@/lib/calc-preset';
+import { applyPreset, CALC_APPLY_EVENT, takeCalcPreset, type CalcApplyDetail } from '@/lib/calc-preset';
 import { ACCEPT, MAX_FILES, validateFiles } from '@/lib/order';
 import { reachGoal } from '@/lib/metrika';
 import { ProductIcon } from './productIcons';
@@ -213,8 +213,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
 
   // «Настроить в калькуляторе» on a ready-made variant: fill the calculator and scroll to it
   useEffect(() => {
-    const on = (e: Event) => {
-      const d = (e as CustomEvent<CalcApplyDetail>).detail;
+    const apply = (d: CalcApplyDetail | undefined) => {
       if (!d?.product) return;
       const fc = cats.find((c) => listOf(c).some((p) => p.id === d.product));
       const fp = fc && listOf(fc).find((p) => p.id === d.product);
@@ -223,7 +222,13 @@ export default function Calculator({ category, product, only, hideCategories, lo
       const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       rootRef.current?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
     };
+    const on = (e: Event) => {
+      takeCalcPreset(window);
+      apply((e as CustomEvent<CalcApplyDetail>).detail);
+    };
     window.addEventListener(CALC_APPLY_EVENT, on);
+    // pressed before this island hydrated: the settings are waiting in the queue
+    apply(takeCalcPreset(window));
     return () => window.removeEventListener(CALC_APPLY_EVENT, on);
   }, [cats]);
 
@@ -766,7 +771,10 @@ export default function Calculator({ category, product, only, hideCategories, lo
           </div>
         </div>
 
-        <aside class="calc-result" aria-live="polite" aria-label="Расчёт">
+        <aside class="calc-result" aria-label="Расчёт">
+          <p class="visually-hidden" role="status" aria-live="polite">
+            {quote.error ? 'Цена индивидуально' : `Итого ${quote.from ? 'от ' : ''}${rub(quote.total)} за ${n(sel.qty)} шт`}
+          </p>
           <div class="calc-result-inner" ref={resultRef}>
             <div class="calc-result-head">
               <span class="calc-result-ico" aria-hidden="true">

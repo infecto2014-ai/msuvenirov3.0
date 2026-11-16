@@ -5,7 +5,9 @@
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { findProduct } from '@/data/pricing';
+import { COLOR_MIN, extraPrintFactor, findProduct } from '@/data/pricing';
+
+const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
 
 const tables = [
   { id: 'tshirt-unisex', title: 'Взрослая футболка' },
@@ -13,8 +15,8 @@ const tables = [
 ].map((t) => ({ ...t, table: findProduct('textile', t.id)!.table! }));
 
 const rules = [
-  { icon: 'palette' as const, text: 'Цветные футболки — от 5 шт. Белые и чёрные — с 1 шт.' },
-  { icon: 'layers' as const, text: 'Каждый следующий принт на изделии — со скидкой −30%.' },
+  { icon: 'palette' as const, text: `Цветные футболки — от ${COLOR_MIN} шт. Белые и чёрные — с 1 шт.` },
+  { icon: 'layers' as const, text: `Каждый следующий принт — со скидкой −${extraOff}%, самый дорогой — по полной цене.` },
 ];
 ---
 
