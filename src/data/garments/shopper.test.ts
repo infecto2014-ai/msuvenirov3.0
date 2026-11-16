@@ -93,6 +93,8 @@ test('«Подробнее»: два вида шоппера и «DTF или с�
   expect(row(0, 'Размер')).toBe('38 × 42 см');
   expect(row(1, 'Цвет')).toBe('небелёный лён');
   expect(row(1, 'Ручки')).toBe('70 см');
+  // the calculator tile's name, so the card and the tile read as one product
+  expect(kinds[1].tag).toContain(shopper.calc.tiles.find((t) => t.product === 'shopper-sub')!.label);
   const tech = shopper.extra![1].cards;
   expect(tech.map((t) => t.title)).toEqual(['DTF-печать', 'Сублимация']);
   expect(tech[0].points).toContain('До А4 с каждой стороны, можно с двух сторон.');

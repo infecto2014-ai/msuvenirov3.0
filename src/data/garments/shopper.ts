@@ -118,7 +118,8 @@ export const shopper: GarmentPage = {
         },
         {
           title: 'Светлый шоппер цвета льна',
-          tag: 'для тиража',
+          // review 16.11.2026: the calculator tile's name next to the 2.0 title
+          tag: 'Шоппер для сублимации · для тиража',
           rows: [
             { label: 'Материал', value: 'синтетическая ткань для сублимации, 330 г/м²' },
             { label: 'Цвет', value: 'небелёный лён' },

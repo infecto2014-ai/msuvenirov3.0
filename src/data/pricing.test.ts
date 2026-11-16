@@ -245,6 +245,25 @@ describe('pricing', () => {
     expect(p.quote(sel('textile', 'shopper', { qty: 1, options: { print1: 'a4' } }).s).total).toBe(1250);
   });
 
+  // review 16.11.2026: the shopper-sub table showed 250 ₽ in «21–99 шт» while from 50 pcs it is 230 ₽
+  it('sublimation tables: every cell equals what the calculator quotes at the column start', () => {
+    for (const id of ['shopper-sub', 'tshirt-sub', 'sub-print']) {
+      const p = findProduct('textile', id)!;
+      const t = p.table!;
+      t.columns.forEach((col, ci) => {
+        const qty = Math.max(Number(col.match(/\d+/)![0]), p.qty.min);
+        t.rows.forEach((row) => {
+          const f = row.label.match(/сублимация (А\d)/)?.[1];
+          const fid = f ? { А6: 'a6', А5: 'a5', А4: 'a4', А3: 'a3' }[f]! : 'a6';
+          const q = p.quote({ ...defaultSelection(p), options: { ...defaultSelection(p).options, print1: fid }, qty });
+          const want = f ? q.breakdown.find((b) => b.label.startsWith(`Сублимация ${f}`))!.amount : q.breakdown[0].amount;
+          expect(row.cells[ci], `${id} ${row.label} @ ${col}`).toBe(`${f ? '+' : ''}${rub(want)}`);
+        });
+      });
+    }
+    expect(findProduct('textile', 'shopper-sub')!.table!.columns).toContain('50–99 шт');
+  });
+
   it('clothing is priced up to 50 pcs, more — individually', () => {
     const p = findProduct('textile', 'tshirt-unisex')!;
     expect(p.qty.max).toBe(50);
