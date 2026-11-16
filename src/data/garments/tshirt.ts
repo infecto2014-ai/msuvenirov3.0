@@ -129,7 +129,7 @@ export const tshirt: GarmentPage = {
     lead: 'Выберите футболку, цвет и принты — цена за штуку и за тираж посчитается сразу.',
   },
   presets,
-  colors: { product: 'tshirt-unisex', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN} шт` },
+  colors: { product: 'tshirt-unisex', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN.tshirt} шт` },
   specs: { items: specs, sub: '100% хлопок, 160–180 г/м², печать DTF' },
   sizes: { adult: adultSizes, kids: kidsSizes, sub: 'Взрослые XS–3XL, детские 98–164' },
   care,
@@ -147,7 +147,7 @@ export const tshirt: GarmentPage = {
       { id: 'tshirt-kids', title: 'Детская футболка' },
     ],
     rules: [
-      { icon: 'palette', text: `Цветные футболки — от ${COLOR_MIN} шт. Белые и чёрные — с 1 шт.` },
+      { icon: 'palette', text: `Цветные футболки — от ${COLOR_MIN.tshirt} шт. Белые и чёрные — с 1 шт.` },
       { icon: 'layers', text: `Каждый следующий принт — со скидкой −${extraOff}%, самый дорогой — по полной цене.` },
     ],
   },

@@ -1,8 +1,9 @@
 // «Печать на худи» (/pechat-na-hudi) on the clothing template: ready-made variants, specs, size chart, print sizes,
 // care. Texts are taken verbatim from msuvenirov 2.0 (src/data/garments.ts); prices are never written here — a
 // variant's price is quoted by the calculator rules in pricing.ts (presetPrice). Specs and sizes are confirmed by
-// the owner (16.11.2026) — no «уточняйте» notes. Colours: white and black only (no grey melange).
-import { extraPrintFactor } from '../pricing';
+// the owner (16.11.2026) — no «уточняйте» notes. Colours: the 11 garment colours of pricing.ts, coloured from 5 pcs
+// (owner, 16.11.2026; no grey melange).
+import { COLOR_MIN, extraPrintFactor } from '../pricing';
 import { site } from '../site';
 import type { GarmentPage, GarmentPreset, SizeTable } from './types';
 
@@ -49,7 +50,7 @@ const specs = [
   { label: 'Состав', value: '80% хлопок, 20% полиэстер' },
   { label: 'Плотность', value: '320 г/м², с начёсом внутри' },
   { label: 'Размеры', value: 'от S до 3XL' },
-  { label: 'Цвета', value: 'белый и чёрный' },
+  { label: 'Цвета', value: `11 цветов: белый и чёрный — с 1 шт, цветные — от ${COLOR_MIN.hoodie} шт` },
   { label: 'Технология печати', value: 'DTF — на тёмном и светлом трикотаже' },
   { label: 'Места печати', value: 'грудь, спина, рукава, капюшон — до 4 принтов на одном худи' },
   { label: 'Размер принта', value: 'от А6 (10×15 см) до А3 (28×38 см) на спине' },
@@ -87,8 +88,8 @@ const extraOff = Math.round((1 - extraPrintFactor[1]) * 100);
 export const hoodie: GarmentPage = {
   slug: '/pechat-na-hudi',
   title: 'Печать на худи в Калининграде от 1 шт | Мастерская сувениров',
-  // owner, 16.11.2026: hoodies are white and black only (+ the customer's own) — not «на любом цвете»
-  description: `Печать на худи в Калининграде от 1 шт: большой принт на спине, логотип на груди, надпись на рукаве. DTF на белых и чёрных худи и на вашем. ТЦ «Экватор», ${site.phone}.`,
+  // owner, 16.11.2026: white, black and coloured hoodies (coloured from 5 pcs) + the customer's own
+  description: `Печать на худи в Калининграде от 1 шт: большой принт на спине, логотип на груди, надпись на рукаве. DTF на белых, чёрных и цветных худи и на вашем. ТЦ «Экватор», ${site.phone}.`,
   h1: 'Печать на худи в Калининграде',
   accent: 'от 1 штуки',
   crumbs: [
@@ -108,8 +109,8 @@ export const hoodie: GarmentPage = {
     lead: 'Выберите худи, цвет и принты — цена за штуку и за тираж посчитается сразу.',
   },
   presets,
-  // owner, 16.11.2026: only white and black (the grey melange of 2.0 is not shown)
-  colors: { product: 'hoodie', sub: 'Белый и чёрный — в наличии' },
+  // owner, 16.11.2026: all 11 colours like the T-shirts (the grey melange of 2.0 is not shown)
+  colors: { product: 'hoodie', sub: `Белый и чёрный — в наличии, остальные — от ${COLOR_MIN.hoodie} шт` },
   specs: { items: specs, sub: '80% хлопок, 320 г/м² с начёсом, печать DTF' },
   sizes: { adult: adultSizes, sub: 'Унисекс, от S до 3XL' },
   care,
@@ -128,7 +129,7 @@ export const hoodie: GarmentPage = {
     lead: 'Цена указана за одно худи вместе с печатью. Чем больше тираж, тем дешевле печать.',
     products: [{ id: 'hoodie', title: 'Худи' }],
     rules: [
-      { icon: 'palette', text: 'Худи — белые и чёрные, одна цена при любом количестве.' },
+      { icon: 'palette', text: `Цветные худи — от ${COLOR_MIN.hoodie} шт. Белые и чёрные — с 1 шт. Цена худи одна при любом количестве.` },
       { icon: 'layers', text: `Каждый следующий принт — со скидкой −${extraOff}%, самый дорогой — по полной цене.` },
     ],
   },

@@ -86,7 +86,7 @@ test('тексты сайта не спорят с правилами 16.11: х�
   const prints = (id: string) => findProduct('textile', id)!.options!.filter((g) => /^print\d$/.test(g.id)).length;
   const all = JSON.stringify({ services, generalFaq });
   const general = JSON.stringify(generalFaq);
-  expect(general).toContain(`Худи — белые и чёрные, ${rub(HOODIE_BLANK)} за штуку при любом количестве`);
+  expect(general).toContain(`Худи — ${rub(HOODIE_BLANK)} за штуку при любом количестве, плюс печать; белые и чёрные — от 1 штуки, цветные — от 5.`);
   expect(all).not.toMatch(/худи[^"]{0,40}уточняйте наличие/i);
   expect(all).not.toContain('До 4 принтов');
   expect(all).toContain(`${rub(HOODIE_BLANK)} за штуку при любом количестве`);
@@ -127,12 +127,12 @@ test('отзывы футболок: все про футболки, не доб
   expect(topped).toBe(false);
 });
 
-test('детская футболка в «Печати на одежде»: места печати не выдумываем — «До 5 принтов, каждый до А3»', () => {
+// owner, 16.11.2026 (after the hoodie): the kids T-shirt is printed on all places like the adult one
+test('детская футболка в «Печати на одежде»: «Грудь, спина, рукав; до 5 принтов, каждый до А3»', () => {
   const prints = findProduct('textile', 'tshirt-kids')!.options!.filter((g) => /^print\d$/.test(g.id)).length;
   const blocks = JSON.stringify(services.find((s) => s.slug === '/pechat-na-odezhde')!.blocks);
   const kidsRow = blocks.match(/"Детская футболка","values":\[[^\]]*\]/)![0];
-  expect(kidsRow).toContain(`"До ${prints} принтов, каждый до А3"`);
-  expect(kidsRow).not.toContain('Грудь, спина, рукав');
+  expect(kidsRow).toContain(`"Грудь, спина, рукав; до ${prints} принтов, каждый до А3"`);
 });
 
 test('шаблон: цвета из прайса с пометкой по правилам, цена «от» — по плиткам', async () => {

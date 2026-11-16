@@ -285,13 +285,15 @@ type Format = keyof typeof dtfPrint;
  */
 export const extraPrintFactor = [1, 0.7, 0.7];
 
-/** Coloured garments (anything but white and black) are ordered from this many pcs (owner, 16.11.2026). */
-export const COLOR_MIN = 5;
-const COLOR_HINT = `от ${COLOR_MIN} шт`;
+/**
+ * Coloured garments (anything but white and black) are ordered from this many pcs — set per product
+ * (owner, 16.11.2026): T-shirts and hoodies from 5, cotton shoppers and caps from 10. Also quoted in the page texts.
+ */
+export const COLOR_MIN = { tshirt: 5, hoodie: 5, shopper: 10, cap: 10 } as const;
 /** colours that are in stock and have no minimum */
-const COLOR_FREE = ['white', 'black'];
+export const COLOR_FREE = ['white', 'black'];
 
-/** T-shirt colours (unisex and kids), swatches from the owner's list; white and black from 1 pc, the rest from 5. */
+/** The owner's 11 garment colours (T-shirts, hoodies, cotton shoppers, caps), swatches from the owner's list. */
 export const GARMENT_COLORS: Choice[] = [
   { id: 'white', label: 'Белый', swatch: '#ffffff' },
   { id: 'black', label: 'Чёрный', swatch: '#1b1b1d' },
@@ -304,7 +306,7 @@ export const GARMENT_COLORS: Choice[] = [
   { id: 'gray', label: 'Серый', swatch: '#8c8c8c' },
   { id: 'blue', label: 'Синий', swatch: '#2e5fd8' },
   { id: 'lilac', label: 'Сиреневый', swatch: '#6a64a8' },
-].map((c) => (COLOR_FREE.includes(c.id) ? c : { ...c, hint: COLOR_HINT }));
+];
 
 const formatChoices = (formats: Format[], withNone: boolean): Choice[] => [
   ...(withNone ? [{ id: 'none', label: 'Нет' }] : []),
@@ -327,10 +329,10 @@ function garment(args: {
   /** max number of print places */
   places: number;
   /**
-   * colour choices. `otherMin` > 0 adds «Другой цвет» that is sewn to order from that many pcs (shopper: 20);
-   * `colorMin` — the listed colours except `free` ones are ordered from `min` pcs (T-shirts, caps).
+   * colour choice: the owner's GARMENT_COLORS; white and black (COLOR_FREE) from 1 pc, any other colour from `min`
+   * pcs, worded as «`noun` — от `min` шт» (e.g. «Цветные худи — от 5 шт»)
    */
-  colorSet?: { choices: Choice[]; otherMin: number; what: string; colorMin?: { min: number; free: string[]; noun: string } };
+  colors?: { min: number; noun: string };
   /** priced up to this quantity, more — individually (default GARMENT_MAX) */
   max?: number;
   /** offer «своя вещь»: e.g. 'футболка' → choice «Своя футболка», only the print is charged */
@@ -355,16 +357,15 @@ function garment(args: {
     });
   }
   const isOwn = (sel: Selection) => !!args.own && one(sel, 'blank', 'ours') === 'own';
-  const colorSet = args.colorSet;
-  if (colorSet) {
+  const colors = args.colors;
+  if (colors) {
     options.push({
       ...(args.own ? { hideWhen: { group: 'blank', value: 'own' } } : {}),
       id: 'color',
       label: 'Цвет изделия',
       type: 'one',
-      // otherMin 0 → only the listed colours, no «другой цвет»
-      choices: colorSet.otherMin ? [...colorSet.choices, { id: 'other', label: 'Другой цвет', hint: `от ${colorSet.otherMin} шт` }] : colorSet.choices,
-      default: colorSet.choices[0].id,
+      choices: GARMENT_COLORS.map((c) => (COLOR_FREE.includes(c.id) ? c : { ...c, hint: `от ${colors.min} шт` })),
+      default: GARMENT_COLORS[0].id,
     });
   }
   for (let i = 0; i < args.places; i++) {
@@ -401,14 +402,12 @@ function garment(args: {
     args.blank?.forEach((t) => set.add(t.from));
     return [...set].sort((a, b) => a - b).map((from) => ({ from, price: unitAt(sel, from) }));
   };
-  /** the colour's own minimum: «другой цвет» is sewn from otherMin (shopper: 20), coloured garments from colorMin.min */
+  /** the colour's own minimum: white and black from 1 pc, coloured garments from colors.min */
   const colourRule = (sel: Selection): { min: number; note: string } | undefined => {
-    if (!colorSet || isOwn(sel)) return undefined;
-    const color = one(sel, 'color', colorSet.choices[0].id);
-    if (color === 'other' && colorSet.otherMin) return { min: colorSet.otherMin, note: `${colorSet.what} — от ${colorSet.otherMin} шт` };
-    // any colour outside `free` (also «other» and unknown ones from old estimate lines) counts as coloured
-    const cm = colorSet.colorMin;
-    return cm && !cm.free.includes(color) ? { min: cm.min, note: `${cm.noun} — от ${cm.min} шт` } : undefined;
+    if (!colors || isOwn(sel)) return undefined;
+    // any colour outside COLOR_FREE counts as coloured — also old estimate lines («other», cap «khaki», shopper «light»)
+    const color = one(sel, 'color', GARMENT_COLORS[0].id);
+    return COLOR_FREE.includes(color) ? undefined : { min: colors.min, note: `${colors.noun} — от ${colors.min} шт` };
   };
   /** smallest run for the selected colour; 1 without a colour minimum */
   const minQtyOf = (sel: Selection): number => colourRule(sel)?.min ?? 1;
@@ -436,7 +435,7 @@ function garment(args: {
       note: `Больше ${maxQty} шт — цена рассчитывается индивидуально.`,
     },
     ladder: breakpoints,
-    ...(colorSet?.colorMin || colorSet?.otherMin ? { minQty: minQtyOf, minQtyNote: (sel: Selection) => colourRule(sel)?.note } : {}),
+    ...(colors ? { minQty: minQtyOf, minQtyNote: (sel: Selection) => colourRule(sel)?.note } : {}),
     quote: (sel) => {
       const qty = sel.qty;
       const breakdown: Quote['breakdown'] = [];
@@ -456,10 +455,8 @@ function garment(args: {
       const unit = unitAt(sel, qty);
       const nb = breakpoints(sel).find((t) => t.from > qty && t.price < unit);
       let error: string | undefined;
-      if (colorSet && !isOwn(sel) && one(sel, 'color', colorSet.choices[0].id) === 'other' && qty < colorSet.otherMin) {
-        error = `${colorSet.what} — от ${colorSet.otherMin} шт.`;
-      }
-      if (colorSet?.colorMin && qty < minQtyOf(sel)) error = `${colorSet.colorMin.noun} — от ${colorSet.colorMin.min} шт`;
+      const rule = colourRule(sel);
+      if (rule && qty < rule.min) error = rule.note;
       if (args.blankFrom && !isOwn(sel)) notes.push('Наличие и точную цену изделия уточнит менеджер.');
       if (isOwn(sel)) notes.push(`${ownForms.own}: принесите ${ownForms.it} в мастерскую, напечатаем на ${ownForms.onIt}. Подойдут хлопок, смесовые ткани, синтетика.`);
       if (!args.blank) notes.push('Печать на вашем изделии. Подойдут хлопок, смесовые ткани, синтетика.');
@@ -542,7 +539,7 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
 /** a hoodie without print, any run (owner, 16.11.2026) — also quoted in the texts (faq.ts, services.ts) */
 export const HOODIE_BLANK = 2600;
 
-const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные футболки' } };
+const tshirtColors = { min: COLOR_MIN.tshirt, noun: 'Цветные футболки' };
 
 const textile: Category = {
   id: 'textile',
@@ -558,7 +555,7 @@ const textile: Category = {
       formats: ['a6', 'a5', 'a4', 'a3'],
       // owner, 16.11.2026: up to 5 prints (was 4)
       places: 5,
-      colorSet: tshirtColors,
+      colors: tshirtColors,
       own: 'футболка',
     }),
     garment({
@@ -570,18 +567,18 @@ const textile: Category = {
       // owner, 16.11.2026: up to 5 prints and up to А3 (was 2 prints up to А4)
       formats: ['a6', 'a5', 'a4', 'a3'],
       places: 5,
-      colorSet: tshirtColors,
+      colors: tshirtColors,
     }),
     garment({
       id: 'hoodie',
       name: 'Худи',
-      short: 'белое или чёрное',
+      short: '80% хлопок, 320 г/м², с начёсом',
       image: '/img/showcase/hoodie.webp',
-      // owner, 16.11.2026: 2 600 ₽ at any run (was «от 2 000 ₽, уточняйте наличие»), only white and black, no minimum
+      // owner, 16.11.2026: 2 600 ₽ at any run (was «от 2 000 ₽, уточняйте наличие»); all 11 colours, coloured from 5 pcs
       blank: tiers([1], [HOODIE_BLANK]),
       formats: ['a6', 'a5', 'a4', 'a3'],
       places: 4,
-      colorSet: { choices: GARMENT_COLORS.filter((c) => COLOR_FREE.includes(c.id)), otherMin: 0, what: '' },
+      colors: { min: COLOR_MIN.hoodie, noun: 'Цветные худи' },
       // owner, 16.11.2026: every clothing page has a «свой» tile — the customer's own hoodie, only the print
       own: 'худи',
       ownForms: { ours: 'Наше худи', own: 'Своё худи', it: 'его', onIt: 'нём' },
@@ -618,20 +615,8 @@ const textile: Category = {
       places: 3,
       own: 'бейсболка',
       max: 100,
-      colorSet: {
-        choices: [
-          { id: 'black', label: 'Чёрный', swatch: '#111111' },
-          { id: 'white', label: 'Белый', swatch: '#ffffff' },
-          { id: 'red', label: 'Красный', swatch: '#e10f0f', hint: COLOR_HINT },
-          { id: 'blue', label: 'Синий', swatch: '#2a5be8', hint: COLOR_HINT },
-          { id: 'yellow', label: 'Жёлтый', swatch: '#ffee00', hint: COLOR_HINT },
-          { id: 'green', label: 'Зелёный', swatch: '#0f8a0f', hint: COLOR_HINT },
-          { id: 'khaki', label: 'Хаки', swatch: '#7d6a2c', hint: COLOR_HINT },
-        ],
-        otherMin: 0,
-        what: '',
-        colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные бейсболки' },
-      },
+      // owner, 16.11.2026: all 11 colours (was 7), white and black from 1 pc, coloured from 10 pcs
+      colors: { min: COLOR_MIN.cap, noun: 'Цветные бейсболки' },
     }),
     garment({
       id: 'shopper',
@@ -641,8 +626,8 @@ const textile: Category = {
       blank: tiers([1, 5, 20], [450, 350, 250]),
       formats: ['a6', 'a5', 'a4'],
       places: 2,
-      // owner, 05.11.2026: light (linen-like) and black in stock, any other colour sewn to order from 20 pcs
-      colorSet: { choices: [{ id: 'light', label: 'Светлый', hint: 'как лён' }, { id: 'black', label: 'Чёрный' }], otherMin: 20, what: 'Шопперы другого цвета шьём под заказ' },
+      // owner, 16.11.2026: all 11 colours, white and black from 1 pc, coloured from 10 pcs (was: light / black, other sewn from 20)
+      colors: { min: COLOR_MIN.shopper, noun: 'Цветные шопперы' },
     }),
     // owner, 05.11.2026: light linen shopper for sublimation, from 10 pcs
     sublimated({
@@ -1558,8 +1543,8 @@ export const defaultSelection = (p: Product): Selection => {
 
 
 /**
- * The colours of a product (its `color` group, «Другой цвет» included) with the smallest run of each, taken from the
- * pricing rules (colorMin / otherMin via minQty), not from the chip hints: the shopper's «как лён» is a description.
+ * The colours of a product (its `color` group) with the smallest run of each, taken from the pricing rules (minQty),
+ * not from the chip hints.
  * Empty for an unknown product or one without colours.
  */
 export function colorChoices(categoryId: string, productId: string): (Choice & { min: number })[] {

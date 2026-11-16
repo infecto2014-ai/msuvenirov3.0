@@ -35,9 +35,11 @@ test('цена худи — точная, без «от»; одна цена п�
   expect(JSON.stringify(hoodie)).not.toMatch(/уточняйте/i);
 });
 
-test('цвета только белый и чёрный, без серого меланжа и без пометок', () => {
-  expect(garmentColors(hoodie).map((c) => c.id)).toEqual(['white', 'black']);
-  expect(garmentColors(hoodie).every((c) => c.free && c.note === 'в наличии')).toBe(true);
+test('цвета — все 11, как у футболок: белый и чёрный в наличии, цветные — от 5 шт; без серого меланжа', () => {
+  const c = garmentColors(hoodie);
+  expect(c.map((x) => x.id)).toEqual(['white', 'black', 'yellow', 'green', 'brown', 'red', 'orange', 'pink', 'gray', 'blue', 'lilac']);
+  expect(c.filter((x) => x.free).map((x) => x.id)).toEqual(['white', 'black']);
+  expect(c.filter((x) => !x.free).every((x) => x.note === 'от 5 шт')).toBe(true);
   expect(JSON.stringify(hoodie)).not.toMatch(/меланж/i);
 });
 
@@ -125,12 +127,29 @@ test('presetPrice: категория обязательна (страницы �
   expect(presetPrice(v, hoodie.calc.category)).toEqual(presetPrice(v, 'textile'));
 });
 
-test('описание худи: DTF только на белых и чёрных и на вашем; телефон — из site.ts', async () => {
+test('описание худи: DTF на белых, чёрных и цветных и на вашем; телефон — из site.ts', async () => {
   const { site } = await import('../site');
   const svc = services.find((s) => s.slug === '/pechat-na-hudi')!;
   for (const d of [hoodie.description, svc.description]) {
-    expect(d).toContain('DTF на белых и чёрных худи и на вашем');
+    expect(d).toContain('DTF на белых, чёрных и цветных худи и на вашем');
     expect(d).not.toContain('любом цвете');
   }
   expect(hoodie.description).toContain(site.phone);
+});
+
+test('тексты сайта — по правилам 16.11 (после худи): цветные худи от 5, шопперы и кепки — 11 цветов, цветные от 10', async () => {
+  const { generalFaq } = await import('../faq');
+  const all = JSON.stringify({ services, generalFaq, hoodie });
+  for (const old of [/7 цветов/, /сем[иь] цветов/, /от 20 шт/, /Худи — белые и чёрные,/, /'Цвета', value: 'белый и чёрный'/, /на белых и чёрных худи и/, /белого нет/i]) {
+    expect(all).not.toMatch(old);
+  }
+  expect(hoodie.prices.rules![0].text).toBe('Цветные худи — от 5 шт. Белые и чёрные — с 1 шт. Цена худи одна при любом количестве.');
+  expect(specs.find((s) => s.label === 'Цвета')!.value).toBe('11 цветов: белый и чёрный — с 1 шт, цветные — от 5 шт');
+  const rows = JSON.stringify(services.find((s) => s.slug === '/pechat-na-odezhde')!.blocks);
+  expect(rows).toContain('"Худи","values":["Тёплый мерч, худи для класса или команды","Белые и чёрные — от 1 шт, цветные — от 5 шт"');
+  expect(rows).toContain('"Шоппер","values":["Подарок, мероприятие, сумка с логотипом магазина","Белые и чёрные — от 1 шт, цветные — от 10 шт"');
+  expect(rows).toContain('"Кепка","values":["Персонал, команда, промо","Белые и чёрные — от 1 шт, цветные — от 10 шт"');
+  expect(rows).toContain('"Грудь, спина, рукав; до 5 принтов, каждый до А3"');
+  const caps = services.find((s) => s.slug === '/pechat-na-kepkah')!;
+  expect(caps.highlights).toContain('11 цветов');
 });

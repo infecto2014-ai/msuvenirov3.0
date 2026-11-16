@@ -111,3 +111,27 @@ test('setEstimateQty: старые позиции (4 принта у взрос�
   expect(h.unitPrice).toBe(2600 + 800);
   expect(h.from).toBeFalsy();
 });
+
+test('setEstimateQty: старые цвета (бейсболка «хаки», шоппер «светлый» / «другой») не ломают смету и считаются цветными — от 10 шт', async () => {
+  const old = (id: string, product: string, color: string, qty: number) => ({
+    id,
+    title: 'старая позиция',
+    details: '',
+    qty,
+    unitPrice: 1,
+    total: 1,
+    calc: { cat: 'textile', product, sel: { qty, options: { color, print1: 'a6' }, dims: {} } },
+  });
+  const stored = [old('c1', 'cap', 'khaki', 5), old('s1', 'shopper', 'light', 1), old('s2', 'shopper', 'other', 20), old('h1', 'hoodie', 'red', 1)];
+  const { setEstimateQty, getEstimate } = await load(JSON.stringify(stored));
+  for (const id of ['c1', 's1', 's2', 'h1']) setEstimateQty(id, 2);
+  const [c, s1, s2, h] = getEstimate();
+  expect([c.qty, s1.qty, s2.qty, h.qty]).toEqual([10, 10, 10, 5]);
+  for (const it of [c, s1, s2, h]) {
+    expect(it.note, it.id).toBeUndefined();
+    expect(it.total, it.id).toBe(it.unitPrice * it.qty);
+  }
+  expect(c.unitPrice).toBe(550 + 350);
+  expect(s1.unitPrice).toBe(350 + 350);
+  expect(h.unitPrice).toBe(2600 + 350);
+});
