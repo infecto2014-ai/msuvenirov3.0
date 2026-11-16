@@ -1,10 +1,12 @@
 ---
-// Home first screen: h1 with the blue accent, subtitle, two buttons.
-// Desktop: the 2400×1400 scene follows the content width (its right edge sits at the .wrap column, not the window),
-// so the cat stays next to the text on wide monitors; its empty light left part goes under the text.
-// ≤ 900px: a square picture under the text instead. Only one copy is displayed at any width (the other is
+// Home first screen, by the owner's mockup of 16.11.2026 (docs/design-refs/home-hero-2026-11-16.webp,
+// spec docs/superpowers/specs/2026-11-16-home-hero-mockup-design.md): a pill «Своя мастерская в Калининграде»,
+// a three-line heading with the squiggle and a heart under «Калининграде», three advantages, two buttons, the
+// address; on the right the owner's cut-out cat with the press on a lilac-blue blob, a crown and three strokes.
+// ≤ 900px: one column, the cat under the text. Only one picture is displayed at any width (the other wrapper is
 // display:none), so assistive tech gets exactly one picture with the alt.
 import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { site } from '@/data/site';
 
@@ -12,106 +14,138 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-media">
-    <Pic name="hero" alt={alt} w={1467} h={993} loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label="hero — сцена с котом" class="hero-pic" />
-  </div>
+  <svg class="hero-waves" viewBox="0 0 1440 640" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="w1" d="M0 250C180 190 300 330 470 380C640 430 760 560 900 640H0Z" />
+    <path class="w2" d="M0 420C200 360 360 470 560 560C620 590 680 620 720 640H0Z" />
+    <path class="w3" d="M1440 120C1300 170 1220 300 1260 430C1290 520 1370 590 1440 610Z" />
+  </svg>
 
   <div class="wrap hero-in">
     <div class="hero-text">
+      <p class="hero-badge"><Icon name="crown" size={18} /> Своя мастерская в Калининграде</p>
+
       <h1 id="hero-title" class="hero-title">
-        Печать на&nbsp;одежде <br class="hero-br" />и&nbsp;сувенирах в&nbsp;Калининграде <br class="hero-br" />
-        <span class="accent">
-          от 1 штуки
-          <svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        Печать на&nbsp;одежде <br />и&nbsp;сувенирах <br />в&nbsp;<span class="accent"
+          >Калининграде<svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
-          </svg>
-        </span>
+          </svg><svg class="accent-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
+          </svg></span
+        >
       </h1>
-      <p class="hero-sub">Сельма, {site.address.place}</p>
+
+      <ul class="hero-perks" role="list">
+        <li><Icon name="shirt" size={30} /><span>Печать <b>от&nbsp;1&nbsp;штуки</b></span></li>
+        <li><Icon name="zap" size={30} /><span>Быстрое изготовление</span></li>
+        <li><Icon name="star" size={30} /><span>Качественные материалы</span></li>
+      </ul>
+
       <div class="hero-actions">
         <Button href="#catalog" arrow>Выбрать изделие</Button>
         <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
       </div>
+
+      <p class="hero-sub"><Icon name="map-pin" size={20} /> Сельма, {site.address.place}</p>
     </div>
 
-    <div class="hero-mobile">
-      <Pic name="hero-mobile" alt={alt} w={1200} h={812} loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-mpic" />
+    <div class="hero-art">
+      <svg class="art-blob" viewBox="0 0 600 520" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="hero-blob-g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#d7dcfd" />
+            <stop offset="1" stop-color="#aeb8f6" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#hero-blob-g)"
+          d="M395 18C500 30 590 110 596 228C602 340 548 452 430 496C320 537 186 512 104 446C24 382 -12 278 26 190C62 106 152 82 228 52C284 30 334 11 395 18Z"
+        />
+      </svg>
+      <svg class="art-crown" viewBox="0 0 64 52" aria-hidden="true" focusable="false">
+        <path d="M6 14l13 12 13-20 13 20 13-12-6 32H12z" />
+        <circle cx="25" cy="34" r="1.8" /><circle cx="39" cy="34" r="1.8" />
+      </svg>
+      <svg class="art-strokes" viewBox="0 0 60 70" aria-hidden="true" focusable="false">
+        <path d="M34 4l12 20" /><path d="M8 30l26 12" /><path d="M2 64h26" />
+      </svg>
+      <span class="art-shadow" aria-hidden="true"></span>
+      <div class="art-desk">
+        <Pic name="hero" alt={alt} w={1467} h={993} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label="hero — кот с прессом" class="hero-pic" />
+      </div>
+      <div class="art-mobile">
+        <Pic name="hero-mobile" alt={alt} w={1200} h={812} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-pic" />
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .hero {
-    /* right edge of the text column: the picture's empty left half may go under the text, its subject may not */
-    --text-max: 36rem;
-    --text-edge: calc(max((100vw - var(--wrap)) / 2, var(--gutter)) + var(--text-max) + var(--s-5));
     position: relative;
     isolation: isolate;
     /* room for the facts strip that overlaps the bottom edge */
-    padding-block: var(--s-8) calc(var(--s-9) + var(--s-6));
-    background:
-      radial-gradient(42rem 26rem at 78% 40%, rgba(21, 87, 255, 0.1), transparent 70%),
-      linear-gradient(180deg, var(--sky-2), var(--sky) 70%, rgba(234, 242, 255, 0));
+    padding-block: var(--s-7) calc(var(--s-9) + var(--s-6));
+    background: linear-gradient(180deg, var(--sky-2), #eef0ff 70%, rgba(238, 240, 255, 0));
     overflow: hidden;
   }
-  .hero-in {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    min-height: 460px;
-  }
-  .hero-text {
-    max-width: var(--text-max);
-  }
-
-  /* desktop: the owner's cut-out cat (16.11.2026: «кот в 2 раза больше») stands right of the buttons, on the facts
-     strip: from just past the buttons (the text column start + 31rem) to the content edge + --s-8, never past the
-     window. Its top-left corner is empty, so it may reach above the end of the heading's long line; the hero is
-     taller so the tail stays below the heading. */
-  .hero-media {
-    --pic-left: calc(max((100vw - var(--wrap)) / 2, var(--gutter)) + 31rem);
-    --pic-right: max(var(--s-4), calc((100vw - var(--wrap)) / 2 - var(--s-8)));
+  /* soft lilac hills at the edges, behind everything */
+  .hero-waves {
     position: absolute;
-    z-index: 0;
-    right: var(--pic-right);
-    bottom: calc(var(--s-9) + var(--s-6) - var(--s-5));
-    width: min(calc(100vw - var(--pic-left) - var(--pic-right)), 60rem);
-    aspect-ratio: 1467 / 993;
-  }
-  .hero-media :global(.hero-pic) {
+    inset: 0;
+    z-index: -1;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: right bottom;
   }
-  /* no photo yet: the placeholder keeps to the right half, never under the text */
-  .hero-media :global(.pic-ph) {
-    width: 52%;
-    margin-left: auto;
-    aspect-ratio: auto !important;
-    border-radius: var(--radius-panel) 0 0 var(--radius-panel);
+  .hero-waves .w1 {
+    fill: rgba(170, 182, 246, 0.22);
+  }
+  .hero-waves .w2 {
+    fill: rgba(150, 164, 244, 0.18);
+  }
+  .hero-waves .w3 {
+    fill: rgba(170, 182, 246, 0.2);
   }
 
-  /* owner, 16.11.2026: the heading in Helvetica (system font: Helvetica on Apple devices, Arial elsewhere) */
+  .hero-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: var(--s-6);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 6px var(--s-4) 6px var(--s-3);
+    border-radius: var(--radius-pill);
+    background: rgba(21, 87, 255, 0.1);
+    color: var(--ink);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+  .hero-badge :global(svg) {
+    color: var(--blue);
+  }
+
   .hero-title {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 700;
+    margin-top: var(--s-4);
+    font-weight: 800;
     letter-spacing: -0.02em;
-    font-size: clamp(2.125rem, 1.2rem + 3vw, 3.5rem);
+    line-height: 1.06;
+    font-size: clamp(2.25rem, 1.3rem + 3.2vw, 4rem);
   }
   .accent {
     position: relative;
     display: inline-block;
-    color: var(--blue);
     white-space: nowrap;
   }
   .accent-squiggle {
     position: absolute;
-    left: 6%;
-    bottom: -0.36em;
+    left: 2%;
+    bottom: -0.3em;
     width: 100%;
-    height: 0.42em;
+    height: 0.4em;
     overflow: visible;
     fill: none;
     stroke: var(--blue);
@@ -120,39 +154,133 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
   }
-  .hero-sub {
-    margin-top: var(--s-6);
-    max-width: 30rem;
-    color: var(--muted);
-    font-size: var(--fs-lg);
+  .accent-heart {
+    position: absolute;
+    right: -0.62em;
+    bottom: -0.18em;
+    width: 0.5em;
+    height: 0.5em;
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 2.4;
+    stroke-linejoin: round;
+    transform: rotate(-12deg);
   }
+
+  .hero-perks {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: var(--s-7);
+    list-style: none;
+    padding: 0;
+  }
+  .hero-perks li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    max-width: 12rem;
+    padding-inline: var(--s-5);
+    color: var(--ink);
+    font-size: var(--fs-base);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .hero-perks li:first-child {
+    padding-left: 0;
+  }
+  .hero-perks li + li {
+    border-left: 1px solid var(--line);
+  }
+  .hero-perks :global(svg) {
+    flex: none;
+    color: var(--blue);
+  }
+  .hero-perks b {
+    display: block;
+    color: var(--blue);
+    font-weight: 700;
+  }
+
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--s-3) var(--s-4);
     margin-top: var(--s-6);
   }
+  .hero-sub {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    color: var(--muted);
+    font-size: var(--fs-base);
+  }
 
-  .hero-mobile {
+  /* the cat on the blob: the blob behind, the crown top right, three strokes over the head, a soft shadow below */
+  .hero-art {
+    position: relative;
+    aspect-ratio: 600 / 500;
+  }
+  .art-blob {
+    position: absolute;
+    inset: 0 0 4% 6%;
+    width: 94%;
+    height: 96%;
+  }
+  .art-crown {
+    position: absolute;
+    top: 8%;
+    right: 4%;
+    width: 13%;
+    fill: #fff;
+    stroke: var(--blue);
+    stroke-width: 3;
+    stroke-linejoin: round;
+    transform: rotate(18deg);
+  }
+  .art-crown circle {
+    fill: var(--blue);
+    stroke: none;
+  }
+  .art-strokes {
+    position: absolute;
+    top: 0;
+    left: 6%;
+    width: 9%;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+  .art-shadow {
+    position: absolute;
+    left: 14%;
+    right: 2%;
+    bottom: 3%;
+    height: 8%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(11, 26, 63, 0.22), transparent);
+  }
+  .art-desk,
+  .art-mobile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5%;
+  }
+  .art-mobile {
     display: none;
   }
+  .hero-art :global(.hero-pic) {
+    width: 100%;
+    height: auto;
+  }
 
-  /* Once, on load (pure CSS, does not wait for JS or scrolling): the heading, the subtitle and the buttons fade in
-     60ms apart, without moving; the cat settles from 102% to 100% while it fades in. The facts strip stays still.
-     fill-mode `both` keeps the delayed lines hidden until their turn, so nothing flashes first. */
-  .hero-title,
-  .hero-sub,
-  .hero-actions {
+  /* Once, on load (pure CSS): the text fades in, the cat settles from 102% to 100%. */
+  .hero-text {
     animation: hero-fade 400ms var(--ease-out) both;
   }
-  .hero-sub {
-    animation-delay: 60ms;
-  }
-  .hero-actions {
-    animation-delay: 120ms;
-  }
-  .hero-media,
-  .hero-mobile {
+  .hero-art {
     animation: hero-settle 600ms var(--ease-out) both;
   }
   @keyframes hero-fade {
@@ -166,86 +294,72 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
       transform: scale(1.02);
     }
   }
-  /* reduced motion: everything fades in together, no scale (base.css cuts durations to 0.01ms with !important) */
   @media (prefers-reduced-motion: reduce) {
-    .hero-title,
-    .hero-sub,
-    .hero-actions,
-    .hero-media,
-    .hero-mobile {
+    .hero-text,
+    .hero-art {
       animation: hero-fade 400ms var(--ease-out) both;
-      animation-delay: 0ms;
       animation-duration: 400ms !important;
     }
   }
 
-  /* desktop (≥ 1240px): the heading in exactly three lines — «Печать на одежде / и сувенирах в Калининграде /
-     от 1 штуки». The column is as wide as the long middle line (about 13.9em), the heading a little smaller than
-     before, and the picture is sized so that the leftmost part of the cat (its tail, at about 37% of the picture's
-     width) stays clear of the text: picture width = (its right edge − the text edge) / 0.63.
-     Narrower screens keep the four-line heading: there three lines would leave the cat too small. */
-  .hero-br {
-    display: none;
-  }
-  @media (min-width: 1240px) {
-    .hero {
-      --text-max: 42.5rem;
-    }
-    .hero-br {
-      display: inline;
+  /* laptops and tablets in landscape: a narrower art column, the heading in three lines, the perks compact */
+  @media (max-width: 1180px) and (min-width: 901px) {
+    .hero-in {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: var(--s-5);
     }
     .hero-title {
-      font-size: 3rem;
-      text-wrap: wrap;
+      font-size: clamp(2.5rem, 1rem + 2.6vw, 3rem);
     }
-    .hero-in {
-      min-height: 560px;
+    .hero-perks {
+      margin-top: var(--s-6);
     }
-  }
-
-  @media (max-width: 1100px) {
-    .hero {
-      /* both buttons still fit on one line at 1024 */
-      --text-max: 31rem;
+    .hero-perks li {
+      max-width: 10.5rem;
+      padding-inline: var(--s-3);
+      font-size: var(--fs-sm);
     }
   }
 
   @media (max-width: 900px) {
     .hero {
-      padding-block: var(--s-7) calc(var(--s-8) + var(--s-5));
-    }
-    .hero-media {
-      display: none;
+      padding-block: var(--s-6) calc(var(--s-8) + var(--s-5));
     }
     .hero-in {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--s-6);
-      min-height: 0;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-5);
     }
-    .hero {
-      --text-max: 40rem;
-    }
-    .hero-mobile {
-      position: relative;
-      display: block;
+    .hero-art {
       width: 100%;
-      /* the cut-out cat with the press, as wide as the column (owner: «кот в 2 раза больше») */
-      max-width: 680px;
+      max-width: 620px;
       margin-inline: auto;
+    }
+    .art-desk {
+      display: none;
+    }
+    .art-mobile {
+      display: block;
     }
   }
 
   @media (max-width: 560px) {
-    .hero-sub {
-      margin-top: var(--s-5);
-      font-size: var(--fs-base);
+    .hero-perks {
+      flex-direction: column;
+      gap: var(--s-3);
+      margin-top: var(--s-6);
+    }
+    .hero-perks li {
+      max-width: none;
+      padding: 0;
+    }
+    .hero-perks li + li {
+      border-left: 0;
+    }
+    .hero-perks b {
+      display: inline;
     }
     .hero-actions {
       flex-direction: column;
-    }
-    .hero-actions :global(.btn) {
-      width: 100%;
     }
   }
 </style>
