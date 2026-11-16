@@ -63,7 +63,7 @@ test('FAQ передаёт актуальные цены и сохраняет �
   expect(expected[3].a).toContain(one('mug', 'chameleon'));
   expect(mugs.care).toHaveLength(4);
   expect(mugs.careSub).toBe('Как мыть, чтобы рисунок оставался ярким');
-  expect(mugs.images).toMatchObject({ hero: 'mug-hero', heroMobile: 'mug-hero-mobile', heroSize: { w: 1200, h: 1000 }, heroMobileSize: { w: 1200, h: 1000 } });
+  expect(mugs.images).toMatchObject({ hero: 'mug-hero', heroMobile: 'mug-hero-mobile', heroSize: { w: 932, h: 1294 }, heroMobileSize: { w: 648, h: 900 } });
   expect(JSON.stringify(mugs)).not.toMatch(/УФ|своя кружка|свою кружку|portfolio-14/iu);
   expect(mugs.images.label).toBe('кот с кружкой');
   expect(mugs.images.alt).toBe('Рыжий кот с кружкой');

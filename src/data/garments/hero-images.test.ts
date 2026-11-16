@@ -9,8 +9,9 @@ import { workwear } from './workwear';
 import { sport } from './sport';
 import { sublimation } from './sublimation';
 import { transfers } from './transfers';
+import { mugs } from './mugs';
 
-const pages = { tshirt, hoodie, shopper, cap, workwear, sport, sublimation, transfers };
+const pages = { tshirt, hoodie, shopper, cap, workwear, sport, sublimation, transfers, mugs };
 const file = (name: string) => join(process.cwd(), 'public/img/v3', `${name}.webp`);
 
 // the first-screen cats are tight cut-outs: the sizes in the data must match the files, or HeroArt reserves a wrong box
