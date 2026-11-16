@@ -206,13 +206,6 @@ const catReady = 'src' in resolvePic('cat-peek');
     background: var(--sky);
     box-shadow: var(--shadow-card);
   }
-  /* press: the card gives a little, 160ms */
-  .wk-card {
-    transition: transform 160ms var(--ease-out);
-  }
-  .wk-card:active {
-    transform: scale(0.98);
-  }
   .wk-card img {
     width: 100%;
     height: 100%;
@@ -323,11 +316,8 @@ const catReady = 'src' in resolvePic('cat-peek');
     background: var(--blue-hover);
   }
 
-  /* reduced motion: no press scale; the cat is never hidden or moved (the script does not start either) */
+  /* reduced motion: the cat is never hidden or moved (the script does not start either) */
   @media (prefers-reduced-motion: reduce) {
-    .wk-card:active {
-      transform: none;
-    }
     .wk-cat[data-cat] {
       opacity: 1;
       animation: none;
