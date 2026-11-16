@@ -37,9 +37,8 @@ test('до 5 принтов: правила, таблица цен, без «д�
   expect(rules).toContain('До 5 принтов на одной вещи, каждый до А3');
   expect(rules).toContain(`Каждый следующий принт — −${extraOff}%`);
   expect(rules).toContain('Больше 50 шт — индивидуально');
-  // embroidery is only mentioned in the question «Делаете вышивку?» of 2.0 — answered «Нет»
-  expect(JSON.stringify({ ...workwear, faq: [] })).not.toMatch(/вышив/i);
-  expect(workwear.faq!.find((f) => /вышив/i.test(f.q))!.a).toMatch(/^Нет, вышивку мы не делаем/);
+  // owner, 16.11.2026: the 2.0 question «Делаете вышивку?» is dropped — no embroidery anywhere on the page
+  expect(JSON.stringify(workwear)).not.toMatch(/вышив/i);
   expect(JSON.stringify(workwear)).not.toMatch(/до 3 принтов|до трёх|второй и третий|Второй принт на изделии|халат|шелкограф|доставк/i);
 });
 
@@ -96,7 +95,7 @@ test('«Подробнее»: на чём, где, свои или подбер�
 
 test('вопросы: восемь из 2.0, цены из pricing.ts, правила 16.11.2026', () => {
   const faq = garmentFaq(workwear);
-  expect(faq).toHaveLength(8);
+  expect(faq).toHaveLength(7);
   expect(faq[0].q).toBe('На какой спецодежде вы печатаете?');
   const price = faq.find((f) => f.q === 'Сколько стоит нанести логотип на спецодежду?')!;
   expect(price.a).toContain(rub(quote({ print1: 'a6' }, 1).unit));
