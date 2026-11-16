@@ -315,7 +315,7 @@ describe('pricing', () => {
     expect(note('tshirt-unisex', { color: 'red' })).toBe('Цветные футболки — от 5 шт');
     expect(note('tshirt-unisex', { color: 'white' })).toBeUndefined();
     expect(note('tshirt-unisex', { color: 'red', blank: 'own' })).toBeUndefined();
-    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём — под заказ от 20 шт');
+    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём под заказ — от 20 шт');
     expect(note('shopper', { color: 'light' })).toBeUndefined();
   });
 
