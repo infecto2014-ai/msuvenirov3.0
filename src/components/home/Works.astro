@@ -74,7 +74,11 @@ const catReady = 'src' in resolvePic('cat-peek');
 
 <script>
   import { initWorksSlider } from '@/scripts/works-slider';
-  document.querySelectorAll<HTMLElement>('[data-works]').forEach(initWorksSlider);
+  import { initWorksCat } from '@/scripts/works-cat';
+  document.querySelectorAll<HTMLElement>('[data-works]').forEach((root) => {
+    initWorksSlider(root);
+    initWorksCat(root);
+  });
 </script>
 
 <style>
@@ -120,6 +124,38 @@ const catReady = 'src' in resolvePic('cat-peek');
     box-shadow:
       0 8px 18px rgba(21, 87, 255, 0.09),
       0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  }
+  /* The cat peeks out once, when the block first comes into view (works-cat.ts): the cat and its ledge fade in,
+     the cat rises 12px from behind the ledge and sways ±3° around its bottom edge, then stays still.
+     Without JS (or with reduced motion) the script never sets data-cat and the cat simply sits in place. */
+  .wk-cat[data-cat='wait'] {
+    opacity: 0;
+  }
+  .wk-cat[data-cat='wait'] :global(img) {
+    transform: translateY(12px);
+  }
+  .wk-cat[data-cat='peek'] {
+    animation: wk-cat-in 200ms var(--ease-out) both;
+  }
+  .wk-cat[data-cat='peek'] :global(img) {
+    transform-origin: 50% 100%;
+    animation: wk-cat-peek 500ms var(--ease-out) both;
+  }
+  @keyframes wk-cat-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes wk-cat-peek {
+    0% {
+      transform: translateY(12px) rotate(-3deg);
+    }
+    55% {
+      transform: translateY(0) rotate(3deg);
+    }
+    100% {
+      transform: none;
+    }
   }
   .wk-cat-ph {
     bottom: 0;
@@ -169,6 +205,13 @@ const catReady = 'src' in resolvePic('cat-peek');
     border-radius: var(--radius-card);
     background: var(--sky);
     box-shadow: var(--shadow-card);
+  }
+  /* press: the card gives a little, 160ms */
+  .wk-card {
+    transition: transform 160ms var(--ease-out);
+  }
+  .wk-card:active {
+    transform: scale(0.98);
   }
   .wk-card img {
     width: 100%;
@@ -278,6 +321,21 @@ const catReady = 'src' in resolvePic('cat-peek');
   }
   .wk-dots :global(.wk-dot:hover)::before {
     background: var(--blue-hover);
+  }
+
+  /* reduced motion: no press scale; the cat is never hidden or moved (the script does not start either) */
+  @media (prefers-reduced-motion: reduce) {
+    .wk-card:active {
+      transform: none;
+    }
+    .wk-cat[data-cat] {
+      opacity: 1;
+      animation: none;
+    }
+    .wk-cat[data-cat] :global(img) {
+      transform: none;
+      animation: none;
+    }
   }
 
   @media (max-width: 1320px) {

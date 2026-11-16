@@ -54,6 +54,9 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --t-fast: 0.18s;
   --t: 0.25s;
+  /* strong ease-out for entrances (windows, menus, answers), iOS-like curve for sheets that slide in */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @media (max-width: 900px) {

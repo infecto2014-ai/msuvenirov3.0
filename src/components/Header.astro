@@ -325,6 +325,20 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     background: var(--white);
     box-shadow: var(--shadow-pop);
   }
+  /* the panel opens out of the «Каталог» button: a short fade and a slight scale from the button's spot.
+     Closing is instant. Without @starting-style the panel just appears. */
+  .cat[open] .cat-panel {
+    transform-origin: 62px -14px;
+    transition:
+      opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+  @starting-style {
+    .cat[open] .cat-panel {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
   .cat-groups {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -516,6 +530,15 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
     background: var(--white);
     border-top: 1px solid var(--line);
   }
+  /* the sheet slides in from the right edge; closing is instant */
+  .mnav[open] .mnav-sheet {
+    transition: transform 300ms var(--ease-drawer);
+  }
+  @starting-style {
+    .mnav[open] .mnav-sheet {
+      transform: translateX(100%);
+    }
+  }
   .mnav-title {
     margin: var(--s-2) 0 var(--s-3);
     color: var(--muted);
@@ -666,6 +689,10 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
       top: calc(100% - 2px);
       width: auto;
     }
+    /* the «Каталог» button now sits about 155–260px from the panel's left edge (after the logo) */
+    .cat[open] .cat-panel {
+      transform-origin: 210px -14px;
+    }
     .hdr-actions {
       gap: var(--s-2);
     }
@@ -712,6 +739,26 @@ const ext = (l: NavLink) => (isExternal(l) ? { target: '_blank', rel: 'noopener'
   @media (max-width: 560px) {
     .hdr-logo :global(svg) {
       height: 34px;
+    }
+  }
+
+  /* reduced motion: the catalog panel and the sheet only fade in, no scale and no slide
+     (base.css cuts every duration to 0.01ms with !important; a more specific !important gives the fade its time back) */
+  @media (prefers-reduced-motion: reduce) {
+    .cat[open] .cat-panel {
+      transition: opacity 180ms var(--ease-out);
+      transition-duration: 180ms !important;
+    }
+    .mnav[open] .mnav-sheet {
+      transition: opacity 300ms var(--ease-out);
+      transition-duration: 300ms !important;
+    }
+    @starting-style {
+      .cat[open] .cat-panel,
+      .mnav[open] .mnav-sheet {
+        opacity: 0;
+        transform: none;
+      }
     }
   }
 
