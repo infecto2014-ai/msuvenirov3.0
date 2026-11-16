@@ -1,13 +1,14 @@
 ---
 // Home first screen, by the owner's mockup of 16.11.2026 (docs/design-refs/home-hero-2026-11-16.webp,
-// spec docs/superpowers/specs/2026-11-16-home-hero-mockup-design.md): a pill «Своя мастерская в Калининграде»,
-// a three-line heading with the squiggle and a heart under «Калининграде», three advantages, two buttons, the
-// address; on the right the owner's cut-out cat with the press on a lilac-blue blob, a crown and three strokes.
-// ≤ 900px: one column, the cat under the text. Only one picture is displayed at any width (the other wrapper is
-// display:none), so assistive tech gets exactly one picture with the alt.
+// spec docs/superpowers/specs/2026-11-16-home-hero-mockup-design.md; the pill «Своя мастерская в Калининграде»
+// removed by the owner's second mockup): a three-line heading with the squiggle and a heart under «Калининграде», three advantages, two buttons, the
+// address; on the right the shared cat art (HeroArt: blob, crown, strokes, shadow). One grid, the DOM order is
+// heading → cat → perks → buttons → address: on desktop the cat spans the right column, ≤ 900px (phone mockup
+// docs/design-refs/home-hero-mobile-2026-11-16.webp) everything is one column in that order, the perks in one
+// row of three.
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import Pic from '@/components/ui/Pic.astro';
+import HeroArt from '@/components/ui/HeroArt.astro';
 import { site } from '@/data/site';
 
 const alt = 'Рыжий кот в фартуке у термопресса с футболкой, рядом стопка кружек';
@@ -21,61 +22,30 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
   </svg>
 
   <div class="wrap hero-in">
-    <div class="hero-text">
-      <p class="hero-badge"><Icon name="crown" size={18} /> Своя мастерская в Калининграде</p>
+    <h1 id="hero-title" class="hero-title">
+      Печать на&nbsp;одежде <br />и&nbsp;сувенирах <br />в&nbsp;<span class="accent"
+        >Калининграде<svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
+        </svg><svg class="accent-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
+        </svg></span
+      >
+    </h1>
 
-      <h1 id="hero-title" class="hero-title">
-        Печать на&nbsp;одежде <br />и&nbsp;сувенирах <br />в&nbsp;<span class="accent"
-          >Калининграде<svg class="accent-squiggle" viewBox="0 0 200 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M4 20C52 12 104 8 166 6.5L118 17.5c28-3.5 54-5 78-4.5" />
-          </svg><svg class="accent-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
-          </svg></span
-        >
-      </h1>
+    <HeroArt name="hero" w={1467} h={993} mobileName="hero-mobile" mw={1200} mh={812} alt={alt} label="кот с прессом" class="hero-cat" />
 
-      <ul class="hero-perks" role="list">
-        <li><Icon name="shirt" size={30} /><span>Печать <b>от&nbsp;1&nbsp;штуки</b></span></li>
-        <li><Icon name="zap" size={30} /><span>Быстрое изготовление</span></li>
-        <li><Icon name="star" size={30} /><span>Качественные материалы</span></li>
-      </ul>
+    <ul class="hero-perks" role="list">
+      <li><Icon name="shirt" size={30} /><span>Печать <b>от&nbsp;1&nbsp;штуки</b></span></li>
+      <li><Icon name="zap" size={30} /><span>Быстрое изготовление</span></li>
+      <li><Icon name="star" size={30} /><span>Качественные материалы</span></li>
+    </ul>
 
-      <div class="hero-actions">
-        <Button href="#catalog" arrow>Выбрать изделие</Button>
-        <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
-      </div>
-
-      <p class="hero-sub"><Icon name="map-pin" size={20} /> Сельма, {site.address.place}</p>
+    <div class="hero-actions">
+      <Button href="#catalog" arrow>Выбрать изделие</Button>
+      <Button href={site.constructorUrl} variant="ghost" icon="pencil" target="_blank" rel="noopener">Создать свой дизайн <span class="visually-hidden">(откроется в новой вкладке)</span></Button>
     </div>
 
-    <div class="hero-art">
-      <svg class="art-blob" viewBox="0 0 600 520" aria-hidden="true" focusable="false">
-        <defs>
-          <linearGradient id="hero-blob-g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#d7dcfd" />
-            <stop offset="1" stop-color="#aeb8f6" />
-          </linearGradient>
-        </defs>
-        <path
-          fill="url(#hero-blob-g)"
-          d="M395 18C500 30 590 110 596 228C602 340 548 452 430 496C320 537 186 512 104 446C24 382 -12 278 26 190C62 106 152 82 228 52C284 30 334 11 395 18Z"
-        />
-      </svg>
-      <svg class="art-crown" viewBox="0 0 64 52" aria-hidden="true" focusable="false">
-        <path d="M6 14l13 12 13-20 13 20 13-12-6 32H12z" />
-        <circle cx="25" cy="34" r="1.8" /><circle cx="39" cy="34" r="1.8" />
-      </svg>
-      <svg class="art-strokes" viewBox="0 0 60 70" aria-hidden="true" focusable="false">
-        <path d="M34 4l12 20" /><path d="M8 30l26 12" /><path d="M2 64h26" />
-      </svg>
-      <span class="art-shadow" aria-hidden="true"></span>
-      <div class="art-desk">
-        <Pic name="hero" alt={alt} w={1467} h={993} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(max-width: 900px)" label="hero — кот с прессом" class="hero-pic" />
-      </div>
-      <div class="art-mobile">
-        <Pic name="hero-mobile" alt={alt} w={1200} h={812} fit="contain" loading="eager" fetchpriority="high" hiddenMedia="(min-width: 901px)" label="hero-mobile" class="hero-pic" />
-      </div>
-    </div>
+    <p class="hero-sub"><Icon name="map-pin" size={20} /> Сельма, {site.address.place}</p>
   </div>
 </section>
 
@@ -106,30 +76,38 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
     fill: rgba(170, 182, 246, 0.2);
   }
 
+  /* one grid: text in the left column (centred vertically by the 1fr rows), the cat spans the right column */
   .hero-in {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    align-items: center;
-    gap: var(--s-6);
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    grid-template-areas:
+      '. art'
+      'title art'
+      'perks art'
+      'actions art'
+      'sub art'
+      '. art';
+    column-gap: var(--s-6);
   }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--s-2);
-    padding: 6px var(--s-4) 6px var(--s-3);
-    border-radius: var(--radius-pill);
-    background: rgba(21, 87, 255, 0.1);
-    color: var(--ink);
-    font-size: var(--fs-sm);
-    font-weight: 500;
+  .hero-title {
+    grid-area: title;
   }
-  .hero-badge :global(svg) {
-    color: var(--blue);
+  .hero-in > :global(.hero-cat) {
+    grid-area: art;
+    align-self: center;
+  }
+  .hero-perks {
+    grid-area: perks;
+  }
+  .hero-actions {
+    grid-area: actions;
+  }
+  .hero-sub {
+    grid-area: sub;
   }
 
   .hero-title {
-    margin-top: var(--s-4);
     font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 1.06;
@@ -170,7 +148,7 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
   .hero-perks {
     display: flex;
     flex-wrap: wrap;
-    margin-top: var(--s-7);
+    margin: var(--s-7) 0 0;
     list-style: none;
     padding: 0;
   }
@@ -216,89 +194,16 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
     font-size: var(--fs-base);
   }
 
-  /* the cat on the blob: the blob behind, the crown top right, three strokes over the head, a soft shadow below */
-  .hero-art {
-    position: relative;
-    aspect-ratio: 600 / 500;
-  }
-  .art-blob {
-    position: absolute;
-    inset: 0 0 4% 6%;
-    width: 94%;
-    height: 96%;
-  }
-  .art-crown {
-    position: absolute;
-    top: 8%;
-    right: 4%;
-    width: 13%;
-    fill: #fff;
-    stroke: var(--blue);
-    stroke-width: 3;
-    stroke-linejoin: round;
-    transform: rotate(18deg);
-  }
-  .art-crown circle {
-    fill: var(--blue);
-    stroke: none;
-  }
-  .art-strokes {
-    position: absolute;
-    top: 0;
-    left: 6%;
-    width: 9%;
-    fill: none;
-    stroke: var(--ink);
-    stroke-width: 5;
-    stroke-linecap: round;
-  }
-  .art-shadow {
-    position: absolute;
-    left: 14%;
-    right: 2%;
-    bottom: 3%;
-    height: 8%;
-    border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(11, 26, 63, 0.22), transparent);
-  }
-  .art-desk,
-  .art-mobile {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 5%;
-  }
-  .art-mobile {
-    display: none;
-  }
-  .hero-art :global(.hero-pic) {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Once, on load (pure CSS): the text fades in, the cat settles from 102% to 100%. */
-  .hero-text {
+  /* Once, on load (pure CSS): the text fades in without moving (the cat settles inside HeroArt). */
+  .hero-title,
+  .hero-perks,
+  .hero-actions,
+  .hero-sub {
     animation: hero-fade 400ms var(--ease-out) both;
-  }
-  .hero-art {
-    animation: hero-settle 600ms var(--ease-out) both;
   }
   @keyframes hero-fade {
     from {
       opacity: 0;
-    }
-  }
-  @keyframes hero-settle {
-    from {
-      opacity: 0;
-      transform: scale(1.02);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .hero-text,
-    .hero-art {
-      animation: hero-fade 400ms var(--ease-out) both;
-      animation-duration: 400ms !important;
     }
   }
 
@@ -306,7 +211,7 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
   @media (max-width: 1180px) and (min-width: 901px) {
     .hero-in {
       grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-      gap: var(--s-5);
+      column-gap: var(--s-5);
     }
     .hero-title {
       font-size: clamp(2.5rem, 1rem + 2.6vw, 3rem);
@@ -321,45 +226,58 @@ const alt = 'Рыжий кот в фартуке у термопресса с ф
     }
   }
 
+  /* phone mockup: heading → cat → perks in one row of three → buttons full width → address centred */
   @media (max-width: 900px) {
     .hero {
       padding-block: var(--s-6) calc(var(--s-8) + var(--s-5));
     }
     .hero-in {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--s-5);
+      grid-template-rows: none;
+      grid-template-areas: 'title' 'art' 'perks' 'actions' 'sub';
     }
-    .hero-art {
-      width: 100%;
+    .hero-in > :global(.hero-cat) {
+      margin-top: var(--s-5);
+    }
+    .hero-perks {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       max-width: 620px;
+      width: 100%;
+      margin: var(--s-4) auto 0;
+    }
+    .hero-perks li,
+    .hero-perks li:first-child {
+      flex-direction: column;
+      gap: var(--s-2);
+      max-width: none;
+      padding-inline: var(--s-2);
+      text-align: center;
+    }
+    .hero-actions {
+      flex-direction: column;
+      max-width: 620px;
+      width: 100%;
       margin-inline: auto;
     }
-    .art-desk {
-      display: none;
+    .hero-actions :global(.btn) {
+      width: 100%;
     }
-    .art-mobile {
-      display: block;
+    .hero-sub {
+      justify-content: center;
+      text-align: center;
     }
   }
 
   @media (max-width: 560px) {
-    .hero-perks {
-      flex-direction: column;
-      gap: var(--s-3);
-      margin-top: var(--s-6);
+    .hero-perks li,
+    .hero-perks li:first-child {
+      padding-inline: var(--s-1);
+      font-size: var(--fs-sm);
     }
-    .hero-perks li {
-      max-width: none;
-      padding: 0;
-    }
-    .hero-perks li + li {
-      border-left: 0;
-    }
-    .hero-perks b {
-      display: inline;
-    }
-    .hero-actions {
-      flex-direction: column;
+    .hero-perks :global(svg) {
+      width: 28px;
+      height: 28px;
     }
   }
 </style>

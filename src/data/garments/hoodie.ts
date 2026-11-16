@@ -139,7 +139,9 @@ export const hoodie: GarmentPage = {
   },
   images: {
     hero: 'hoodie-hero',
+    heroSize: { w: 1220, h: 1211 },
     heroMobile: 'hoodie-hero-mobile',
+    heroMobileSize: { w: 900, h: 893 },
     alt: 'Рыжий кот в тёмно-синем худи показывает худи с принтом на спине',
     label: 'кот с худи',
   },

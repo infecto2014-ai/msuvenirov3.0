@@ -194,7 +194,9 @@ export const shopper: GarmentPage = {
   },
   images: {
     hero: 'shopper-hero',
+    heroSize: { w: 913, h: 1388 },
     heroMobile: 'shopper-hero-mobile',
+    heroMobileSize: { w: 592, h: 900 },
     alt: 'Рыжий кот в тёмно-синем худи с шоппером на плече',
     label: 'кот с шоппером',
   },

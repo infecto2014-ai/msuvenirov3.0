@@ -116,5 +116,14 @@ export interface GarmentPage {
    * picture names for Pic (public/img/v3), the alt text, what the placeholder says until the picture arrives
    * («кот с футболкой»), `extra.measure` — the measuring cat next to the size charts
    */
-  images: { hero: string; heroMobile: string; alt: string; label: string; extra?: { measure?: string } };
+  /** first-screen cat (shared HeroArt): tight cut-outs in public/img/v3 with their pixel sizes */
+  images: {
+    hero: string;
+    heroSize: { w: number; h: number };
+    heroMobile: string;
+    heroMobileSize: { w: number; h: number };
+    alt: string;
+    label: string;
+    extra?: { measure?: string };
+  };
 }

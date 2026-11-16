@@ -255,7 +255,9 @@ export const sport: GarmentPage = {
   },
   images: {
     hero: 'sport-hero',
+    heroSize: { w: 910, h: 1398 },
     heroMobile: 'sport-hero-mobile',
+    heroMobileSize: { w: 586, h: 900 },
     alt: 'Рыжий кот в футбольной форме с мячом',
     label: 'кот в футбольной форме',
   },
