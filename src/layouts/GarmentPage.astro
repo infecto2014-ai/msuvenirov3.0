@@ -68,7 +68,7 @@ const schema = [
   </section>
 
   {page.presets.length > 0 && <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>}
-  <div class="g-cb"><ConstructorBanner /></div>
+  {page.showConstructor !== false && <div class="g-cb"><ConstructorBanner /></div>}
   <GarmentDetails page={page} />
   <div class="band-sky">
     <Works works={garmentWorks(page)} title="Наши" accent="работы" lead={heads.worksLead} />

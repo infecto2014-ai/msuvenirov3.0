@@ -63,6 +63,8 @@ export interface GarmentPage {
   /** name of the Service in JSON-LD */
   serviceName: string;
   hero: { priceLabel: string };
+  /** The clothing constructor is not offered for mugs and other non-clothing products. */
+  showConstructor?: boolean;
   /**
    * the calculator: its tiles (a tile with `own` — the customer's item, only the print). The page's products — for
    * the calculator, the first-screen «от» price and the JSON-LD — are the tiles' products (tileProducts).
@@ -84,6 +86,7 @@ export interface GarmentPage {
   /** the measuring scheme next to the charts is drawn on `prints.shape` (none without prints) */
   sizes?: { adult?: SizeTable; kids?: SizeTable; sub: string; /** not confirmed — a visible note */ todo?: boolean };
   care?: string[];
+  careSub?: string;
   /** extra card sections (two kinds of shopper, «DTF или сублимация»…), after the specs, before the print sizes */
   extra?: DetailExtra[];
   /** DTF print sizes (w×h, cm) drawn to scale on the `shape` outline (src/data/garments/shapes.ts) */

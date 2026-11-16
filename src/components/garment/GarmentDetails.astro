@@ -28,7 +28,7 @@ const sections = [
   ...(extra ?? []).map((x) => ({ id: x.id, icon: x.icon, title: x.title, sub: x.sub, cards: x.cards })),
   prints ? { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: prints.sub } : undefined,
   sizes ? { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: sizes.sub } : undefined,
-  care?.length ? { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' } : undefined,
+  care?.length ? { id: 'care', icon: 'droplets', title: 'Уход', sub: page.careSub ?? 'Как стирать, чтобы принт служил дольше' } : undefined,
 ].filter((s): s is { id: string; icon: IconName; title: string; sub: string; cards?: DetailCard[] } => !!s);
 
 const shape: GarmentShape | undefined = prints ? SHAPES[prints.shape] : undefined;
