@@ -135,10 +135,7 @@ export const hoodie: GarmentPage = {
   },
   heads: {
     details: 'о худи',
-    works: 'на худи',
     worksLead: 'Настоящие худи наших клиентов',
-    reviews: 'о печати на худи',
-    faq: 'о худи',
   },
   images: {
     hero: 'hoodie-hero',

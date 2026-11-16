@@ -74,8 +74,12 @@ export interface GarmentPage {
     products: { id: string; title: string }[];
     rules: { icon: IconName; text: string }[];
   };
-  /** section headings of the page; `reviews` only while the reviews are about the garment (else «Отзывы клиентов») */
-  heads: { details: string; works: string; worksLead: string; reviews: string; faq: string };
+  /**
+   * the page's own heading parts: the accent of «Подробнее о …» and the lead under «Наши работы». The other section
+   * headings are the template's and neutral (owner, 16.11.2026: the product name only in h1, the price table and
+   * «Подробнее о …» — not «на футболках» in every section)
+   */
+  heads: { details: string; worksLead: string };
   /**
    * picture names for Pic (public/img/v3), the alt text, what the placeholder says until the picture arrives
    * («кот с футболкой»), `extra.measure` — the measuring cat next to the size charts

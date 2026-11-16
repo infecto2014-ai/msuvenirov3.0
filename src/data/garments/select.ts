@@ -22,7 +22,7 @@ export const garmentWorks = (page: GarmentPage): PortfolioItem[] =>
 
 /**
  * up to six reviews that mention the garment; if there are fewer than three, the rest comes from the home selection
- * and `topped` is true — the page then uses the neutral heading «Отзывы клиентов», not «Отзывы о печати на …»
+ * and `topped` is true (the heading is «Отзывы клиентов» either way)
  */
 export const garmentReviews = (page: GarmentPage): { items: Review[]; topped: boolean } => {
   const about = reviews.filter((r) => page.reviewWords.some((w) => r.text.toLowerCase().includes(w))).slice(0, 6);

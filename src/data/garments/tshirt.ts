@@ -153,10 +153,7 @@ export const tshirt: GarmentPage = {
   },
   heads: {
     details: 'о футболке',
-    works: 'на футболках',
     worksLead: 'Настоящие футболки наших клиентов',
-    reviews: 'о печати на футболках',
-    faq: 'о футболках',
   },
   images: {
     hero: 'tee-hero',
