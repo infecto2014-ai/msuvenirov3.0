@@ -577,7 +577,8 @@ const textile: Category = {
       // owner, 16.11.2026: 2 600 ₽ at any run (was «от 2 000 ₽, уточняйте наличие»); all 11 colours, coloured from 5 pcs
       blank: tiers([1], [HOODIE_BLANK]),
       formats: ['a6', 'a5', 'a4', 'a3'],
-      places: 4,
+      // owner, 16.11.2026 (after the hoodie): like T-shirts — up to 5 prints, each up to А3 (was 4)
+      places: 5,
       colors: { min: COLOR_MIN.hoodie, noun: 'Цветные худи' },
       // owner, 16.11.2026: every clothing page has a «свой» tile — the customer's own hoodie, only the print
       own: 'худи',
@@ -612,7 +613,8 @@ const textile: Category = {
       blank: tiers([1, 10, 30], [650, 550, 450]),
       formats: ['a6'],
       // owner, 06.11.2026: front (≈11×6 cm), side (size depends on the cap), back above the clasp; own cap — print only
-      places: 3,
+      // owner, 16.11.2026: up to 4 prints, all А6 (was 3)
+      places: 4,
       own: 'бейсболка',
       max: 100,
       // owner, 16.11.2026: all 11 colours (was 7), white and black from 1 pc, coloured from 10 pcs
@@ -624,6 +626,7 @@ const textile: Category = {
       short: 'хлопковая сумка',
       image: '/img/showcase/shopper.webp',
       blank: tiers([1, 5, 20], [450, 350, 250]),
+      // owner, 16.11.2026: up to 2 prints, up to А4
       formats: ['a6', 'a5', 'a4'],
       places: 2,
       // owner, 16.11.2026: all 11 colours, white and black from 1 pc, coloured from 10 pcs (was: light / black, other sewn from 20)

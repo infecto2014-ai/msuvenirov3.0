@@ -62,10 +62,10 @@ test('калькулятор: плитки «Худи» и «Своё худи»
   expect(quote({ blank: 'own', print1: 'a4' }).breakdown.some((b) => b.amount === HOODIE_BLANK)).toBe(false);
 });
 
-test('таблица цен «Цена печати на худи»; принтов до 4', () => {
+test('таблица цен «Цена печати на худи»; принтов до 5', () => {
   expect(`${hoodie.prices.title} ${hoodie.prices.accent}`).toBe('Цена печати на худи');
   for (const p of hoodie.prices.products) expect(findProduct(hoodie.calc.category, p.id)?.table, p.id).toBeTruthy();
-  expect(product.options!.filter((g) => /^print\d$/.test(g.id))).toHaveLength(4);
+  expect(product.options!.filter((g) => /^print\d$/.test(g.id))).toHaveLength(5);
 });
 
 test('картинки котов и схема принтов', () => {
@@ -152,4 +152,20 @@ test('тексты сайта — по правилам 16.11 (после худ
   expect(rows).toContain('"Грудь, спина, рукав; до 5 принтов, каждый до А3"');
   const caps = services.find((s) => s.slug === '/pechat-na-kepkah')!;
   expect(caps.highlights).toContain('11 цветов');
+});
+
+test('тексты: число принтов как в прайсе — худи 5 (каждый до А3), кепка 4 (каждый до А6), шоппер 2', async () => {
+  const { generalFaq } = await import('../faq');
+  const places = (id: string) => findProduct('textile', id)!.options!.filter((g) => /^print\d$/.test(g.id)).length;
+  expect([places('hoodie'), places('cap'), places('shopper')]).toEqual([5, 4, 2]);
+  const all = JSON.stringify({ services, generalFaq, hoodie });
+  for (const old of [/до 4 принтов на одном худи/, /на худи — до четырёх/, /на кепке — до трёх/, /Второй принт можно сделать сзади/, /Спереди и ещё одно место/]) {
+    expect(all).not.toMatch(old);
+  }
+  expect(specs.find((s) => s.label === 'Места печати')!.value).toContain(`до ${places('hoodie')} принтов на одном худи`);
+  const hub = services.find((s) => s.slug === '/pechat-na-odezhde')!;
+  expect(JSON.stringify(hub.faq)).toContain('На футболке и худи — до пяти, на кепке — до четырёх, на шоппере — два.');
+  const rows = JSON.stringify(hub.blocks);
+  expect(rows).toMatch(/"Худи","values":\[[^\]]*"Грудь, спина, рукав; до 5 принтов, каждый до А3"\]/);
+  expect(rows).toMatch(/"Кепка","values":\[[^\]]*"Спереди, сзади, сбоку; до 4 принтов, каждый до А6"\]/);
 });

@@ -135,3 +135,22 @@ test('setEstimateQty: старые цвета (бейсболка «хаки», 
   expect(s1.unitPrice).toBe(350 + 350);
   expect(h.unitPrice).toBe(2600 + 350);
 });
+
+test('setEstimateQty: старые позиции худи (4 места) и бейсболки (3 места) пересчитываются', async () => {
+  const old = (id: string, product: string, options: Record<string, string>) => ({
+    id, title: 'старая позиция', details: '', qty: 1, unitPrice: 1, total: 1,
+    calc: { cat: 'textile', product, sel: { qty: 1, options, dims: {} } },
+  });
+  const stored = [
+    old('h4', 'hoodie', { blank: 'ours', color: 'black', print1: 'a4', print2: 'a6', print3: 'none', print4: 'a6' }),
+    old('c3', 'cap', { blank: 'ours', color: 'black', print1: 'a6', print2: 'a6', print3: 'a6' }),
+  ];
+  const { setEstimateQty, getEstimate } = await load(JSON.stringify(stored));
+  setEstimateQty('h4', 2);
+  setEstimateQty('c3', 2);
+  const [h, c] = getEstimate();
+  expect(h.note).toBeUndefined();
+  expect(h.unitPrice).toBe(2600 + 800 + 2 * 420);
+  expect(c.note).toBeUndefined();
+  expect(c.unitPrice).toBe(650 + 600 + 2 * 420);
+});

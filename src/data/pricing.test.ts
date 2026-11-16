@@ -137,11 +137,34 @@ describe('pricing', () => {
     expect(p.quote(s).breakdown.map((b) => b.label)).toEqual(['Печать DTF А3', 'Печать DTF А4 (−30%)', 'Печать DTF А6 (−30%)']);
   });
 
-  it('t-shirt and hoodie take up to 4 prints, the 4th also at −30%', () => {
+  it('the 4th print is also at −30%', () => {
     const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a6', print2: 'a3', print3: 'a6', print4: 'a4' } });
     expect(p.quote(s).total).toBe(750 + 1100 + 800 * 0.7 + 600 * 0.7 + 600 * 0.7);
-    expect(findProduct('textile', 'hoodie')!.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(4);
-    expect(findProduct('textile', 'cap')!.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(3);
+  });
+
+  // owner, 16.11.2026 (after the hoodie): hoodie like T-shirts — 5 prints up to А3; cap — 4 prints, all А6; shopper — 2 up to А4
+  it('prints per product: hoodie 5 × А6–А3, cap 4 × А6, cotton shopper 2 × А6–А4', () => {
+    const places = (id: string) => findProduct('textile', id)!.options!.filter((g) => /^print\d$/.test(g.id));
+    const formats = (id: string) => places(id)[0].choices.map((c) => c.id);
+    expect(places('hoodie')).toHaveLength(5);
+    expect(formats('hoodie')).toEqual(['a6', 'a5', 'a4', 'a3']);
+    expect(places('cap')).toHaveLength(4);
+    expect(formats('cap')).toEqual(['a6']);
+    expect(places('shopper')).toHaveLength(2);
+    expect(formats('shopper')).toEqual(['a6', 'a5', 'a4']);
+    const h = sel('textile', 'hoodie', { qty: 1, options: { print1: 'a3', print2: 'a3', print3: 'a6', print4: 'a6', print5: 'a6' } });
+    expect(h.p.quote(h.s).total).toBe(2600 + 1100 + 1100 * 0.7 + 3 * 600 * 0.7);
+    const c = sel('textile', 'cap', { qty: 1, options: { print1: 'a6', print2: 'a6', print3: 'a6', print4: 'a6' } });
+    expect(c.p.quote(c.s).total).toBe(650 + 600 + 3 * 420);
+  });
+
+  it('old estimate lines: hoodie with 4 places, cap with 3 places still quote', () => {
+    const h = sel('textile', 'hoodie', { qty: 1, options: { print1: 'a4', print2: 'a6', print3: 'none', print4: 'a6' } });
+    delete (h.s.options as Record<string, unknown>).print5;
+    expect(h.p.quote(h.s).total).toBe(2600 + 800 + 2 * 420);
+    const c = sel('textile', 'cap', { qty: 1, options: { print1: 'a6', print2: 'a6', print3: 'a6' } });
+    delete (c.s.options as Record<string, unknown>).print4;
+    expect(c.p.quote(c.s).total).toBe(650 + 600 + 2 * 420);
   });
 
   it('t-shirts (unisex and kids) take up to 5 prints, the 5th also at −30%', () => {
@@ -186,7 +209,6 @@ describe('pricing', () => {
     expect(p.short).not.toContain('уточняйте');
     expect(p.table!.rows[0].cells.every((c) => !c.startsWith('от'))).toBe(true);
     expect(p.quote({ ...defaultSelection(p), options: { ...defaultSelection(p).options, color: 'black' } }).error).toBeUndefined();
-    expect(p.options!.filter((g) => g.id.startsWith('print'))).toHaveLength(4);
   });
 
   it('own hoodie: «Наше худи / Своё худи», only the DTF print, colour hidden, no minimum', () => {

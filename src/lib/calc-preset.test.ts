@@ -138,8 +138,11 @@ test('смена плитки: размеры принтов переносят�
   const o = switchTile(tee, unisex, own, cur)!;
   expect(o.options.blank).toBe('own');
   expect(o.options.print1).toBe('a3');
-  // to the hoodie: only 4 places — print5 is dropped, print1 kept
+  // to the hoodie: 5 places up to А3 too — all prints carried over
   const h = switchTile(findProduct('textile', 'hoodie')!, unisex, { id: 'h', label: 'Худи', product: 'hoodie' }, cur)!;
-  expect(h.options.print1).toBe('a3');
-  expect(h.options.print5).toBeUndefined();
+  expect([h.options.print1, h.options.print2, h.options.print5]).toEqual(['a3', 'a6', 'a5']);
+  // to the cap: 4 places, А6 only — print5 dropped, sizes the cap has not fall back to its default
+  const c = switchTile(findProduct('textile', 'cap')!, unisex, { id: 'c', label: 'Бейсболка', product: 'cap' }, cur)!;
+  expect(c.options.print5).toBeUndefined();
+  expect(c.options.print1).toBe('a6');
 });
