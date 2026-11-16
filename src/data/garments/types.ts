@@ -36,6 +36,8 @@ export interface DetailCard {
   points?: string[];
   /** a closing line under the rows / points */
   text?: string;
+  /** the card's title is a link to this page (an existing address — a «переезжает» stub page is fine) */
+  href?: string;
 }
 
 /** an extra «Подробнее» section of cards, drawn after the specs and before the print sizes */
@@ -66,6 +68,7 @@ export interface GarmentPage {
    * the calculator, the first-screen «от» price and the JSON-LD — are the tiles' products (tileProducts).
    */
   calc: { category: string; tiles: CalcTile[]; lead: string };
+  /** ready-made variants; an empty list leaves the «Готовые варианты» block out (sublimation, sheets have none) */
   presets: GarmentPreset[];
   /*
    * «Подробнее об изделии»: every section is optional and left out without data, in this order — colours, specs,
