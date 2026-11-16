@@ -102,7 +102,7 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
                   <div class="td-tables">
                     <div class="td-table-block">
                       <h3 class="td-h3">
-                        Взрослые{adultSizes.todo && <small class="td-todo">уточняйте у менеджера</small>}
+                        Взрослые
                       </h3>
                       <div class="td-scroll" tabindex="0" role="region" aria-label="Взрослые размеры, прокрутка таблицы">
                         <table class="td-table">
@@ -122,6 +122,12 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
                           </tbody>
                         </table>
                       </div>
+                      {adultSizes.todo && (
+                        <p class="td-note">
+                          <Icon name="info" size={20} />
+                          <span>Размеры ориентировочные — точные мерки уточняйте у менеджера</span>
+                        </p>
+                      )}
                     </div>
                     <div class="td-table-block">
                       <h3 class="td-h3">Детские</h3>
@@ -445,10 +451,22 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: 26 - p.w / 2, y:
     margin-bottom: var(--s-3);
     font-size: var(--fs-lg);
   }
-  .td-todo {
-    color: var(--muted);
-    font-size: var(--fs-xs);
-    font-weight: 600;
+  /* the adult chart is not confirmed by the owner yet — a clearly visible note right under it */
+  .td-note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--radius-md);
+    background: var(--sky);
+    color: var(--ink);
+    font-size: var(--fs-base);
+  }
+  .td-note :global(.icon) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--blue);
   }
   .td-scroll {
     overflow-x: auto;

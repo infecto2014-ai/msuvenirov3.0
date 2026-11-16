@@ -1,20 +1,18 @@
 import { expect, test } from 'vitest';
 import { adultSizes, kidsSizes, presetPrice, printSizes, teeCare, teePresets, teeSpecs } from './tshirt';
-import { findProduct } from './pricing';
-import { applyPreset } from '@/lib/calc-preset';
 
-test('готовые варианты: четыре, цена из калькулятора', () => {
+test('готовые варианты: четыре, цена по прайсу', () => {
   expect(teePresets).toHaveLength(4);
-  const p = findProduct('textile', 'tshirt-unisex')!;
-  expect(p.id).toBe('tshirt-unisex');
   for (const v of teePresets) {
     const price = presetPrice(v);
-    const q = p.quote(applyPreset(p, { options: v.options, qty: v.qty }));
-    expect(q.error, v.title).toBeUndefined();
     expect(price.unit, v.title).toBeGreaterThan(0);
-    expect(price.total, v.title).toBeGreaterThan(0);
-    expect(price).toEqual({ unit: q.unit, total: q.total });
+    expect(price.total, v.title).toBe(price.unit * v.qty);
   }
+  // pinned: blank 750 + DTF A4 800 (1 pc)
+  expect(presetPrice(teePresets.find((v) => v.title === 'Футболка с фото в подарок')!).total).toBe(1550);
+  const team = teePresets.find((v) => v.title.startsWith('Для команды'))!;
+  // 20 pcs: blank 550 + A4 at the 20+ tier + A6 −30%
+  expect(presetPrice(team)).toEqual({ unit: 1196, total: 23920 });
 });
 
 test('«Для команды» — 20 синих футболок', () => {
