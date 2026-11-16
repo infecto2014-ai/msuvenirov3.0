@@ -41,3 +41,10 @@ test('цена готового варианта совпадает с расч�
   expect(q.error).toBeUndefined();
   expect(q.total).toBe(q.unit * 20);
 });
+
+test('шоппер другого цвета из готового варианта: 1 шт поднимается до 20', () => {
+  const shopper = findProduct('textile', 'shopper')!;
+  const s = applyPreset(shopper, { options: { color: 'other' }, qty: 1 });
+  expect(s.qty).toBe(20);
+  expect(shopper.quote(s).error).toBeUndefined();
+});

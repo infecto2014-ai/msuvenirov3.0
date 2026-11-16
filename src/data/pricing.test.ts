@@ -292,6 +292,26 @@ describe('pricing', () => {
     expect(p.quote({ ...s, options: { ...s.options, color: 'black' } }).error).toBeUndefined();
   });
 
+  it('cotton shopper: «другой цвет» lifts the smallest run to 20, listed colours from 1', () => {
+    const m = (color: string) => {
+      const { p, s } = sel('textile', 'shopper', { options: { color } });
+      return p.minQty!(s);
+    };
+    expect([m('light'), m('black'), m('other')]).toEqual([1, 1, 20]);
+  });
+
+  it('minimum-run note: the wording of the product, nothing without a minimum', () => {
+    const note = (id: string, options: Record<string, string>) => {
+      const { p, s } = sel('textile', id, { options });
+      return p.minQtyNote?.(s);
+    };
+    expect(note('tshirt-unisex', { color: 'red' })).toBe('Цветные футболки — от 5 шт');
+    expect(note('tshirt-unisex', { color: 'white' })).toBeUndefined();
+    expect(note('tshirt-unisex', { color: 'red', blank: 'own' })).toBeUndefined();
+    expect(note('shopper', { color: 'other' })).toBe('Шопперы другого цвета шьём — под заказ от 20 шт');
+    expect(note('shopper', { color: 'light' })).toBeUndefined();
+  });
+
   it('cap: 650 / 550 / 450 by run + DTF A6, up to 100 pcs, 7 colours', () => {
     const u = (qty: number) => {
       const { p, s } = sel('textile', 'cap', { qty });

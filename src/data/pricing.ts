@@ -90,6 +90,8 @@ export interface Product {
   quote: (sel: Selection) => Quote;
   /** smallest run for this selection when it depends on the size (stickers: minimum order sum); default qty.min */
   minQty?: (sel: Selection) => number;
+  /** why the smallest run is above 1 for this selection («Цветные футболки — от 5 шт»); undefined without a minimum */
+  minQtyNote?: (sel: Selection) => string | undefined;
   /** static price table for the HTML price list (always visible, indexable) */
   table?: PriceTable;
   /** lowest possible price per piece, for "от N ₽" labels */
@@ -396,9 +398,16 @@ function garment(args: {
     args.blank?.forEach((t) => set.add(t.from));
     return [...set].sort((a, b) => a - b).map((from) => ({ from, price: unitAt(sel, from) }));
   };
-  /** smallest run for the selected colour (coloured garments only); 1 without a colour minimum */
-  const minQtyOf = (sel: Selection): number =>
-    !colorSet?.colorMin || isOwn(sel) || colorSet.colorMin.free.includes(one(sel, 'color', colorSet.choices[0].id)) ? 1 : colorSet.colorMin.min;
+  /** the colour's own minimum: «другой цвет» is sewn from otherMin (shopper: 20), coloured garments from colorMin.min */
+  const colourRule = (sel: Selection): { min: number; note: string } | undefined => {
+    if (!colorSet || isOwn(sel)) return undefined;
+    const color = one(sel, 'color', colorSet.choices[0].id);
+    if (color === 'other') return colorSet.otherMin ? { min: colorSet.otherMin, note: `${colorSet.what} — под заказ от ${colorSet.otherMin} шт` } : undefined;
+    const cm = colorSet.colorMin;
+    return cm && !cm.free.includes(color) ? { min: cm.min, note: `${cm.noun} — от ${cm.min} шт` } : undefined;
+  };
+  /** smallest run for the selected colour; 1 without a colour minimum */
+  const minQtyOf = (sel: Selection): number => colourRule(sel)?.min ?? 1;
   const blankMin = args.blank ? minPrice(args.blank) : 0;
   const maxQty = args.max ?? GARMENT_MAX;
   // price table columns: DTF tiers plus the blank's own tiers (caps: 1 / 10 / 30)
@@ -423,7 +432,7 @@ function garment(args: {
       note: `Больше ${maxQty} шт — цена рассчитывается индивидуально.`,
     },
     ladder: breakpoints,
-    ...(colorSet?.colorMin ? { minQty: minQtyOf } : {}),
+    ...(colorSet?.colorMin || colorSet?.otherMin ? { minQty: minQtyOf, minQtyNote: (sel: Selection) => colourRule(sel)?.note } : {}),
     quote: (sel) => {
       const qty = sel.qty;
       const breakdown: Quote['breakdown'] = [];

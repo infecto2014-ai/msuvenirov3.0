@@ -110,11 +110,26 @@ const sheetSize = (c: Choice): [number, number] | null => {
   const m = c.hint?.match(/(\d+(?:[.,]\d+)?)\s*×\s*(\d+(?:[.,]\d+)?)\s*см/);
   return m ? [parseFloat(m[1].replace(',', '.')), parseFloat(m[2].replace(',', '.'))] : null;
 };
-/** a choice with a minimum run in its hint: «от 5 шт» → 5 */
-const minOf = (c?: Choice) => Number(c?.hint?.match(/от\s+(\d+)\s*шт/)?.[1] ?? 0);
+/** Russian list: «белый», «белый и чёрный», «белый, чёрный и серый» */
+const joinRu = (a: string[]) => (a.length < 2 ? (a[0] ?? '') : `${a.slice(0, -1).join(', ')} и ${a[a.length - 1]}`);
+const capFirst = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
-/** «Цветные футболки — от 5 шт»: what the coloured items are called on the hint near the quantity */
-const colouredName = (id: string) => (id.startsWith('tshirt') ? 'футболки' : id === 'cap' ? 'бейсболки' : 'изделия');
+/** Arrow keys inside a radio group (one tab stop per group): Left/Up — previous, Right/Down — next, Home/End. */
+const radioKeys = (e: KeyboardEvent) => {
+  const keys = ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', 'Home', 'End'];
+  if (!keys.includes(e.key)) return;
+  const items = Array.from((e.currentTarget as HTMLElement).querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+  if (!items.length) return;
+  e.preventDefault();
+  const i = items.indexOf(document.activeElement as HTMLButtonElement);
+  const last = items.length - 1;
+  const next =
+    e.key === 'Home' ? 0 : e.key === 'End' ? last : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? (i <= 0 ? last : i - 1) : i < 0 || i === last ? 0 : i + 1;
+  items[next].focus();
+  items[next].click();
+};
+/** the checked radio takes the tab stop; with none checked — the first one */
+const tabOf = (on: boolean, index: number, anyOn: boolean) => (on || (!anyOn && index === 0) ? 0 : -1);
 
 const Svg = ({ size = 20, children }: { size?: number; children: ComponentChildren }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -162,6 +177,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
   })();
   const [qtyText, setQtyText] = useState(String(sel.qty));
   const [toast, setToast] = useState('');
+  const toastTimer = useRef<ReturnType<typeof setTimeout>>();
   const rootRef = useRef<HTMLDivElement>(null);
   // phone: the compact total bar hides while the full result panel is on screen
   const resultRef = useRef<HTMLDivElement>(null);
@@ -179,6 +195,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
     setProdId(p.id);
     setSel(s);
     setQtyText(String(s.qty));
+    setOtherColor('');
   };
 
   // read ?calc=category:product from the URL (links from cards and landing pages)
@@ -277,13 +294,8 @@ export default function Calculator({ category, product, only, hideCategories, lo
     return out;
   })();
 
-  // the colour asks for a minimum run (coloured T-shirts: from 5 pcs) and it is in force now
-  const colourMin = (() => {
-    const g = prod.options?.find((x) => x.id === 'color');
-    if (!g || (g.hideWhen && sel.options[g.hideWhen.group] === g.hideWhen.value)) return 0;
-    const need = minOf(g.choices.find((c) => c.id === sel.options.color));
-    return need && min >= need ? need : 0;
-  })();
+  // why the smallest run is above one piece now («Цветные футболки — от 5 шт»), from pricing.ts
+  const minNote = min > prod.qty.min ? prod.minQtyNote?.(sel) : undefined;
 
   const add = (thenOrder: boolean) => {
     if (quote.error) return;
@@ -300,7 +312,8 @@ export default function Calculator({ category, product, only, hideCategories, lo
     if (thenOrder) openOrder({ source: 'calculator' });
     else {
       setToast(`${prod.name} — в смете`);
-      setTimeout(() => setToast(''), 2600);
+      clearTimeout(toastTimer.current);
+      toastTimer.current = setTimeout(() => setToast(''), 2600);
     }
   };
 
@@ -317,17 +330,21 @@ export default function Calculator({ category, product, only, hideCategories, lo
 
     if (g.type === 'one' && shown.every((c) => c.swatch)) {
       // colours: circles without captions, the name is in the tooltip and for screen readers
-      const free = shown.filter((c) => !minOf(c));
-      const paid = shown.filter((c) => minOf(c));
+      // the smallest run of each colour, as pricing.ts counts it (white and black — 1, coloured — 5)
+      const runOf = (c: Choice) => prod.minQty?.({ ...sel, options: { ...sel.options, [g.id]: c.id } }) ?? 1;
+      const free = shown.filter((c) => runOf(c) <= 1);
+      const paid = shown.filter((c) => runOf(c) > 1);
+      const anyOn = shown.some(isOn);
       return (
         <>
-          <div class="calc-swatches" role="radiogroup" aria-label={g.label}>
-            {shown.map((c) => (
+          <div class="calc-swatches" role="radiogroup" aria-label={g.label} onKeyDown={radioKeys}>
+            {shown.map((c, i) => (
               <button
                 type="button"
                 role="radio"
                 aria-checked={isOn(c)}
-                class={`calc-swatch${minOf(c) ? ' is-min' : ''}`}
+                tabIndex={tabOf(isOn(c), i, anyOn)}
+                class={`calc-swatch${runOf(c) > 1 ? ' is-min' : ''}`}
                 aria-label={c.hint ? `${c.label}, ${c.hint}` : c.label}
                 title={c.hint ? `${c.label} — ${c.hint}` : c.label}
                 onClick={() => pick(c)}
@@ -339,7 +356,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
           {free.length > 0 && paid.length > 0 && (
             <p class="calc-swatch-note">
               <span class="calc-swatch-mark" aria-hidden="true" />
-              {free.map((c) => c.label.toLowerCase()).join(' и ').replace(/^./, (x) => x.toUpperCase())} — с 1 шт, остальные цвета — {paid[0].hint}
+              {capFirst(joinRu(free.map((c) => c.label.toLowerCase())))} — с 1 шт, остальные цвета — от {runOf(paid[0])} шт
             </p>
           )}
         </>
@@ -350,11 +367,11 @@ export default function Calculator({ category, product, only, hideCategories, lo
       // print formats: a tiny sheet drawn to scale (A3 = 40 px tall)
       const k = 40 / 38;
       return (
-        <div class="calc-sheets" role="radiogroup" aria-label={g.label}>
-          {shown.map((c) => {
+        <div class="calc-sheets" role="radiogroup" aria-label={g.label} onKeyDown={radioKeys}>
+          {shown.map((c, i) => {
             const s = sheetSize(c);
             return (
-              <button type="button" role="radio" aria-checked={isOn(c)} class="calc-sheet" onClick={() => pick(c)}>
+              <button type="button" role="radio" aria-checked={isOn(c)} tabIndex={tabOf(isOn(c), i, shown.some(isOn))} class="calc-sheet" onClick={() => pick(c)}>
                 <span class="calc-sheet-box" aria-hidden="true">
                   {s && <span class="calc-sheet-paper" style={{ width: `${Math.max(8, s[0] * k)}px`, height: `${Math.max(10, s[1] * k)}px` }} />}
                 </span>
@@ -369,12 +386,17 @@ export default function Calculator({ category, product, only, hideCategories, lo
 
     const short = shown.every((c) => c.label.length <= 4 && !c.hint);
     return (
-      <div class={`calc-seg${shown.length >= 5 && !short ? ' calc-seg-grid' : ''}`} role={g.type === 'one' ? 'radiogroup' : 'group'} aria-label={g.label}>
-        {shown.map((c) => (
+      <div
+        class={`calc-seg${shown.length >= 5 && !short ? ' calc-seg-grid' : ''}`}
+        role={g.type === 'one' ? 'radiogroup' : 'group'}
+        aria-label={g.label}
+        onKeyDown={g.type === 'one' ? radioKeys : undefined}
+      >
+        {shown.map((c, i) => (
           <button
             type="button"
             class="calc-opt"
-            {...(g.type === 'one' ? { role: 'radio', 'aria-checked': isOn(c) } : { 'aria-pressed': isOn(c) })}
+            {...(g.type === 'one' ? { role: 'radio', 'aria-checked': isOn(c), tabIndex: tabOf(isOn(c), i, shown.some(isOn)) } : { 'aria-pressed': isOn(c) })}
             onClick={() => pick(c)}
           >
             {g.type === 'many' && (
@@ -594,13 +616,13 @@ export default function Calculator({ category, product, only, hideCategories, lo
                   </Svg>
                 </button>
               </div>
-              {colourMin > 0 && (
+              {minNote && (
                 <p class="calc-min">
                   <Svg size={18}>
                     <circle cx="12" cy="12" r="9" />
                     <path d="M12 8v5M12 16.5h.01" />
                   </Svg>
-                  Цветные {colouredName(prod.id)} — от {colourMin} шт
+                  {minNote}
                 </p>
               )}
             </div>
@@ -638,9 +660,16 @@ export default function Calculator({ category, product, only, hideCategories, lo
               </span>
             </div>
             {presets && (
-              <div class="calc-seg calc-presets" role="radiogroup" aria-label="Готовые тиражи">
-                {presets.map((q) => (
-                  <button type="button" class="calc-opt" role="radio" aria-checked={q === sel.qty} onClick={() => setQty(q)}>
+              <div class="calc-seg calc-presets" role="radiogroup" aria-label="Готовые тиражи" onKeyDown={radioKeys}>
+                {presets.map((q, i) => (
+                  <button
+                    type="button"
+                    class="calc-opt"
+                    role="radio"
+                    aria-checked={q === sel.qty}
+                    tabIndex={tabOf(q === sel.qty, i, presets.includes(sel.qty))}
+                    onClick={() => setQty(q)}
+                  >
                     <span class="calc-opt-text">
                       <span>{n(q)} шт</span>
                     </span>
