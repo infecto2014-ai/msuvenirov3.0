@@ -36,7 +36,7 @@ export interface DetailCard {
   points?: string[];
   /** a closing line under the rows / points */
   text?: string;
-  /** the card's title is a link to this page (not a menu address that has no page yet) */
+  /** the card's title is a link to this page (an existing address — a «переезжает» stub page is fine) */
   href?: string;
 }
 

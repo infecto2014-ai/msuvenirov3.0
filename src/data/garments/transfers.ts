@@ -126,7 +126,8 @@ export const transfers: GarmentPage = {
   ],
   serviceName: 'DTF и сублимация без нанесения',
   // the «от» price is of the cheapest sheet (sublimation A4), so the label says what it is for
-  hero: { priceLabel: 'Цена за лист' },
+  // the cheapest sheet is the А4 sublimation one — say so, or «от 60 ₽» reads as the DTF price
+  hero: { priceLabel: 'Сублимационный лист А4' },
   calc: {
     category: 'transfers',
     tiles: [

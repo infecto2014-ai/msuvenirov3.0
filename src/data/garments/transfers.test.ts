@@ -36,7 +36,7 @@ test('калькулятор: категория transfers, две плитки 
   ]);
   expect(tileProducts(t.calc.tiles)).toEqual(['dtf-sheet', 'sub-sheet']);
   expect(t.calc.tiles.some((x) => x.own)).toBe(false);
-  expect(t.hero.priceLabel).toBe('Цена за лист');
+  expect(t.hero.priceLabel).toBe('Сублимационный лист А4');
   expect(garmentFrom(t)).toBe(sub.fromPrice);
   // сублимация: формат листа А3 / А4, больше 50 листов — индивидуально
   expect(sub.options!.find((g) => g.id === 'variant')!.choices.map((c) => c.id)).toEqual(['a3', 'a4']);

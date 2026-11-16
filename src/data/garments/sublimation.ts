@@ -201,7 +201,7 @@ export const sublimation: GarmentPage = {
       icon: 'check-square',
       sub: 'Светлая синтетика — да, тёмный и чистый хлопок — нет',
       cards: [
-        { title: 'Подходит', tag: 'сублимация', points: fitYes.map(point) },
+        { title: 'Подходит', points: fitYes.map(point) },
         {
           title: 'Не подходит',
           points: fitNo.map(point),
