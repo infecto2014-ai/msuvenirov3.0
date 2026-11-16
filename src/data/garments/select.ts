@@ -20,12 +20,15 @@ export function presetPrice(preset: GarmentPreset, category = 'textile'): { unit
 export const garmentWorks = (page: GarmentPage): PortfolioItem[] =>
   portfolio.filter((w) => w.tags.includes(page.worksTag) && !w.src.includes('portfolio-14.'));
 
-/** up to six reviews that mention the garment; if there are fewer than three, the rest comes from the home selection */
-export const garmentReviews = (page: GarmentPage): Review[] => {
+/**
+ * up to six reviews that mention the garment; if there are fewer than three, the rest comes from the home selection
+ * and `topped` is true — the page then uses the neutral heading «Отзывы клиентов», not «Отзывы о печати на …»
+ */
+export const garmentReviews = (page: GarmentPage): { items: Review[]; topped: boolean } => {
   const about = reviews.filter((r) => page.reviewWords.some((w) => r.text.toLowerCase().includes(w))).slice(0, 6);
-  if (about.length >= 3) return about;
+  if (about.length >= 3) return { items: about, topped: false };
   const rest = homeReviews.filter((r) => !about.includes(r));
-  return [...about, ...rest].slice(0, 3);
+  return { items: [...about, ...rest].slice(0, 3), topped: true };
 };
 
 /** the page's questions: its entry of services.ts */

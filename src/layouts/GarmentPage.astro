@@ -29,6 +29,8 @@ const { page } = Astro.props;
 const { calc, heads } = page;
 
 const faq = garmentFaq(page);
+// reviews topped up from the home selection are not all about this garment — a neutral heading then
+const reviews = garmentReviews(page);
 const lowPrice = Math.min(...calc.products.map((id) => findProduct(calc.category, id)!.fromPrice));
 const schema = [
   breadcrumbs(page.crumbs.map((c) => ({ name: c.label, href: c.href }))),
@@ -71,7 +73,7 @@ const schema = [
   <div class="band-sky">
     <Works works={garmentWorks(page)} title="Наши работы" accent={heads.works} lead={heads.worksLead} />
   </div>
-  <Reviews items={garmentReviews(page)} title="Отзывы" accent={heads.reviews} showRatings={false} />
+  <Reviews items={reviews.items} title="Отзывы" accent={reviews.topped ? 'клиентов' : heads.reviews} showRatings={false} />
   <div class="band-sky">
     <Faq items={faq} title="Вопросы" accent={heads.faq} />
   </div>

@@ -65,7 +65,7 @@ export interface GarmentPage {
     products: { id: string; title: string }[];
     rules: { icon: IconName; text: string }[];
   };
-  /** section headings of the page */
+  /** section headings of the page; `reviews` only while the reviews are about the garment (else «Отзывы клиентов») */
   heads: { details: string; works: string; worksLead: string; reviews: string; faq: string };
   /**
    * picture names for Pic (public/img/v3), the alt text, what the placeholder says until the picture arrives

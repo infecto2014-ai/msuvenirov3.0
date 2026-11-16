@@ -94,10 +94,13 @@ test('«Наши работы» худи: только с тегом hudi', () =
   }
 });
 
-test('отзывы худи: не меньше трёх, без повторов', () => {
-  const reviews = garmentReviews(hoodie);
-  expect(reviews.length).toBeGreaterThanOrEqual(3);
-  expect(new Set(reviews.map((r) => r.text)).size).toBe(reviews.length);
+test('отзывы худи: не меньше трёх, без повторов; добраны с главной — помечены topped', () => {
+  const { items, topped } = garmentReviews(hoodie);
+  expect(items.length).toBeGreaterThanOrEqual(3);
+  expect(new Set(items.map((r) => r.text)).size).toBe(items.length);
+  // fewer than three reviews mention «худи» — the rest comes from the home selection, the heading turns neutral
+  expect(items.filter((r) => r.text.toLowerCase().includes('худи')).length).toBeLessThan(3);
+  expect(topped).toBe(true);
 });
 
 test('вопросы худи — из services.ts', () => {

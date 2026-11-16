@@ -6,7 +6,7 @@ import { findProduct } from '../pricing';
 
 const { presets, sizes, printSizes, specs, care } = tshirt;
 const works = garmentWorks(tshirt);
-const reviews = garmentReviews(tshirt);
+const { items: reviews, topped } = garmentReviews(tshirt);
 const faq = garmentFaq(tshirt);
 
 test('готовые варианты: четыре, цена по прайсу', () => {
@@ -116,4 +116,10 @@ test('вопросы футболок — из services.ts', () => {
   const svc = services.find((s) => s.slug === '/pechat-na-futbolkah')!;
   expect(faq.length).toBeGreaterThan(0);
   expect(faq).toEqual(svc.faq);
+});
+
+test('отзывы футболок: все про футболки, не добраны с главной', () => {
+  expect(reviews.length).toBeGreaterThanOrEqual(3);
+  for (const r of reviews) expect(r.text.toLowerCase()).toContain('футболк');
+  expect(topped).toBe(false);
 });
