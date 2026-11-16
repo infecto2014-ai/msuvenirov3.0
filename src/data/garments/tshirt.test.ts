@@ -14,15 +14,15 @@ const faq = garmentFaq(tshirt);
 test('готовые варианты: четыре, цена по прайсу', () => {
   expect(presets).toHaveLength(4);
   for (const v of presets) {
-    const price = presetPrice(v);
+    const price = presetPrice(v, 'textile');
     expect(price.unit, v.title).toBeGreaterThan(0);
     expect(price.total, v.title).toBe(price.unit * v.qty);
   }
   // pinned: blank 750 + DTF A4 800 (1 pc)
-  expect(presetPrice(presets.find((v) => v.title === 'Футболка с фото в подарок')!).total).toBe(1550);
+  expect(presetPrice(presets.find((v) => v.title === 'Футболка с фото в подарок')!, 'textile').total).toBe(1550);
   const team = presets.find((v) => v.title.startsWith('Для команды'))!;
   // 20 pcs: blank 550 + A4 at the 20+ tier + A6 −30%
-  expect(presetPrice(team)).toEqual({ unit: 1196, total: 23920 });
+  expect(presetPrice(team, 'textile')).toEqual({ unit: 1196, total: 23920 });
 });
 
 test('«Для команды» — 20 синих футболок', () => {

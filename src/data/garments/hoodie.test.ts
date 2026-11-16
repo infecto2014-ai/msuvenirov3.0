@@ -13,16 +13,16 @@ const quote = (o: Record<string, string>, qty = 1) => product.quote({ options: {
 test('готовые варианты: четыре, цена по прайсу', () => {
   expect(presets).toHaveLength(4);
   for (const v of presets) {
-    const price = presetPrice(v);
+    const price = presetPrice(v, 'textile');
     expect(price.unit, v.title).toBeGreaterThan(HOODIE_BLANK);
     expect(price.total, v.title).toBe(price.unit * v.qty);
   }
   // pinned: hoodie 2 600 + DTF A4 800 (1 pc)
-  expect(presetPrice(presets.find((v) => v.title === 'Худи с принтом на груди')!).total).toBe(HOODIE_BLANK + 800);
+  expect(presetPrice(presets.find((v) => v.title === 'Худи с принтом на груди')!, 'textile').total).toBe(HOODIE_BLANK + 800);
   // team: 20 pcs — hoodie 2 600 at any run + A4 and A6 at the 20+ tier
   const team = presets.find((v) => v.title.startsWith('Для класса'))!;
   expect(team.qty).toBe(20);
-  expect(presetPrice(team).unit).toBeGreaterThan(HOODIE_BLANK);
+  expect(presetPrice(team, 'textile').unit).toBeGreaterThan(HOODIE_BLANK);
 });
 
 test('цена худи — точная, без «от»; одна цена при любом количестве', () => {
@@ -114,4 +114,13 @@ test('вопросы худи — из services.ts', () => {
 
 test('в данных нет старого адреса', () => {
   expect(JSON.stringify(hoodie)).not.toContain('Челнокова, 11');
+});
+
+test('presetPrice: категория обязательна (страницы не только из «textile»)', () => {
+  const v = presets[0];
+  // a type check (npm run build): without a category the price would silently be looked up in «textile»
+  // @ts-expect-error — the category is required
+  const withoutCategory = () => presetPrice(v);
+  expect(typeof withoutCategory).toBe('function');
+  expect(presetPrice(v, hoodie.calc.category)).toEqual(presetPrice(v, 'textile'));
 });

@@ -10,7 +10,7 @@ import type { Faq, PortfolioItem, Review } from '../types';
 import type { GarmentPage, GarmentPreset } from './types';
 
 /** price of a variant exactly as the calculator quotes it after «Настроить в калькуляторе» */
-export function presetPrice(preset: GarmentPreset, category = 'textile'): { unit: number; total: number } {
+export function presetPrice(preset: GarmentPreset, category: string): { unit: number; total: number } {
   const p = findProduct(category, preset.product)!;
   const q = p.quote(applyPreset(p, { options: preset.options, qty: preset.qty }));
   return { unit: q.unit, total: q.total };
