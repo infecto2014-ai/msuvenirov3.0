@@ -194,6 +194,21 @@ describe('pricing', () => {
     expect(ch.filter((c) => c.hint === 'от 5 шт').map((c) => c.id)).toEqual(['red', 'blue', 'yellow', 'green', 'khaki']);
   });
 
+  it('coloured below the minimum: no price, error with the product wording', () => {
+    const err = (id: string, color: string, qty: number, blank?: string) => {
+      const { p, s } = sel('textile', id, { qty, options: { color, ...(blank ? { blank } : {}) } });
+      return p.quote(s).error;
+    };
+    expect(err('tshirt-unisex', 'red', 1)).toBe('Цветные футболки — от 5 шт');
+    expect(err('tshirt-kids', 'red', 4)).toBe('Цветные футболки — от 5 шт');
+    expect(err('tshirt-unisex', 'red', 5)).toBeUndefined();
+    expect(err('tshirt-unisex', 'white', 1)).toBeUndefined();
+    expect(err('tshirt-unisex', 'red', 1, 'own')).toBeUndefined();
+    expect(err('cap', 'red', 1)).toBe('Цветные бейсболки — от 5 шт');
+    expect(err('cap', 'red', 5)).toBeUndefined();
+    expect(err('cap', 'black', 1)).toBeUndefined();
+  });
+
   it('every extra print is −30%, note says so', () => {
     expect(extraPrintFactor).toEqual([1, 0.7, 0.7]);
     const { p, s } = sel('textile', 'tshirt-unisex', { qty: 1, options: { print1: 'a4', print2: 'a4' } });

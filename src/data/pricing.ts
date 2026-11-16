@@ -328,7 +328,7 @@ function garment(args: {
    * colour choices. `otherMin` > 0 adds «Другой цвет» that is sewn to order from that many pcs (shopper: 20);
    * `colorMin` — the listed colours except `free` ones are ordered from `min` pcs (T-shirts, caps).
    */
-  colorSet?: { choices: Choice[]; otherMin: number; what: string; colorMin?: { min: number; free: string[] } };
+  colorSet?: { choices: Choice[]; otherMin: number; what: string; colorMin?: { min: number; free: string[]; noun: string } };
   /** priced up to this quantity, more — individually (default GARMENT_MAX) */
   max?: number;
   /** offer «своя вещь»: e.g. 'футболка' → choice «Своя футболка», only the print is charged */
@@ -396,6 +396,9 @@ function garment(args: {
     args.blank?.forEach((t) => set.add(t.from));
     return [...set].sort((a, b) => a - b).map((from) => ({ from, price: unitAt(sel, from) }));
   };
+  /** smallest run for the selected colour (coloured garments only); 1 without a colour minimum */
+  const minQtyOf = (sel: Selection): number =>
+    !colorSet?.colorMin || isOwn(sel) || colorSet.colorMin.free.includes(one(sel, 'color', colorSet.choices[0].id)) ? 1 : colorSet.colorMin.min;
   const blankMin = args.blank ? minPrice(args.blank) : 0;
   const maxQty = args.max ?? GARMENT_MAX;
   // price table columns: DTF tiers plus the blank's own tiers (caps: 1 / 10 / 30)
@@ -420,12 +423,7 @@ function garment(args: {
       note: `Больше ${maxQty} шт — цена рассчитывается индивидуально.`,
     },
     ladder: breakpoints,
-    ...(colorSet?.colorMin
-      ? {
-          minQty: (sel: Selection) =>
-            isOwn(sel) || colorSet.colorMin!.free.includes(one(sel, 'color', colorSet.choices[0].id)) ? 1 : colorSet.colorMin!.min,
-        }
-      : {}),
+    ...(colorSet?.colorMin ? { minQty: minQtyOf } : {}),
     quote: (sel) => {
       const qty = sel.qty;
       const breakdown: Quote['breakdown'] = [];
@@ -448,6 +446,7 @@ function garment(args: {
       if (colorSet && !isOwn(sel) && one(sel, 'color', colorSet.choices[0].id) === 'other' && qty < colorSet.otherMin) {
         error = `${colorSet.what} — под заказ от ${colorSet.otherMin} шт.`;
       }
+      if (colorSet?.colorMin && qty < minQtyOf(sel)) error = `${colorSet.colorMin.noun} — от ${colorSet.colorMin.min} шт`;
       if (args.blankFrom && !isOwn(sel)) notes.push('Наличие и точную цену изделия уточнит менеджер.');
       if (isOwn(sel)) notes.push(`${cap(`своя ${args.own}`)}: принесите её в мастерскую, напечатаем на ней. Подойдут хлопок, смесовые ткани, синтетика.`);
       if (!args.blank) notes.push('Печать на вашем изделии. Подойдут хлопок, смесовые ткани, синтетика.');
@@ -527,7 +526,7 @@ function sublimated(args: { id: string; name: string; short: string; image?: str
   };
 }
 
-const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE } };
+const tshirtColors = { choices: GARMENT_COLORS, otherMin: 0, what: '', colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные футболки' } };
 
 const textile: Category = {
   id: 'textile',
@@ -609,7 +608,7 @@ const textile: Category = {
         ],
         otherMin: 0,
         what: '',
-        colorMin: { min: COLOR_MIN, free: COLOR_FREE },
+        colorMin: { min: COLOR_MIN, free: COLOR_FREE, noun: 'Цветные бейсболки' },
       },
     }),
     garment({
