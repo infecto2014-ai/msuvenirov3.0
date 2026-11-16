@@ -1,0 +1,38 @@
+/* Product icons of the calculator (ported from 2.0). The drawings use --c / --m / --y for the «print» accent
+   and --paper-2 for small fills; here they get the 3.0 colours: blue accents on a light-blue tile. */
+.calc-product-ico,
+.calc-result-ico {
+  --c: var(--blue);
+  --m: var(--blue);
+  --y: #8fb2ff;
+  --paper-2: var(--sky-2);
+}
+.calc-product-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--sky);
+  color: var(--ink);
+  transition: background-color var(--t-fast) ease;
+}
+.calc-product-ico svg,
+.calc-result-ico svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.calc-product[aria-pressed='true'] .calc-product-ico {
+  background: var(--white);
+}
+@media (max-width: 560px) {
+  .calc-product-ico {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+}
