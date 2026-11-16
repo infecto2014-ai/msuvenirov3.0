@@ -48,7 +48,7 @@ export interface GarmentPage {
   care: string[];
   /** DTF print sizes on clothing, w×h in cm; `shape` — the outline the to-scale scheme is drawn on */
   printSizes: { label: string; w: number; h: number }[];
-  prints: { sub: string; shape: 'tshirt'; caption: string };
+  prints: { sub: string; shape: 'tshirt' | 'hoodie'; caption: string };
   /** portfolio tag of the page's works */
   worksTag: string;
   /** lower-case word stems a review must contain to be shown first (e.g. 'футболк') */

@@ -10,4 +10,5 @@ test('заглушки покрывают все внутренние адрес
 test('страницы нового дизайна — не заглушки', () => {
   for (const slug of REAL_PAGES) expect(stubSlugs()).not.toContain(slug);
   expect(REAL_PAGES).toContain('pechat-na-futbolkah');
+  expect(REAL_PAGES).toContain('pechat-na-hudi');
 });

@@ -8,7 +8,7 @@ export interface StubPage {
 }
 
 /** menu addresses that already have a real page in the new design (src/pages/<slug>.astro) */
-export const REAL_PAGES: string[] = ['pechat-na-futbolkah'];
+export const REAL_PAGES: string[] = ['pechat-na-futbolkah', 'pechat-na-hudi'];
 
 export function stubPages(): StubPage[] {
   const links: NavLink[] = [

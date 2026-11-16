@@ -25,13 +25,33 @@ const sections: { id: string; icon: IconName; title: string; sub: string }[] = [
   { id: 'care', icon: 'droplets', title: 'Уход', sub: 'Как стирать, чтобы принт служил дольше' },
 ];
 
-// garment outlines in centimetres; prints hang from `top` cm below the shoulder line, centred on `center`
+// garment outlines in centimetres; prints hang from `top` cm below the shoulder line, centred on `center`.
+// `dims` — the A / B / C measuring lines and their labels (length, width, sleeve) for the size scheme.
 const SHAPES = {
   // T-shirt, size M: 52 cm wide, 72 cm long
-  tshirt: { path: 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z', center: 26, top: 9 },
+  tshirt: {
+    path: 'M17 0C21 6 31 6 35 0L48 3L68 15L62 27L52 22L52 72L0 72L0 22L-10 27L-16 15L4 3Z',
+    extra: '',
+    center: 26,
+    top: 9,
+    viewBox: '-18 -2 88 76',
+    dims: ['M6 4V71', 'M1 30H51', 'M50.5 6.5L64.5 15'],
+    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 30 }, { l: 'C', x: 57.5, y: 10.8 }],
+  },
+  // Hoodie, size M–L: 54 cm wide, 70 cm long, long sleeves, hood and kangaroo pocket
+  hoodie: {
+    path: 'M14 3L38 3L46 6L66 52L57 56L52 32L52 70L0 70L0 32L-5 56L-14 52L6 6Z',
+    extra: 'M14 3C12 -9 40 -9 38 3C32 8 20 8 14 3ZM9 50L43 50L47 66L5 66Z',
+    center: 26,
+    top: 7,
+    viewBox: '-18 -9 88 82',
+    dims: ['M6 6V69', 'M1 32H51', 'M47 7L61.5 52'],
+    labels: [{ l: 'A', x: 6, y: 50 }, { l: 'B', x: 40, y: 32 }, { l: 'C', x: 56, y: 30 }],
+  },
 } as const;
-const SHIRT = SHAPES[prints.shape].path;
-const frames = [...printSizes].reverse().map((p) => ({ ...p, x: SHAPES[prints.shape].center - p.w / 2, y: SHAPES[prints.shape].top }));
+const shape = SHAPES[prints.shape];
+const SHIRT = shape.path;
+const frames = [...printSizes].reverse().map((p) => ({ ...p, x: shape.center - p.w / 2, y: shape.top }));
 ---
 
 <section class="section td-sec" aria-labelledby="td-title">
@@ -90,8 +110,9 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: SHAPES[prints.sh
               {s.id === 'prints' && (
                 <div class="td-prints">
                   <figure class="td-scheme">
-                    <svg viewBox="-18 -2 88 76" role="img" aria-labelledby="td-scheme-cap" focusable="false">
+                    <svg viewBox={shape.viewBox} role="img" aria-labelledby="td-scheme-cap" focusable="false">
                       <path class="td-shirt" d={SHIRT} />
+                      {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                       {frames.map((f) => (
                         <g class="td-frame">
                           <rect x={f.x} y={f.y} width={f.w} height={f.h} rx="0.6" />
@@ -158,20 +179,21 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: SHAPES[prints.sh
                   <aside class="td-measure" aria-label="Как мерить">
                     {measure && <Pic name={measure} alt="Рыжий кот с сантиметровой лентой на шее" w={800} h={800} fit="contain" label={measure} class="td-cat" />}
                     <figure class="td-abc">
-                      <svg viewBox="-18 -2 88 76" aria-hidden="true" focusable="false">
+                      <svg viewBox={shape.viewBox} aria-hidden="true" focusable="false">
                         <path class="td-shirt" d={SHIRT} />
+                        {shape.extra && <path class="td-shirt-extra" d={shape.extra} />}
                         <g class="td-dim">
-                          <path d="M6 4V71" />
-                          <path d="M1 30H51" />
-                          <path d="M50.5 6.5L64.5 15" />
+                          {shape.dims.map((d) => (
+                            <path d={d} />
+                          ))}
                         </g>
                         <g class="td-dim-label">
-                          <circle cx="6" cy="50" r="3.6" />
-                          <text x="6" y="51.3">A</text>
-                          <circle cx="40" cy="30" r="3.6" />
-                          <text x="40" y="31.3">B</text>
-                          <circle cx="57.5" cy="10.8" r="3.6" />
-                          <text x="57.5" y="12.1">C</text>
+                          {shape.labels.map((x) => (
+                            <>
+                              <circle cx={x.x} cy={x.y} r="3.6" />
+                              <text x={x.x} y={x.y + 1.3}>{x.l}</text>
+                            </>
+                          ))}
                         </g>
                       </svg>
                       <figcaption>
@@ -380,6 +402,12 @@ const frames = [...printSizes].reverse().map((p) => ({ ...p, x: SHAPES[prints.sh
   }
   .td-shirt {
     fill: var(--white);
+    stroke: #b9c8e6;
+    stroke-width: 0.5;
+    stroke-linejoin: round;
+  }
+  .td-shirt-extra {
+    fill: none;
     stroke: #b9c8e6;
     stroke-width: 0.5;
     stroke-linejoin: round;
