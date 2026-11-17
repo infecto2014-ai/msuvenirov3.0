@@ -70,7 +70,7 @@ const current = page.crumbs.at(-1)!.label;
 
     <p class="th-price">
       <span class="th-price-label">{page.hero.priceLabel}</span>
-      <span class="th-price-value">от&nbsp;{rub(from)}</span>
+      <span class="th-price-value">от&nbsp;{rub(from)}{page.hero.priceUnit && ` / ${page.hero.priceUnit}`}</span>
     </p>
 
     <div class="th-actions">

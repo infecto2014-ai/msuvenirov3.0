@@ -31,10 +31,11 @@ const { calc, heads } = page;
 const faq = garmentFaq(page);
 // the garment's reviews first, topped up from the home selection
 const reviews = garmentReviews(page);
+const works = garmentWorks(page);
 const lowPrice = garmentFrom(page);
 const schema = [
   breadcrumbs(page.crumbs.map((c) => ({ name: c.label, href: c.href }))),
-  service({ name: page.serviceName, description: page.description, url: page.slug, lowPrice }),
+  service({ name: page.serviceName, description: page.description, url: page.slug, lowPrice, priceUnit: page.hero.priceUnit }),
   ...(faq.length ? [faqPage(faq)] : []),
 ];
 ---
@@ -70,9 +71,9 @@ const schema = [
   {page.presets.length > 0 && <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>}
   {page.showConstructor !== false && <div class="g-cb"><ConstructorBanner /></div>}
   <GarmentDetails page={page} />
-  <div class="band-sky">
-    <Works works={garmentWorks(page)} title="Наши" accent="работы" lead={heads.worksLead} />
-  </div>
+  {works.length > 0 && <div class="band-sky">
+    <Works works={works} title="Наши" accent="работы" lead={heads.worksLead} />
+  </div>}
   <Reviews items={reviews.items} title="Отзывы" accent="клиентов" showRatings={false} />
   <div class="band-sky">
     <Faq items={faq} title="Частые" accent="вопросы" />

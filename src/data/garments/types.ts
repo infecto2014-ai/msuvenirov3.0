@@ -14,6 +14,7 @@ export interface GarmentPreset {
   qty: number;
   /** calculator options: color, print1…print5 ('a6' | 'a5' | 'a4' | 'a3' | 'none'), blank… */
   options: Record<string, string>;
+  dims?: Record<string, number>;
   /** a real work of the workshop (/portfolio/…) */
   img?: string;
   /** or a picture slot of public/img/v3 (Pic name, 1000×1000): the product photo, a labelled placeholder until it arrives */
@@ -42,6 +43,7 @@ export interface DetailCard {
 
 /** an extra «Подробнее» section of cards, drawn after the specs and before the print sizes */
 export interface DetailExtra {
+  illustration?: 'badge-layout';
   id: string;
   title: string;
   icon: IconName;
@@ -62,7 +64,7 @@ export interface GarmentPage {
   crumbs: { href: string; label: string }[];
   /** name of the Service in JSON-LD */
   serviceName: string;
-  hero: { priceLabel: string };
+  hero: { priceLabel: string; priceUnit?: string };
   /** The clothing constructor is not offered for mugs and other non-clothing products. */
   showConstructor?: boolean;
   /**
@@ -102,6 +104,7 @@ export interface GarmentPage {
   /** works to show: files of /portfolio in this order (instead of the `worksTag` selection) */
   works?: string[];
   prices: {
+    unitLabel?: string;
     title: string;
     accent: string;
     lead: string;

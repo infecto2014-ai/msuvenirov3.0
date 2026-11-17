@@ -65,7 +65,7 @@ export const faqPage = (faq: Faq[]) => ({
   mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 });
 
-export const service = (args: { name: string; description: string; url: string; lowPrice: number; highPrice?: number; offerCount?: number }) => ({
+export const service = (args: { name: string; description: string; url: string; lowPrice: number; priceUnit?: string; highPrice?: number; offerCount?: number }) => ({
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: args.name,
@@ -77,6 +77,7 @@ export const service = (args: { name: string; description: string; url: string; 
     '@type': 'AggregateOffer',
     priceCurrency: 'RUB',
     lowPrice: args.lowPrice,
+    ...(args.priceUnit ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: args.lowPrice, priceCurrency: 'RUB', unitText: args.priceUnit } } : {}),
     ...(args.highPrice ? { highPrice: args.highPrice } : {}),
     ...(args.offerCount ? { offerCount: args.offerCount } : {}),
     availability: 'https://schema.org/InStock',

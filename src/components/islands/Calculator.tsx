@@ -228,7 +228,7 @@ export default function Calculator({ category, product, only, hideCategories, lo
       const fc = cats.find((c) => listOf(c).some((p) => p.id === d.product));
       const fp = fc && listOf(fc).find((p) => p.id === d.product);
       if (!fc || !fp) return;
-      show(fc, fp, applyPreset(fp, { options: d.options, qty: d.qty }));
+      show(fc, fp, applyPreset(fp, { options: d.options, dims: d.dims, qty: d.qty }));
       const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       rootRef.current?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
     };

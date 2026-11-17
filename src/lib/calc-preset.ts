@@ -6,6 +6,7 @@ export const CALC_APPLY_EVENT = 'calc:apply';
 
 export interface CalcPreset {
   options?: Record<string, string>;
+  dims?: Record<string, number>;
   qty?: number;
 }
 
@@ -13,6 +14,7 @@ export interface CalcPreset {
 export interface CalcApplyDetail {
   product: string;
   options: Record<string, string>;
+  dims?: Record<string, number>;
   qty: number;
 }
 
@@ -22,6 +24,11 @@ export interface CalcApplyDetail {
  */
 export function applyPreset(p: Product, preset: CalcPreset): Selection {
   const sel = defaultSelection(p);
+  // Apply size before the minimum run: small stickers need a larger run to meet the minimum order sum.
+  for (const d of p.dims ?? []) {
+    const value = preset.dims?.[d.id];
+    if (typeof value === 'number' && Number.isFinite(value)) sel.dims[d.id] = Math.min(d.max, Math.max(d.min, value));
+  }
   for (const [groupId, value] of Object.entries(preset.options ?? {})) {
     const g = p.options?.find((x) => x.id === groupId);
     if (!g || !g.choices.some((c) => c.id === value)) continue;
@@ -96,6 +103,8 @@ export const activeTile = (tiles: CalcTile[], productId: string, options: Select
  * Falls back to the product's fromPrice if that selection cannot be quoted.
  */
 export function tileFromPrice(p: Product, t: CalcTile): number {
+  // An area rate is not the price of the default-sized piece at the largest run.
+  if (p.fromUnit && p.fromUnit !== 'шт') return p.fromPrice;
   const s = applyPreset(p, { options: t.preset ?? {} });
   const first = p.options?.find((g) => g.id === 'print1')?.choices.find((c) => c.id !== 'none');
   if (first) s.options.print1 = first.id;

@@ -22,7 +22,7 @@ const { presets, category } = Astro.props;
 
 const cards = presets.map((v) => {
   const size = (v.img && imageSize(join(process.cwd(), 'public', v.img))) || { w: 800, h: 600 };
-  const detail: CalcApplyDetail = { product: v.product, options: v.options, qty: v.qty };
+  const detail: CalcApplyDetail = { product: v.product, options: v.options, dims: v.dims, qty: v.qty };
   return {
     ...v,
     ...size,
@@ -37,7 +37,7 @@ const cards = presets.map((v) => {
   <div class="wrap">
     <SectionHead id="tp-title" title="Готовые" accent="варианты" lead="Выберите похожий заказ — калькулятор заполнится сам, останется поправить мелочи." />
 
-    <ul class:list={['tp', { 'tp-n5': cards.length === 5 }]} role="list">
+    <ul class:list={['tp', { 'tp-n5': cards.length === 5, 'tp-n6': cards.length === 6 }]} role="list">
       {
         cards.map((c) => (
           <li class="tp-card">
@@ -104,6 +104,9 @@ const cards = presets.map((v) => {
     gap: var(--s-4);
   }
   /* five variants (shoppers): 3 + 2, the second row centred; 2 + 2 + 1 centred ≤ 1100px */
+  .tp-n6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .tp-n5 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }

@@ -30,7 +30,7 @@ const rules = prices.rules;
               <table class="tpr-table">
                 <thead>
                   <tr>
-                    <th scope="col">За 1 шт</th>
+                    <th scope="col">{prices.unitLabel ?? 'За 1 шт'}</th>
                     {table.columns.map((c) => (
                       <th scope="col">{c}</th>
                     ))}

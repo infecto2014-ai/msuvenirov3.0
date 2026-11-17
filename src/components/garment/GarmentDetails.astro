@@ -5,6 +5,7 @@
 // adult and kids size charts (with the measuring cat), care. Every section is optional: one without data is left
 // out, and without any the block is not drawn. Texts come from the page's data file (src/data/garments/<page>.ts),
 // colours from pricing.ts (garmentColors), outlines from src/data/garments/shapes.ts.
+import BadgeLayoutGuide from './BadgeLayoutGuide.astro';
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
 import Pic from '@/components/ui/Pic.astro';
@@ -25,11 +26,11 @@ const measure = page.images.extra?.measure;
 const sections = [
   colors && colorList.length ? { id: 'colors', icon: 'palette', title: 'Цвета', sub: colors.sub } : undefined,
   specs ? { id: 'specs', icon: specs.icon ?? 'shirt', title: specs.title ?? 'Ткань и характеристики', sub: specs.sub } : undefined,
-  ...(extra ?? []).map((x) => ({ id: x.id, icon: x.icon, title: x.title, sub: x.sub, cards: x.cards })),
+  ...(extra ?? []).map((x) => ({ id: x.id, icon: x.icon, title: x.title, sub: x.sub, cards: x.cards, illustration: x.illustration })),
   prints ? { id: 'prints', icon: 'scan', title: 'Размеры принтов', sub: prints.sub } : undefined,
   sizes ? { id: 'sizes', icon: 'ruler', title: 'Размерный ряд', sub: sizes.sub } : undefined,
   care?.length ? { id: 'care', icon: 'droplets', title: 'Уход', sub: page.careSub ?? 'Как стирать, чтобы принт служил дольше' } : undefined,
-].filter((s): s is { id: string; icon: IconName; title: string; sub: string; cards?: DetailCard[] } => !!s);
+].filter((s): s is { id: string; icon: IconName; title: string; sub: string; cards?: DetailCard[]; illustration?: 'badge-layout' } => !!s);
 
 const shape: GarmentShape | undefined = prints ? SHAPES[prints.shape] : undefined;
 const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p, x: shape.center - p.w / 2, y: shape.top })) : [];
@@ -58,6 +59,7 @@ const frames = prints && shape ? [...prints.sizes].reverse().map((p) => ({ ...p,
             </summary>
 
             <div class="td-a">
+              {s.illustration === 'badge-layout' && <BadgeLayoutGuide />}
               {s.id === 'colors' && (
                 <ul class="td-colors" role="list">
                   {colorList.map((c) => (
