@@ -68,5 +68,5 @@ export const badges: GarmentPage = {
     { icon: 'calculator', text: 'Тиражи больше ' + maxRun + ' штук рассчитаем индивидуально.' },
   ] },
   heads: { details: 'о значках', worksLead: 'Значки и брелоки с печатью на заказ' },
-  images: { hero: 'badge-hero', heroSize: { w: 1200, h: 1000 }, heroMobile: 'badge-hero-mobile', heroMobileSize: { w: 1200, h: 1000 }, alt: 'Рыжий кот со значками', label: 'кот со значками' },
+  images: { hero: 'badge-hero', heroSize: { w: 1007, h: 1296 }, heroMobile: 'badge-hero-mobile', heroMobileSize: { w: 699, h: 900 }, alt: 'Рыжий кот со значками', label: 'кот со значками' },
 };

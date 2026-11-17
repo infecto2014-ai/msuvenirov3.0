@@ -355,5 +355,5 @@ export const stickers: GarmentPage = {
     ],
   },
   heads: { details: 'о стикерах', worksLead: 'Настоящие работы мастерской' },
-  images: { hero: 'sticker-hero', heroSize: { w: 1200, h: 1000 }, heroMobile: 'sticker-hero-mobile', heroMobileSize: { w: 1200, h: 1000 }, alt: 'Рыжий кот со стикерами', label: 'кот со стикерами' },
+  images: { hero: 'sticker-hero', heroSize: { w: 995, h: 1300 }, heroMobile: 'sticker-hero-mobile', heroMobileSize: { w: 689, h: 900 }, alt: 'Рыжий кот со стикерами', label: 'кот со стикерами' },
 };
