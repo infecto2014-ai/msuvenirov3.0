@@ -1,0 +1,26 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import HeroArt from '@/components/ui/HeroArt.astro';
+import { site } from '@/data/site';
+import { corporate } from '@/data/corporate';
+const proof = corporate.highlights.slice(1,4);
+---
+<section class="corporate-hero" aria-labelledby="corporate-title">
+  <div class="wrap corporate-hero-grid">
+    <nav class="corporate-crumbs" aria-label="Хлебные крошки"><ol role="list"><li><a href="/">Главная</a></li><li><Icon name="chevron-right" size={16}/><span aria-current="page">Для компаний</span></li></ol></nav>
+    <div class="corporate-intro"><p class="corporate-eyebrow">Корпоративный мерч · Калининград</p><h1 id="corporate-title">Ваш бренд.<br/><span>Наше производство.<svg viewBox="0 0 500 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 20Q230 1 490 7M345 20l147-13"/></svg></span></h1><p class="corporate-lead">Мерч, форма и подарки с вашим логотипом. Подберём изделия, подготовим макет по брендбуку и согласуем образец перед тиражом.</p></div>
+    <div class="corporate-art"><HeroArt name="corporate-hero" w={1363} h={1135} mobileName="corporate-hero-mobile" mw={900} mh={749} alt="Кот мастерской с коробкой корпоративного мерча и планшетом с галочками" label="кот с корпоративным набором"/></div>
+    <div class="corporate-actions"><Button data-order="Запрос КП для компании" icon="file-text">Запросить КП</Button><Button href={site.social.telegram} variant="ghost" icon="send" target="_blank" rel="noopener noreferrer">Написать в Telegram<span class="visually-hidden"> (новая вкладка)</span></Button></div>
+    <ul class="corporate-proof" role="list">{proof.map(p=><li><Icon name="check" size={20}/><span>{p}</span></li>)}</ul>
+  </div>
+</section>
+<style>
+ .corporate-hero{padding-block:var(--s-6) var(--s-7);background:radial-gradient(ellipse at 85% 75%,var(--sky),transparent 55%),linear-gradient(180deg,var(--sky-2),var(--white));}
+ .corporate-hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:'crumbs art' 'intro art' 'actions art' 'proof proof';gap:var(--s-5) var(--s-6);align-items:center;}
+ .corporate-crumbs{grid-area:crumbs;font-size:var(--fs-sm);color:var(--muted);}.corporate-crumbs ol,.corporate-crumbs li{display:flex;align-items:center;gap:var(--s-2);}.corporate-crumbs a{color:inherit;text-decoration:none;}.corporate-crumbs [aria-current]{font-weight:600;color:var(--ink);}
+ .corporate-intro{grid-area:intro;}.corporate-eyebrow{font-size:var(--fs-sm);color:var(--muted);margin-bottom:var(--s-4);}h1{font-size:clamp(2.15rem,1.4rem + 2.8vw,3.4rem);line-height:1.13;letter-spacing:-.04em;}h1>span{position:relative;display:inline-block;color:var(--blue);}h1 svg{position:absolute;left:0;bottom:-16px;width:100%;height:24px;fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;}
+ .corporate-lead{font-size:var(--fs-lg);color:var(--muted);margin-top:var(--s-6);max-width:570px;}.corporate-art{grid-area:art;}.corporate-actions{grid-area:actions;display:flex;flex-wrap:wrap;gap:var(--s-3);}.corporate-proof{grid-area:proof;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-4);margin-top:var(--s-5);padding:var(--s-5);border:1px solid var(--line);border-radius:var(--radius-card);background:var(--white);}.corporate-proof li{display:flex;align-items:center;justify-content:center;gap:var(--s-3);font-size:var(--fs-sm);font-weight:600;}.corporate-proof :global(svg){color:var(--blue);flex:none;}
+ @media(max-width:900px){.corporate-hero-grid{grid-template-columns:minmax(0,1fr);grid-template-areas:'crumbs' 'intro' 'art' 'actions' 'proof';}.corporate-art{width:min(100%,540px);justify-self:center;}.corporate-actions{justify-content:center;}.corporate-proof{margin-top:0;}.corporate-lead{max-width:650px;}}
+ @media(max-width:560px){h1{font-size:clamp(1.8rem,7.9vw,2.6rem);}.corporate-eyebrow{font-size:var(--fs-xs);margin-bottom:var(--s-3);}.corporate-lead{font-size:var(--fs-base);}.corporate-actions{display:grid;grid-template-columns:minmax(0,1fr);}.corporate-proof{grid-template-columns:minmax(0,1fr);padding:var(--s-4);gap:var(--s-3);}.corporate-proof li{justify-content:flex-start;}.corporate-hero-grid{gap:var(--s-4);}}
+</style>

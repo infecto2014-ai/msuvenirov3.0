@@ -1,0 +1,32 @@
+---
+import { corporate as page } from '@/data/corporate';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+const labels: Record<string,{title:string;icon:IconName}> = {
+ merch:{title:'Мерч и одежда',icon:'shirt'},uniform:{title:'Форма персонала',icon:'building'},gifts:{title:'Подарки с логотипом',icon:'gift'},'welcome-pack':{title:'Welcome pack',icon:'layers'},'new-year':{title:'Новый год',icon:'calendar'},events:{title:'Для мероприятий',icon:'badge'},print:{title:'Полиграфия и реклама',icon:'file-text'},awards:{title:'Награды и сувениры',icon:'award'},
+};
+---
+<section id="corporate-solutions" class="section solutions" aria-labelledby="solutions-title">
+  <div class="wrap">
+    <SectionHead id="solutions-title" eyebrow="От логотипа до готовой вещи" title="Один бренд." accent="Много возможностей." lead="Выберите задачу — внутри изделия, примеры применения и связанные услуги."/>
+    <div class="direction-grid">
+      {page.directions.map(d=><details class="direction" id={d.id}>
+        <summary><span class="direction-icon"><Icon name={labels[d.id]?.icon ?? 'gift'} size={25}/></span><span class="direction-label"><strong>{labels[d.id]?.title ?? d.title}</strong><small>{d.items.slice(0,3).join(' · ')}</small></span><Icon name="chevron-down" size={20}/></summary>
+        <div class="direction-content"><h3>{d.title}</h3><p class="direction-lead">{d.lead}</p><div class="direction-columns"><div><h4>Что брендируем</h4><ul>{d.items.map(it=><li>{it}</li>)}</ul></div>{d.useCases && d.useCases.length > 0 && <div><h4>Для чего</h4><ul>{d.useCases.map(it=><li>{it}</li>)}</ul></div>}</div>
+          {d.links && d.links.length > 0 && <ul class="direction-links" role="list">{d.links.map(l=><li><a href={l.href}>{l.label}<Icon name="arrow-right" size={16}/></a></li>)}</ul>}
+          <Button variant="ghost" class="btn-sm" data-order={`Запрос КП для компании: ${d.title}`} arrow>Обсудить задачу</Button>
+        </div>
+      </details>)}
+    </div>
+    <details class="audience-panel"><summary>Для кого делаем мерч <span>{page.audiences.length} направлений бизнеса <Icon name="chevron-down" size={18}/></span></summary><ul class="audience-list" role="list">{page.audiences.map(a=><li><h3>{a.title}</h3><p>{a.text}</p></li>)}</ul></details>
+  </div>
+</section>
+<style>
+ .direction>summary:focus-visible{outline:3px solid var(--focus);outline-offset:-5px;border-radius:var(--radius-card);}
+ .solutions{scroll-margin-top:var(--header-h);}.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4);align-items:start;}.direction{min-width:0;border:1px solid var(--line);border-radius:var(--radius-card);background:var(--white);overflow:hidden;scroll-margin-top:calc(var(--header-h) + var(--s-4));}
+ summary{cursor:pointer;list-style:none;}summary::-webkit-details-marker{display:none;}.direction summary{display:flex;align-items:center;gap:var(--s-4);padding:var(--s-5);min-height:116px;}.direction-icon{display:grid;place-items:center;width:52px;height:52px;flex:none;border-radius:var(--radius-md);background:var(--sky);color:var(--blue);}.direction-label{flex:1;min-width:0;}.direction-label strong{display:block;font-size:var(--fs-lg);}.direction-label small{display:block;margin-top:var(--s-2);color:var(--muted);font-size:var(--fs-sm);}.direction summary>:global(svg){flex:none;}.direction[open] summary>:global(svg){transform:rotate(180deg);}.direction[open]{border-color:var(--blue);}.direction-content{border-top:1px solid var(--line);padding:var(--s-5);}.direction-content h3{font-size:var(--fs-lg);}.direction-lead{color:var(--muted);margin-top:var(--s-3);}.direction-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4);margin-top:var(--s-5);}.direction-columns h4{font-size:var(--fs-sm);margin-bottom:var(--s-3);}.direction-columns ul{list-style:disc;padding-left:20px;font-size:var(--fs-sm);color:var(--muted);}.direction-columns li+li{margin-top:var(--s-2);}.direction-links{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-4);margin-top:var(--s-4);margin-bottom:var(--s-3);}.direction-links a{display:inline-flex;align-items:center;gap:var(--s-1);min-height:44px;font-size:var(--fs-sm);font-weight:600;color:var(--blue);text-decoration:none;}.direction-links a:hover{text-decoration:underline;}
+ .audience-panel{margin-top:var(--s-5);padding:var(--s-5);background:var(--sky-2);border:1px solid var(--line);border-radius:var(--radius-card);}.audience-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);font-weight:700;min-height:44px;}.audience-panel>summary>span{display:inline-flex;align-items:center;gap:var(--s-2);color:var(--muted);font-size:var(--fs-sm);font-weight:400;}.audience-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-5);margin-top:var(--s-5);}.audience-list h3{font-size:var(--fs-base);}.audience-list p{font-size:var(--fs-sm);color:var(--muted);margin-top:var(--s-2);}
+ @media(max-width:900px){.direction-grid{grid-template-columns:minmax(0,1fr);}.audience-list{grid-template-columns:repeat(2,minmax(0,1fr));}}
+ @media(max-width:560px){.direction summary{padding:var(--s-4);gap:var(--s-3);min-height:108px;}.direction-icon{width:44px;height:44px;border-radius:var(--radius-sm);}.direction-label strong{font-size:var(--fs-base);}.direction-content{padding:var(--s-4);}.direction-columns{grid-template-columns:minmax(0,1fr);}.direction-content :global(.btn){white-space:normal;}.audience-panel{padding:var(--s-4);}.audience-panel>summary{align-items:flex-start;flex-direction:column;gap:var(--s-2);}.audience-list{grid-template-columns:minmax(0,1fr);}}
+</style>

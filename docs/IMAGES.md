@@ -170,3 +170,12 @@
 | about-hero-mobile.webp | 900 × 756 | Версия для телефона |
 
 Встроенный image_gen по mug-hero и tee-hero. Промпт и путь PNG: `docs/image-prompts/2026-11-17-about-cat.md`. Реальные фотографии страницы: portfolio-25, portfolio-20 и portfolio-7. Фото команды и помещения не создавались.
+
+## Для компаний — 18.11.2026
+
+| Файл в public/img/v3 | Размер | Назначение |
+| --- | --- | --- |
+| corporate-hero.webp | 1363 × 1135 | Кот с коробкой мерча и планшетом с галочками, прозрачный фон |
+| corporate-hero-mobile.webp | 900 × 749 | Версия для телефона |
+
+Встроенный image_gen по about-hero и mug-hero; промпт и PNG: `docs/image-prompts/2026-11-18-corporate-cat.md`. Коробка — иллюстрация, отдельно от подтверждённых кейсов (corporate-polo, sport-jersey, portfolio-29, branded-caps). Настоящие логотипы Clients переиспользованы без генерации.
