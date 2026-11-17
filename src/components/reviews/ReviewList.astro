@@ -4,7 +4,6 @@ import { site } from '@/data/site';
 import Icon from '@/components/ui/Icon.astro';
 import Button from '@/components/ui/Button.astro';
 import SectionHead from '@/components/ui/SectionHead.astro';
-const filters = ['Все', ...site.ratings.map(p => p.platform)];
 const excerpt = (text: string) => {
   if (text.length <= 280) return text;
   const end = text.lastIndexOf(' ', 260);
@@ -14,14 +13,7 @@ const excerpt = (text: string) => {
 <section id="customer-reviews" class="section review-section" aria-labelledby="customer-reviews-title" data-review-list>
   <div class="wrap">
     <SectionHead id="customer-reviews-title" title="Слова наших" accent="клиентов" lead="Сохранили имена, даты и площадки. Длинные отзывы можно раскрыть целиком." />
-    <div class="review-toolbar">
-      <div class="review-filters" role="group" aria-label="Отзывы по площадке" hidden>
-        {filters.map((source, i) => <button type="button" class="review-filter" data-review-filter={source} aria-pressed={i === 0} aria-controls="review-cards">
-          {source}<span>{i === 0 ? reviews.length : reviews.filter(r => r.source === source).length}</span>
-        </button>)}
-      </div>
-      <p class="review-count" role="status" aria-live="polite" aria-atomic="true">Всего отзывов: {reviews.length}</p>
-    </div>
+    <p class="review-count" role="status" aria-live="polite" aria-atomic="true">Всего отзывов: {reviews.length}</p>
     <ul id="review-cards" class="review-grid" role="list">
       {reviews.map(r => {
         const platform = site.ratings.find(p => p.platform === r.source);
@@ -51,48 +43,32 @@ const excerpt = (text: string) => {
   const root = document.querySelector<HTMLElement>('[data-review-list]');
   if (root) {
     const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-review-source]'));
-    const filters = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-review-filter]'));
-    const filterGroup = root.querySelector<HTMLElement>('.review-filters')!;
     const status = root.querySelector<HTMLElement>('.review-count')!;
     const moreWrap = root.querySelector<HTMLElement>('.review-more')!;
     const more = root.querySelector<HTMLButtonElement>('[data-review-more]')!;
-    let source = 'Все', limit = 9;
-    const matching = () => cards.filter(card => source === 'Все' || card.dataset.reviewSource === source);
+    let limit = 9;
     const render = () => {
-      const items = matching();
+      const items = cards;
       const shown = new Set(items.slice(0, limit));
       cards.forEach(card => { card.hidden = !shown.has(card); });
-      filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.reviewFilter === source)));
       status.textContent = `Показано ${Math.min(limit, items.length)} из ${items.length}`;
       moreWrap.hidden = limit >= items.length;
       more.textContent = `Показать ещё ${Math.min(9, Math.max(0, items.length - limit))}`;
     };
-    filters.forEach(button => button.addEventListener('click', () => {
-      source = button.dataset.reviewFilter!;
-      limit = 9;
-      render();
-    }));
     more.addEventListener('click', () => {
-      const next = matching()[limit];
+      const next = cards[limit];
       limit += 9;
       render();
       next?.focus({ preventScroll: true });
       next?.scrollIntoView({ block: 'nearest' });
     });
-    filterGroup.hidden = false;
     render();
   }
 </script>
 <style>
   .review-section { background:var(--sky-2); scroll-margin-top:calc(var(--header-h) + var(--s-4)); }
   [hidden] { display:none !important; }
-  .review-toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-4); margin-bottom:var(--s-5); }
-  .review-filters { display:flex; flex-wrap:wrap; gap:var(--s-2); }
-  .review-filter { display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); min-height:44px; padding:8px 18px; border:1px solid var(--line); border-radius:var(--radius-pill); background:var(--white); color:var(--ink); cursor:pointer; font-weight:600; transition:background var(--t-fast),color var(--t-fast),border-color var(--t-fast); }
-  .review-filter[aria-pressed="true"] { background:var(--blue); border-color:var(--blue); color:var(--white); }
-  .review-filter:hover { border-color:var(--blue); }
-  .review-filter span { font-size:var(--fs-sm); font-variant-numeric:tabular-nums; }
-  .review-count { color:var(--muted); font-size:var(--fs-sm); }
+  .review-count { color:var(--muted); font-size:var(--fs-sm); margin-bottom:var(--s-5); }
   .review-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-5); align-items:start; }
   .review-card { display:flex; flex-direction:column; min-width:0; gap:var(--s-4); padding:var(--s-5); background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow-card); overflow-wrap:anywhere; }
   .review-card:focus-visible { outline:3px solid var(--focus); outline-offset:4px; }
@@ -107,5 +83,5 @@ const excerpt = (text: string) => {
   .review-source { display:flex; align-items:center; justify-content:space-between; min-height:44px; border-top:1px solid var(--line); padding-top:var(--s-3); color:var(--blue); font-size:var(--fs-sm); font-weight:600; text-decoration:none; }
   .review-source:hover { text-decoration:underline; } .review-more { text-align:center; margin-top:var(--s-6); }
   @media(max-width:1100px) { .review-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media(max-width:560px) { .review-grid { grid-template-columns:minmax(0,1fr); gap:var(--s-4); } .review-card{padding:var(--s-4);} .review-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;} .review-filter{padding-inline:12px;} }
+  @media(max-width:560px) { .review-grid { grid-template-columns:minmax(0,1fr); gap:var(--s-4); } .review-card{padding:var(--s-4);} }
 </style>
