@@ -19,10 +19,10 @@ const crumbs = [{name:'Главная',href:'/'},{name:'Отзывы',href:'/otz
         <p class="eyebrow">Спасибо, что делитесь впечатлениями</p>
         <h1>О мастерской —<br/><span>словами клиентов</span></h1>
         <p class="lead">О печати на футболках, кружках и других сувенирах. Собрали отзывы с Авито, Яндекс Карт и 2ГИС — с именами и датами.</p>
-        <div class="hero-actions"><Button href="#review-links" data-review-open="" icon="pencil" aria-haspopup="dialog" aria-controls="review-dialog">Оставить отзыв</Button></div>
-        <p class="hero-facts">Отзывов на сайте: <strong>{reviews.length}</strong> <span aria-hidden="true">·</span> <strong>{site.ratings.length}</strong> площадки</p>
       </div>
       <HeroArt name="reviews-hero" w={924} h={1300} mobileName="reviews-hero-mobile" mw={640} mh={900} alt="Рыжий кот мастерской держит карточку с синим сердцем" label="кот благодарит за отзывы" class="review-cat"/>
+      <div class="hero-actions"><Button href="#review-links" data-review-open="" icon="pencil" aria-haspopup="dialog" aria-controls="review-dialog">Оставить отзыв</Button></div>
+      <p class="hero-facts">Отзывов на сайте: <strong>{reviews.length}</strong> <span aria-hidden="true">·</span> <strong>{site.ratings.length}</strong> площадки</p>
     </div>
   </section>
   <ReviewList/>
@@ -38,14 +38,14 @@ const crumbs = [{name:'Главная',href:'/'},{name:'Отзывы',href:'/otz
 </BaseLayout>
 <style>
   .review-hero { background:linear-gradient(180deg,var(--sky-2),var(--sky)); padding-block:var(--s-6) var(--s-7); }
-  .review-hero-grid { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr); grid-template-areas:'crumbs cat' 'intro cat'; gap:var(--s-5) var(--s-7); align-items:center; }
+  .review-hero-grid { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,0.85fr); grid-template-areas:'crumbs cat' 'intro cat' 'actions cat' 'facts cat'; gap:var(--s-4) var(--s-7); align-items:center; }
   .review-crumbs { grid-area:crumbs;align-self:end;font-size:var(--fs-sm);color:var(--muted); }
   .review-crumbs ol,.review-crumbs li { display:flex;align-items:center;gap:var(--s-2); } .review-crumbs a{color:inherit;text-decoration:none;} .review-crumbs [aria-current]{color:var(--ink);font-weight:600;}
   .review-intro{grid-area:intro;align-self:start;} .review-hero-grid>:global(.review-cat){grid-area:cat;max-width:460px;justify-self:end;}
   .eyebrow{color:var(--muted);font-size:var(--fs-sm);margin-bottom:var(--s-3);} h1{font-size:var(--fs-h1);line-height:1.08;letter-spacing:-.035em;text-wrap:balance;} h1 span{color:var(--blue);}
-  .lead{max-width:570px;color:var(--muted);margin-top:var(--s-5);font-size:var(--fs-lg);} .hero-actions{display:flex;flex-wrap:wrap;gap:var(--s-3);margin-top:var(--s-5);} .hero-facts{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);color:var(--muted);font-size:var(--fs-sm);margin-top:var(--s-5);} .hero-facts strong{color:var(--ink);font-size:var(--fs-lg);}
+  .lead{max-width:570px;color:var(--muted);margin-top:var(--s-5);font-size:var(--fs-lg);} .hero-actions{grid-area:actions;display:flex;flex-wrap:wrap;gap:var(--s-3);} .hero-facts{grid-area:facts;display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);color:var(--muted);font-size:var(--fs-sm);} .hero-facts strong{color:var(--ink);font-size:var(--fs-lg);}
   #leave-review{scroll-margin-top:var(--header-h);} .leave-review{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:var(--s-7);align-items:center;} .leave-links{display:flex;flex-wrap:wrap;gap:var(--s-3);}
   .feedback-note{background:var(--sky-2);padding:var(--s-5);border:1px solid var(--line);border-radius:var(--radius-card);} .feedback-note>:global(svg){color:var(--blue);margin-bottom:var(--s-3);} .feedback-note h3{font-size:var(--fs-h3);} .feedback-note p{margin-top:var(--s-2);color:var(--muted);} .feedback-note a{display:inline-flex;align-items:center;gap:var(--s-2);min-height:44px;margin-top:var(--s-3);color:var(--blue);font-weight:600;text-decoration:none;}
-  @media(max-width:900px){.review-hero-grid{gap:var(--s-5);grid-template-columns:minmax(0,1fr);grid-template-areas:'crumbs' 'intro' 'cat';}.review-hero-grid>:global(.review-cat){max-width:340px;justify-self:center;}.lead{max-width:650px;}.review-hero{padding-bottom:var(--s-5);}.leave-review{grid-template-columns:minmax(0,1fr);gap:var(--s-5);}}
-  @media(max-width:560px){.review-hero-grid{gap:var(--s-4);}.hero-actions{display:grid;grid-template-columns:minmax(0,1fr);}.review-hero-grid>:global(.review-cat){max-width:280px;}.lead{font-size:var(--fs-base);margin-top:var(--s-4);}.leave-links{display:grid;grid-template-columns:minmax(0,1fr);}.eyebrow{font-size:var(--fs-xs);}.hero-facts{margin-top:var(--s-4);}}
+  @media(max-width:900px){.review-hero-grid{gap:var(--s-5);grid-template-columns:minmax(0,1fr);grid-template-areas:'crumbs' 'intro' 'cat' 'actions' 'facts';}.review-hero-grid>:global(.review-cat){max-width:340px;justify-self:center;}.lead{max-width:650px;}.review-hero{padding-bottom:var(--s-5);}.leave-review{grid-template-columns:minmax(0,1fr);gap:var(--s-5);}}
+  @media(max-width:560px){.review-hero-grid{gap:var(--s-4);}.hero-actions{display:grid;grid-template-columns:minmax(0,1fr);}.review-hero-grid>:global(.review-cat){max-width:280px;}.lead{font-size:var(--fs-base);margin-top:var(--s-4);}.leave-links{display:grid;grid-template-columns:minmax(0,1fr);}.eyebrow{font-size:var(--fs-xs);}}
 </style>
