@@ -257,13 +257,17 @@ export default function Calculator({ category, product, only, hideCategories, lo
   };
 
   // the smallest run depends on the selection (coloured garments: 5 pcs; stickers: minimum order sum)
-  const qcfg = useMemo(() => (prod.minQty ? { ...prod.qty, min: Math.min(prod.qty.max, prod.minQty(sel)) } : prod.qty), [prod, sel.dims, sel.options]);
+  const qcfg = useMemo(() => {
+    const q = prod.qtyFor?.(sel) ?? prod.qty;
+    return prod.minQty ? { ...q, min: Math.min(q.max, prod.minQty(sel)) } : q;
+  }, [prod, sel.dims, sel.options]);
   useEffect(() => {
-    if (sel.qty < qcfg.min) {
-      setSel((s) => ({ ...s, qty: qcfg.min }));
-      setQtyText(String(qcfg.min));
+    if (sel.qty < qcfg.min || sel.qty > qcfg.max) {
+      const qty = Math.min(qcfg.max, Math.max(qcfg.min, sel.qty));
+      setSel((s) => ({ ...s, qty }));
+      setQtyText(String(qty));
     }
-  }, [qcfg.min]);
+  }, [qcfg.min, qcfg.max]);
 
   const setQty = (n: number) => {
     const q = normalizeQty(n, qcfg);

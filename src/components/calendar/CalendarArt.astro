@@ -1,0 +1,316 @@
+---
+// Иллюстрация настенного квартального календаря (плоская графика «CMYK 2.0»).
+// viewBox — в миллиметрах, поэтому модели в одном scale сравниваются по реальному размеру.
+import { buildLayout, type CalendarType } from './calendar-geometry';
+
+interface Props {
+  type: 'midi3' | 'midi1' | 'mini3' | 'mini1' | 'trio';
+  strip?: 'none' | 'silver' | 'gold'; // металлическая планка, по умолчанию 'none'
+  fold?: boolean; // подгиб постера
+  dims?: boolean; // подписи размеров в мм со стрелками (как на прайсе), по умолчанию false
+  scale?: number; // px на мм, по умолчанию 0.5 (т.е. реальный масштаб между моделями сохраняется)
+  title?: string; // для <title> и aria-label
+  class?: string;
+}
+
+const { type, strip = 'none', fold = false, dims = false, scale = 0.5, title, class: cls } = Astro.props;
+
+const L = buildLayout(type as CalendarType);
+const { header: H } = L;
+const u = 1 / scale; // 1 экранный пиксель в мм
+const uid = 'cal' + crypto.randomUUID().slice(0, 8);
+const id = (s: string) => `${uid}-${s}`;
+
+const NAMES: Record<CalendarType, string> = {
+  midi3: 'Квартальный календарь МИДИ, 3 рекламных поля',
+  midi1: 'Квартальный календарь МИДИ, 1 рекламное поле',
+  mini3: 'Квартальный календарь МИНИ, 3 рекламных поля',
+  mini1: 'Квартальный календарь МИНИ, 1 рекламное поле',
+  trio: 'Квартальный календарь «3 в 1»',
+};
+const label = title ?? NAMES[type as CalendarType];
+
+// Поля вокруг календаря: планка с люверсом сверху, размеры сверху и справа.
+const stripTop = strip !== 'none' ? 16 : 0;
+const dimGapTop = dims ? 26 * u : 0;
+const padL = 4;
+const padT = 4 + stripTop + dimGapTop;
+const padR = dims ? 64 * u : 4;
+const padB = 8;
+const vbW = padL + L.width + padR;
+const vbH = padT + L.height + padB;
+
+// Размерные линии
+const dimX = L.width + 9 * u;
+const dimY = -stripTop - 12 * u;
+const arrow = 6 * u;
+const aw = 2.4 * u;
+const fsDim = 10.5 * u;
+
+// Металлическая планка
+const metal = {
+  silver: { a: '#c9cdd2', b: '#eef0f2', edge: '#99a0a8' },
+  gold: { a: '#c9a227', b: '#f3d36b', edge: '#9c7a12' },
+};
+const m = strip !== 'none' ? metal[strip] : null;
+const stripH = 11;
+const eyeR = 6.5;
+
+const hw = H.w;
+const hh = H.h;
+const foldH = 13;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${vbW.toFixed(1)} ${vbH.toFixed(1)}`}
+  width={Math.round(vbW * scale)}
+  height={Math.round(vbH * scale)}
+  role="img"
+  aria-label={label}
+  class:list={['calart', cls]}
+>
+  <title>{label}</title>
+  <defs>
+    <clipPath id={id('clip')}><rect width={hw} height={hh} rx="3" /></clipPath>
+    <pattern id={id('dots')} width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <circle cx="2.5" cy="2.5" r="1.25" class="f-ink" />
+    </pattern>
+    <filter id={id('sh')} x="-10%" y="-5%" width="120%" height="115%">
+      <feDropShadow dx="0" dy={2 * u} stdDeviation={3 * u} flood-color="#16141b" flood-opacity="0.16" />
+    </filter>
+    {
+      m && (
+        <linearGradient id={id('metal')} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color={m.a} />
+          <stop offset="0.45" stop-color={m.b} />
+          <stop offset="1" stop-color={m.a} />
+        </linearGradient>
+      )
+    }
+  </defs>
+
+  <g transform={`translate(${padL} ${padT})`}>
+    <g filter={`url(#${id('sh')})`}>
+      {/* Шапка-постер */}
+      <g clip-path={`url(#${id('clip')})`} class="poster">
+        <rect width={hw} height={hh} fill="#EAF2FF" />
+        <image href="/img/v3/calendar-print.webp" x="0" y="0" width={hw} height={hh} preserveAspectRatio="xMidYMid slice" />
+        <text x={hw * 0.06} y={hh * 0.28} font-size={hh * 0.2} class="t f-ink" font-weight="800">2027</text>
+        {
+          fold && (
+            <g>
+              <rect width={hw} height={foldH} class="f-ink" opacity="0.16" />
+              <rect y={foldH * 0.45} width={hw} height={foldH * 0.55} class="f-ink" opacity="0.08" />
+              <line x1="0" x2={hw} y1={foldH} y2={foldH} class="s-ink" stroke-width="0.7" opacity="0.55" />
+              <line x1="0" x2={hw} y1={foldH + 0.9} y2={foldH + 0.9} stroke="#fff" stroke-width="0.7" opacity="0.8" />
+            </g>
+          )
+        }
+      </g>
+      <rect width={hw} height={hh} rx="3" class="frame" />
+
+      {/* Календарные блоки */}
+      {L.blocks.map((b) => <rect x={b.x} y={b.y} width={b.w} height={b.h} class="block" />)}
+      {
+        L.months.map((mo) => (
+          <g>
+            <rect x={mo.title.x} y={mo.title.y} width={mo.title.w} height={mo.title.h} rx="1.6" class="f-card" />
+            <rect x={mo.title.x} y={mo.title.y} width={mo.title.h * 0.42} height={mo.title.h} rx="1.6" class={`f-${mo.accent}`} />
+            <text
+              x={mo.title.x + mo.title.h * 0.85}
+              y={mo.title.y + mo.title.h / 2 + mo.titleFs * 0.36}
+              font-size={mo.titleFs}
+              class="t f-ink"
+              font-weight="700"
+              letter-spacing="0.4"
+            >
+              {mo.name.toUpperCase()}
+            </text>
+            <text
+              x={mo.title.x + mo.title.w - mo.title.h * 0.4}
+              y={mo.title.y + mo.title.h / 2 + mo.titleFs * 0.36}
+              font-size={mo.titleFs}
+              text-anchor="end"
+              class="t f-muted"
+              font-weight="500"
+            >
+              {mo.year}
+            </text>
+            {mo.weekdays.map((w) => (
+              <text x={w.x} y={w.y} font-size={mo.wdFs} text-anchor="middle" class={`t ${w.we ? 'f-m' : 'f-muted'}`} font-weight="500">
+                {w.t}
+              </text>
+            ))}
+            {mo.weekNums.map((w) => (
+              <text x={w.x} y={w.y + mo.wnFs * 0.36} font-size={mo.wnFs} text-anchor="middle" class="t f-muted" opacity="0.6">
+                {w.n}
+              </text>
+            ))}
+            {mo.cells.map((c) => (
+              <g>
+                {c.cur && <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={Math.min(c.w, c.h) * 0.18} class="f-card" />}
+                <text
+                  x={c.tx}
+                  y={c.ty}
+                  font-size={mo.fs}
+                  text-anchor="middle"
+                  font-weight={c.cur ? 700 : 400}
+                  class={`t ${c.we ? 'f-m' : 'f-ink'}`}
+                  opacity={c.cur ? 1 : 0.28}
+                >
+                  {c.d}
+                </text>
+              </g>
+            ))}
+          </g>
+        ))
+      }
+
+      {/* Рекламные поля */}
+      {
+        L.ads.map((a) => (
+          <g>
+            <rect x={a.x} y={a.y} width={a.w} height={a.h} rx={a.last ? 2 : 0} class="f-ink" />
+            {a.last && <rect x={a.x} y={a.y} width={a.w} height={4} class="f-ink" />}
+            <text x={a.x + 12} y={a.y + a.h / 2 + 2.9} font-size="8" letter-spacing="1.4" class="t f-paper" opacity="0.78" font-weight="500">
+              РЕКЛАМНОЕ ПОЛЕ
+            </text>
+            {a.last && (
+              <text x={a.x + a.w - 11} y={a.y + a.h / 2 + 9} font-size="26" text-anchor="end" class="t f-y" font-weight="800" letter-spacing="-0.5">
+                2027
+              </text>
+            )}
+          </g>
+        ))
+      }
+
+      {/* Пружины */}
+      {
+        L.spirals.map((s) => (
+          <g>
+            <line x1={s.x} x2={s.x + s.w} y1={s.y} y2={s.y} class="s-ink" stroke-width="0.6" opacity="0.35" />
+            <line x1={s.x} x2={s.x + s.w} y1={s.y} y2={s.y} class="spiral" stroke-width="7" stroke-dasharray="1.5 2.3" />
+          </g>
+        ))
+      }
+    </g>
+
+    {/* Подгиб поверх тени — уже внутри шапки; металлическая планка */}
+    {
+      m && (
+        <g>
+          <rect x={hw / 2 - 5} y={-stripTop + 1} width="10" height={stripTop} rx="2" fill={`url(#${id('metal')})`} stroke={m.edge} stroke-width="0.6" />
+          <circle cx={hw / 2} cy={-stripTop + eyeR + 0.5} r={eyeR} fill={`url(#${id('metal')})`} stroke={m.edge} stroke-width="0.8" />
+          <circle cx={hw / 2} cy={-stripTop + eyeR + 0.5} r={eyeR * 0.5} class="f-paper" stroke={m.edge} stroke-width="0.6" />
+          <rect x="-2.5" y={-stripH / 2 + 1} width={hw + 5} height={stripH} rx="2.2" fill={`url(#${id('metal')})`} stroke={m.edge} stroke-width="0.6" />
+          <line x1="-1" x2={hw + 1} y1={-stripH / 2 + 3} y2={-stripH / 2 + 3} stroke="#fff" stroke-width="0.8" opacity="0.7" />
+          <circle cx="5" cy="1" r="1.5" fill={m.edge} opacity="0.7" />
+          <circle cx={hw - 5} cy="1" r="1.5" fill={m.edge} opacity="0.7" />
+        </g>
+      )
+    }
+
+    {/* Размеры */}
+    {
+      dims && (
+        <g class="dims">
+          <line x1="0" x2="0" y1={-stripTop - 2 * u} y2={dimY - 4 * u} class="ext" stroke-width={u} />
+          <line x1={hw} x2={hw} y1={-stripTop - 2 * u} y2={dimY - 4 * u} class="ext" stroke-width={u} />
+          <line x1={arrow * 0.6} x2={hw - arrow * 0.6} y1={dimY} y2={dimY} class="s-ink2" stroke-width={u} />
+          <path d={`M 0 ${dimY} l ${arrow} ${-aw} v ${aw * 2} z M ${hw} ${dimY} l ${-arrow} ${-aw} v ${aw * 2} z`} class="f-ink2" />
+          <text x={hw / 2} y={dimY - 5 * u} font-size={fsDim} text-anchor="middle" class="mono f-ink2">
+            {`${L.model.headerW} мм`}
+          </text>
+          {L.vdims.map((d) => (
+            <g>
+              <line x1={d.edge + 2 * u} x2={dimX + 4 * u} y1={d.a} y2={d.a} class="ext" stroke-width={u} />
+              <line x1={d.edge + 2 * u} x2={dimX + 4 * u} y1={d.b} y2={d.b} class="ext" stroke-width={u} />
+              <line x1={dimX} x2={dimX} y1={d.a + arrow * 0.6} y2={d.b - arrow * 0.6} class="s-ink2" stroke-width={u} />
+              <path d={`M ${dimX} ${d.a} l ${-aw} ${arrow} h ${aw * 2} z M ${dimX} ${d.b} l ${-aw} ${-arrow} h ${aw * 2} z`} class="f-ink2" />
+              <text x={dimX + 7 * u} y={(d.a + d.b) / 2 + fsDim * 0.36} font-size={fsDim} class="mono f-ink2">
+                {d.label}
+              </text>
+            </g>
+          ))}
+        </g>
+      )
+    }
+  </g>
+</svg>
+
+<style>
+  .calart {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .t {
+    font-family: var(--font, system-ui, sans-serif);
+  }
+  .mono {
+    font-family: var(--mono, ui-monospace, monospace);
+  }
+  .poster {
+    isolation: isolate;
+  }
+  .blend {
+    mix-blend-mode: multiply;
+  }
+  .f-ink {
+    fill: var(--ink, #16141b);
+  }
+  .f-ink2 {
+    fill: var(--ink-2, #3d3944);
+  }
+  .f-muted {
+    fill: var(--muted, #5d5866);
+  }
+  .f-paper {
+    fill: var(--white, #fff);
+  }
+  .f-paper2 {
+    fill: var(--sky-2, #F5F9FF);
+  }
+  .f-card {
+    fill: var(--white, #fff);
+  }
+  .f-c {
+    fill: var(--blue, #1557ff);
+  }
+  .f-m {
+    fill: #de425b;
+  }
+  .f-y {
+    fill: #efad31;
+  }
+  .s-ink {
+    stroke: var(--ink, #16141b);
+  }
+  .s-ink2 {
+    stroke: var(--ink-2, #3d3944);
+  }
+  .wave {
+    fill: none;
+    stroke: var(--ink, #16141b);
+    opacity: 0.55;
+  }
+  .frame {
+    fill: none;
+    stroke: var(--line-strong, #cfc5b1);
+    stroke-width: 0.6;
+  }
+  .block {
+    fill: #edf2fa;
+    stroke: var(--line-strong, #cfc5b1);
+    stroke-width: 0.6;
+  }
+  .spiral {
+    stroke: var(--ink-2, #3d3944);
+  }
+  .ext {
+    stroke: var(--line-strong, #cfc5b1);
+  }
+</style>
+

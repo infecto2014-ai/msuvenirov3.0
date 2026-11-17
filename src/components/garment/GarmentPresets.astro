@@ -4,6 +4,7 @@
 // and scrolls into view; «Заказать» opens the order window with the variant's name in the comment.
 import { join } from 'node:path';
 import SectionHead from '@/components/ui/SectionHead.astro';
+import CalendarArt from '@/components/calendar/CalendarArt.astro';
 import Button from '@/components/ui/Button.astro';
 import Pic from '@/components/ui/Pic.astro';
 import { presetPrice } from '@/data/garments/select';
@@ -42,7 +43,9 @@ const cards = presets.map((v) => {
         cards.map((c) => (
           <li class="tp-card">
             <div class="tp-media">
-              {c.pic ? (
+              {c.art?.kind === 'calendar' ? (
+                <CalendarArt type={c.art.model} strip={c.art.strip} fold={c.art.fold} scale={0.3} />
+              ) : c.pic ? (
                 <Pic name={c.pic.name} alt={c.alt} w={1000} h={1000} label={c.pic.label} />
               ) : (
                 <img src={c.img} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" />
@@ -145,6 +148,12 @@ const cards = presets.map((v) => {
   }
   .tp-media :global(.pic) {
     height: 100%;
+  }
+  .tp-media :global(.calart) {
+    width: 100%;
+    height: 100%;
+    padding: var(--s-3);
+    box-sizing: border-box;
   }
   .tp-card:hover .tp-media img {
     transform: scale(1.03);

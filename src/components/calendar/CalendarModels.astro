@@ -1,0 +1,26 @@
+---
+import CalendarArt from './CalendarArt.astro';
+import { calendarModels } from '@/data/garments/calendars';
+---
+<div class="wrap model-wrap">
+  <details class="models">
+    <summary>Сравнить 5 квартальных моделей <span>Размеры, постер и рекламные поля</span></summary>
+    <ul role="list">
+      {calendarModels.map(m=><li>
+        <div class="drawing"><CalendarArt type={m.id} scale={0.2}/></div>
+        <h3>{m.name}</h3><strong>{m.width} × {m.height} мм</strong>
+        <p>Постер: {m.poster}</p><p>{m.text}</p>
+      </li>)}
+    </ul>
+    <p class="hint">Иллюстрации показаны в одном масштабе. Это пример оформления, не фотография готового заказа.</p>
+  </details>
+</div>
+<style>
+ .model-wrap{padding-block:var(--s-4);} .models{border:1px solid var(--line);border-radius:var(--radius-card);padding:var(--s-4);}
+ summary{cursor:pointer;font-weight:700;font-size:var(--fs-lg);} summary span{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--muted);margin-top:var(--s-1);}
+ ul{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--s-4);padding-top:var(--s-5);}
+ li{min-width:0;} .drawing{height:200px;display:flex;align-items:flex-start;justify-content:center;}
+ .drawing :global(svg){max-height:100%;max-width:100%;} h3{font-size:1rem;margin-block:var(--s-2);} strong{font-size:var(--fs-sm);} p{font-size:var(--fs-sm);color:var(--muted);margin-top:var(--s-2);} .hint{margin-top:var(--s-4);}
+ @media(max-width:1024px){ul{grid-template-columns:repeat(3,minmax(0,1fr));}}
+ @media(max-width:560px){ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-3);} .drawing{height:180px;}}
+</style>

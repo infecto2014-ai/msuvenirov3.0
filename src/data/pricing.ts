@@ -83,6 +83,7 @@ export interface Product {
   short?: string;
   image?: string;
   qty: QtyConfig;
+  qtyFor?: (sel: Selection) => QtyConfig;
   options?: OptionGroup[];
   dims?: DimInput[];
   /** quantities at which the price per piece drops (for the tier ladder in the UI) */
@@ -1341,6 +1342,7 @@ const calendars: Category = {
           },
         ],
         fromPrice: Math.min(...models.map((m) => Math.min(...m.prices))),
+        qtyFor: (sel) => model(sel).id === 'trio' ? { ...p.qty, max: 200, individualAbove: true } : p.qty,
         table: {
           columns: runs.map((r) => `от ${r} шт`),
           rows: [
@@ -1369,6 +1371,7 @@ const calendars: Category = {
             breakdown,
             next: nt ? { qty: nt.from, unit: unit - base + nt.price } : undefined,
             notes,
+            error: m.id === 'trio' && sel.qty > 200 ? '«3 в 1» больше 200 шт — индивидуальный расчёт.' : undefined,
           };
         },
       };

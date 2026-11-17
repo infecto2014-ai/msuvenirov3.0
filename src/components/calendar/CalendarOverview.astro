@@ -1,0 +1,36 @@
+---
+import CalendarArt from './CalendarArt.astro';
+import CalendarOtherArt from './CalendarOtherArt.astro';
+import Button from '@/components/ui/Button.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import { findProduct, rub } from '@/data/pricing';
+const kinds = [
+  { id:'cal-quarterly', name:'Квартальные', note:'МИДИ, МИНИ и «3 в 1»', art:'quarterly', variant:undefined },
+  { id:'cal-wall', name:'Настенные', note:'Плакат или перекидной', art:'flip', variant:'flip-a4' },
+  { id:'cal-desk', name:'Настольные', note:'Домик на рабочий стол', art:'desk', variant:'plain' },
+  { id:'cal-pocket', name:'Карманные', note:'Цена за весь тираж в калькуляторе', art:'pocket', variant:undefined },
+] as const;
+---
+<section class="wrap types" aria-labelledby="calendar-types">
+  <SectionHead id="calendar-types" title="Четыре вида" accent="календарей" lead="Выберите формат — точную стоимость рассчитаете ниже." />
+  <ul class="type-grid" role="list">
+    {kinds.map(k=>{const p=findProduct('calendars',k.id)!; return <li class="type-card">
+      <div class="art">{k.art==='quarterly'?<CalendarArt type="midi3" scale={0.2}/>:<CalendarOtherArt type={k.art}/>}</div>
+      <div><h3>{k.name}</h3><p>{k.note}</p><small>От {p.qty.min} шт · от {rub(p.fromPrice)} / шт</small></div>
+      <Button class="btn-sm" variant="ghost" data-calc-apply={JSON.stringify({product:k.id,options:k.variant?{variant:k.variant}:{},qty:p.qty.default})}>Выбрать</Button>
+    </li>})}
+  </ul>
+  <p class="note">На иллюстрациях — пример оформления с котами. Напечатаем ваш дизайн и согласуем сетку перед тиражом.</p>
+</section>
+<style>
+  .types { padding-block:var(--s-6); }
+  .type-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-4); }
+  .type-card { display:flex; flex-direction:column; gap:var(--s-3); padding:var(--s-4); border:1px solid var(--line); border-radius:var(--radius-card); background:var(--white); }
+  .art { height:160px; background:var(--sky-2); border-radius:var(--radius-md); }
+  .art :global(svg) { height:100%; width:100%; }
+  h3 { font-size:var(--fs-lg); } p,small { color:var(--muted); } small { display:block; margin-top:var(--s-2); }
+  .type-card :global(.btn) { margin-top:auto; }
+  .note { margin-top:var(--s-3); font-size:var(--fs-sm); }
+  @media(max-width:900px) { .type-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  @media(max-width:560px) { .type-grid{gap:var(--s-2);} .type-card{padding:var(--s-3);} .art{height:130px;} h3{font-size:1rem;} p,small{font-size:var(--fs-sm);} .type-card :global(.btn){padding-inline:8px;} }
+</style>

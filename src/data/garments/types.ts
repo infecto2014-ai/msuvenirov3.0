@@ -13,7 +13,8 @@ export interface GarmentPreset {
   product: string;
   qty: number;
   /** calculator options: color, print1…print5 ('a6' | 'a5' | 'a4' | 'a3' | 'none'), blank… */
-  options: Record<string, string>;
+  options: Record<string, string | string[]>;
+  art?: { kind: 'calendar'; model: 'midi3' | 'midi1' | 'mini3' | 'mini1' | 'trio'; strip?: 'none' | 'silver' | 'gold'; fold?: boolean };
   dims?: Record<string, number>;
   /** a real work of the workshop (/portfolio/…) */
   img?: string;

@@ -1,0 +1,26 @@
+---
+import { monthArt } from './calendar-geometry';
+interface Props { type: 'poster' | 'flip' | 'desk' | 'pocket' }
+const { type } = Astro.props;
+const pocket = type === 'pocket';
+const year = 2027;
+const months = Array.from({length: 12}, (_, i) => monthArt({x: 59+(i%4)*50, y: 120+Math.floor(i/4)*34, w: 46, h: 31}, year, i, 'c', {compact:true}));
+const january = monthArt({x: 62,y:145,w:196,h:88},year,0,'c',{compact:true});
+const label = {poster:'Настенный плакат',flip:'Перекидной календарь',desk:'Настольный домик',pocket:'Карманный календарь'}[type];
+---
+<svg viewBox="0 0 320 260" role="img" aria-label={`${label} с котом и надписью 2027`}>
+  <title>{label} — 2027</title>
+  {type === 'desk' && <path d="M34 232L75 45H245L286 232Z" fill="#cedbf5" stroke="#b6c7e5" />}
+  <rect x={pocket?28:50} y={pocket?52:24} width={pocket?264:220} height={pocket?164:218} rx={pocket?12:4} fill="white" stroke="#c5d2e7" />
+  <svg x={pocket?32:54} y={pocket?56:28} width={pocket?256:212} height={pocket?156:type==='flip'?108:84} viewBox="0 0 320 200">
+    <rect width="320" height="200" fill="#EAF2FF" />
+    <image href="/img/v3/calendar-print.webp" width="320" height="200" preserveAspectRatio="xMidYMid slice" />
+    <text x="16" y="54" font-size="38" font-weight="800" fill="#0B1A3F">2027</text>
+  </svg>
+  {(type==='flip'? [january] : pocket? [] : months).map(m => <g>
+    <text x={m.title.x} y={m.title.y+m.titleFs} font-size={m.titleFs} font-weight="700" fill="#1557FF">{m.name}</text>
+    {m.cells.filter(c=>c.cur).map(c=><text x={c.tx} y={c.ty} font-size={m.fs} text-anchor="middle" fill={c.we?'#d63f58':'#0B1A3F'}>{c.d}</text>)}
+  </g>)}
+  {type==='flip' && <path d="M60 27H260" stroke="#61718c" stroke-width="6" stroke-dasharray="2 5" />}
+</svg>
+<style>svg { display:block; width:100%; height:100%; max-width:300px; margin:auto; font-family:var(--font); }</style>

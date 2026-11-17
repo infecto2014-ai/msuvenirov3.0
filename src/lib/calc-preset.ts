@@ -5,7 +5,7 @@ import { defaultSelection, rub, type Product, type Selection } from '@/data/pric
 export const CALC_APPLY_EVENT = 'calc:apply';
 
 export interface CalcPreset {
-  options?: Record<string, string>;
+  options?: Record<string, string | string[]>;
   dims?: Record<string, number>;
   qty?: number;
 }
@@ -13,7 +13,7 @@ export interface CalcPreset {
 /** what a «Настроить в калькуляторе» button sends with CALC_APPLY_EVENT */
 export interface CalcApplyDetail {
   product: string;
-  options: Record<string, string>;
+  options: Record<string, string | string[]>;
   dims?: Record<string, number>;
   qty: number;
 }
@@ -31,11 +31,17 @@ export function applyPreset(p: Product, preset: CalcPreset): Selection {
   }
   for (const [groupId, value] of Object.entries(preset.options ?? {})) {
     const g = p.options?.find((x) => x.id === groupId);
-    if (!g || !g.choices.some((c) => c.id === value)) continue;
-    sel.options[groupId] = g.type === 'many' ? [value] : value;
+    if (!g) continue;
+    if (g.type === 'many') {
+      const values = Array.isArray(value) ? value : [value];
+      sel.options[groupId] = values.filter((v) => g.choices.some((c) => c.id === v));
+    } else if (typeof value === 'string' && g.choices.some((c) => c.id === value)) {
+      sel.options[groupId] = value;
+    }
   }
-  const want = Math.max(preset.qty ?? sel.qty, p.minQty?.(sel) ?? 1, p.qty.min);
-  sel.qty = Math.min(p.qty.max, Math.round(want));
+  const qty = p.qtyFor?.(sel) ?? p.qty;
+  const want = Math.max(preset.qty ?? sel.qty, p.minQty?.(sel) ?? 1, qty.min);
+  sel.qty = Math.min(qty.max, Math.round(want));
   return sel;
 }
 

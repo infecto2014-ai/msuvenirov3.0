@@ -20,4 +20,5 @@ test('страницы нового дизайна — не заглушки', (
   expect(REAL_PAGES).toContain('pechat-na-kruzhkah');
   expect(REAL_PAGES).toContain('znachki');
   expect(REAL_PAGES).toContain('nakleyki');
+  expect(REAL_PAGES).toContain('kalendari');
 });

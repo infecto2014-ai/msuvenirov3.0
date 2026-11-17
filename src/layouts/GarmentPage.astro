@@ -24,8 +24,9 @@ import { breadcrumbs, faqPage, service } from '@/lib/schema';
 
 interface Props {
   page: GarmentPage;
+  compact?: boolean;
 }
-const { page } = Astro.props;
+const { page, compact = false } = Astro.props;
 const { calc, heads } = page;
 
 const faq = garmentFaq(page);
@@ -42,6 +43,7 @@ const schema = [
 
 <BaseLayout title={page.title} description={page.description} path={page.slug} schema={schema}>
   <GarmentHero page={page} />
+  <slot name="after-hero" />
 
   <section class="section g-calc-sec" aria-labelledby="g-calc-title">
     <div class="wrap">
@@ -70,18 +72,23 @@ const schema = [
 
   {page.presets.length > 0 && <div class="band-sky"><GarmentPresets presets={page.presets} category={calc.category} /></div>}
   {page.showConstructor !== false && <div class="g-cb"><ConstructorBanner /></div>}
+  <slot name="before-details" />
   <GarmentDetails page={page} />
   {works.length > 0 && <div class="band-sky">
     <Works works={works} title="Наши" accent="работы" lead={heads.worksLead} />
   </div>}
   <Reviews items={reviews.items} title="Отзывы" accent="клиентов" showRatings={false} />
   <div class="band-sky">
-    <Faq items={faq} title="Частые" accent="вопросы" />
+    {compact ? <details class="wrap compact-panel"><summary>Частые вопросы · {faq.length}</summary><Faq items={faq} title="Частые" accent="вопросы" /></details> : <Faq items={faq} title="Частые" accent="вопросы" />}
   </div>
-  <GarmentPrices page={page} />
+  {compact ? <details class="wrap compact-panel"><summary>Прайс-лист · все виды и тиражи</summary><GarmentPrices page={page} /></details> : <GarmentPrices page={page} />}
 </BaseLayout>
 
 <style>
+  .compact-panel { padding-block: var(--s-5); }
+  .compact-panel > summary { cursor:pointer; padding:var(--s-4); border:1px solid var(--line); border-radius:var(--radius-card); background:var(--white); font-size:var(--fs-lg); font-weight:700; color:var(--ink); }
+  .compact-panel[open] > summary { color:var(--blue); }
+  .compact-panel :global(.wrap) { width:100%; }
   .band-sky {
     background: var(--sky-2);
   }
