@@ -1,0 +1,68 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import AboutHero from '@/components/about/AboutHero.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Reviews from '@/components/home/Reviews.astro';
+import Faq from '@/components/home/Faq.astro';
+import Contacts from '@/components/home/Contacts.astro';
+import { aboutExamples, aboutJourney, aboutValues, aboutTechnologies, aboutFaq } from '@/data/about';
+import { reviews } from '@/data/reviews';
+import { site } from '@/data/site';
+import { breadcrumbs, faqPage, BUSINESS_ID } from '@/lib/schema';
+const description = 'Мастерская сувениров в Калининграде: своё производство с 2019 года, печать от 1 штуки, помощь с макетом. ТЦ «Экватор», Генерала Челнокова, 9.';
+const schema = [
+  breadcrumbs([{name:'Главная',href:'/'},{name:'О мастерской',href:'/o-nas'}]),
+  faqPage(aboutFaq),
+  {'@context':'https://schema.org','@type':'AboutPage',name:'О Мастерской сувениров',url:`${site.url}/o-nas`,about:{'@id':BUSINESS_ID}},
+];
+---
+<BaseLayout title="О мастерской — Мастерская сувениров, Калининград" description={description} path="/o-nas" schema={schema}>
+  <AboutHero/>
+  <section class="section about-story" aria-labelledby="story-title">
+    <div class="wrap">
+      <div class="story-top">
+        <SectionHead id="story-title" eyebrow="Знакомьтесь, это мы" title="Место для вещей" accent="со смыслом"/>
+        <div class="story-copy"><p>К нам приходят за одной футболкой в подарок и за тиражом мерча для компании. Подход одинаковый: понять вашу идею, подобрать изделие и технологию, подготовить макет.</p><p>В ТЦ «Экватор» мы принимаем заказы, показываем образцы, печатаем и выдаём готовые вещи. Можно прийти с картинкой, а можно — с мыслью, которую ещё нужно нарисовать.</p></div>
+      </div>
+      <div class="examples">
+        {aboutExamples.map((e,i)=><article class="example">
+          <span class="example-tape" aria-hidden="true"/>
+          <figure><div class="example-photo"><img src={e.photo} width={e.width} height={e.height} loading="lazy" decoding="async" alt={e.work.title}/></div><figcaption>{e.work.title}</figcaption></figure>
+          <div class="example-copy"><span class="example-no" aria-hidden="true">0{i+1}</span><h3>{e.title}</h3><p>{e.text}</p><a href={e.href}>{e.link}<Icon name="arrow-right" size={18}/></a></div>
+        </article>)}
+      </div>
+      <p class="examples-note">На фотографиях — работы нашей мастерской.</p>
+    </div>
+  </section>
+  <section class="section journey" aria-labelledby="journey-title">
+    <div class="wrap">
+      <SectionHead id="journey-title" eyebrow="Знакомый путь для новой идеи" title="От «есть идея»" accent="до «забираю!»" lead="Четыре шага, в которых вы участвуете вместе с нами."/>
+      <ol class="journey-list" role="list">{aboutJourney.map((step,i)=><li><span class="journey-number" aria-hidden="true">0{i+1}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></li>)}</ol>
+      <div class="journey-action"><span>Начать можно с одного сообщения</span><Button data-order="Хочу обсудить идею для печати" variant="ghost" arrow>Рассказать об идее</Button></div>
+    </div>
+  </section>
+  <section class="section values" aria-labelledby="values-title">
+    <div class="wrap values-grid">
+      <div class="values-intro"><p class="values-eyebrow">Нам важны детали</p><h2 id="values-title">Разберёмся в идее.<br/><span>Подберём печать.</span></h2><p>У разных материалов свой характер. Расскажем о плюсах и ограничениях технологий и предложим ту, которая подходит вашей задаче.</p><a href="#about-technologies">Что умеет мастерская <Icon name="arrow-right" size={20}/></a></div>
+      <ul class="value-list" role="list">{aboutValues.map(v=><li><span class="value-icon"><Icon name={v.icon} size={24}/></span><h3>{v.title}</h3><p>{v.text}</p></li>)}</ul>
+    </div>
+  </section>
+  <section id="about-technologies" class="section tech-section" aria-labelledby="tech-title">
+    <div class="wrap"><details class="tech-panel"><summary><span><Icon name="layers" size={26}/><span id="tech-title">Что умеет мастерская<small>Шесть технологий — выбираем под изделие и тираж</small></span></span><Icon name="chevron-down" size={22}/></summary><ul class="tech-list" role="list">{aboutTechnologies.map(t=><li><h3>{t.title}</h3><p>{t.text}</p><a href={t.href}>Подробнее <span class="visually-hidden">о технологии «{t.title}»</span><Icon name="arrow-right" size={17}/></a></li>)}</ul></details></div>
+  </section>
+  <Reviews items={reviews.slice(0,3)} showRatings={false}/>
+  <div class="about-faq"><Faq items={aboutFaq} title="Ещё немного" accent="о нас"/></div>
+  <Contacts/>
+</BaseLayout>
+<style>
+ .about-story{padding-top:var(--s-6);}.story-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:var(--s-7);align-items:start;margin-bottom:var(--s-7);}.story-copy{color:var(--muted);max-width:650px;}.story-copy p+p{margin-top:var(--s-4);}
+ .examples{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-5);padding-inline:var(--s-2);}.example{position:relative;min-width:0;background:var(--white);padding:var(--s-3);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-card);transform:rotate(-1.3deg);}.example:nth-child(2){transform:rotate(1.2deg) translateY(12px);}.example:nth-child(3){transform:rotate(-.7deg);}.example-tape{position:absolute;left:calc(50% - 38px);top:-11px;width:76px;height:24px;z-index:1;background:var(--sky);border:1px solid var(--line);opacity:.94;transform:rotate(-5deg);}.example:nth-child(2) .example-tape{transform:rotate(5deg);}
+ .example-photo{aspect-ratio:4/3;overflow:hidden;background:var(--sky-2);border-radius:var(--radius-sm);}.example-photo img{width:100%;height:100%;object-fit:contain;}figcaption{font-size:var(--fs-xs);color:var(--muted);margin-top:var(--s-2);}.example-copy{padding:var(--s-4) var(--s-2) var(--s-2);position:relative;}.example-no{position:absolute;right:var(--s-2);top:var(--s-3);font-size:1.6rem;font-weight:800;color:var(--line);}.example-copy h3{font-size:var(--fs-h3);padding-right:40px;}.example-copy p{margin-top:var(--s-2);color:var(--muted);}.example-copy a{display:inline-flex;align-items:center;gap:var(--s-2);min-height:44px;margin-top:var(--s-3);font-size:var(--fs-sm);font-weight:600;color:var(--blue);text-decoration:none;}.example-copy a:hover{text-decoration:underline;}.examples-note{text-align:center;font-size:var(--fs-sm);color:var(--muted);margin-top:var(--s-6);}
+ .journey{background:var(--sky-2);}.journey-list{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-5);}.journey-list::before{content:'';position:absolute;left:28px;right:28px;top:27px;border-top:2px dashed var(--line);}.journey-list li{position:relative;}.journey-number{position:relative;display:grid;place-items:center;width:56px;height:56px;border:2px solid var(--blue);border-radius:50%;background:var(--white);font-size:var(--fs-lg);font-weight:800;color:var(--blue);margin-bottom:var(--s-5);}.journey-list li:last-child .journey-number{background:var(--blue);color:var(--white);}.journey-list h3{font-size:var(--fs-lg);}.journey-list p{color:var(--muted);margin-top:var(--s-3);}.journey-action{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line);}.journey-action>span{color:var(--muted);}
+ .values{background:var(--ink);color:var(--white);}.values-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:var(--s-7);align-items:center;}.values-eyebrow{font-size:var(--fs-sm);margin-bottom:var(--s-4);}.values-intro h2{font-size:var(--fs-h2);line-height:1.15;letter-spacing:-.035em;}.values-intro h2 span{color:var(--white);text-decoration:underline;text-decoration-color:var(--blue);text-underline-offset:8px;}.values-intro>p:not(.values-eyebrow){margin-top:var(--s-5);}.values-intro>a{display:inline-flex;align-items:center;gap:var(--s-2);min-height:44px;margin-top:var(--s-5);color:var(--white);font-weight:600;text-decoration:none;}.values-intro>a:hover{text-decoration:underline;}.value-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4);}.value-list li{padding:var(--s-5);background:var(--white);color:var(--ink);border-radius:var(--radius-card);}.value-icon{display:grid;place-items:center;width:44px;height:44px;background:var(--sky);color:var(--blue);border-radius:var(--radius-sm);margin-bottom:var(--s-4);}.value-list h3{font-size:var(--fs-lg);}.value-list p{margin-top:var(--s-2);color:var(--muted);font-size:var(--fs-sm);}
+ #about-technologies{scroll-margin-top:var(--header-h);}.tech-section{padding-bottom:0;}.tech-panel{border:1px solid var(--line);border-radius:var(--radius-card);overflow:hidden;}.tech-panel summary{display:flex;justify-content:space-between;align-items:center;gap:var(--s-4);padding:var(--s-5);cursor:pointer;list-style:none;font-weight:700;font-size:var(--fs-lg);}.tech-panel summary::-webkit-details-marker{display:none;}.tech-panel summary>span{display:flex;align-items:center;gap:var(--s-4);}.tech-panel summary>span>:global(svg){color:var(--blue);flex:none;}.tech-panel summary>:global(svg){flex:none;}.tech-panel[open] summary>:global(svg){transform:rotate(180deg);}.tech-panel summary small{display:block;margin-top:var(--s-1);color:var(--muted);font-size:var(--fs-sm);font-weight:400;}.tech-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-5);padding:var(--s-5);border-top:1px solid var(--line);background:var(--sky-2);}.tech-list h3{font-size:var(--fs-lg);}.tech-list p{color:var(--muted);font-size:var(--fs-sm);margin-top:var(--s-2);}.tech-list a{display:inline-flex;align-items:center;gap:var(--s-2);min-height:44px;color:var(--blue);font-size:var(--fs-sm);font-weight:600;text-decoration:none;margin-top:var(--s-2);}.about-faq{background:var(--sky-2);}
+ @media(max-width:1024px){.story-top,.values-grid{grid-template-columns:minmax(0,1fr);gap:var(--s-5);}.values-intro{max-width:700px;}.examples{gap:var(--s-4);}.example-copy{padding-inline:0;}.example-copy p{font-size:var(--fs-sm);}.journey-list{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:var(--s-6);}.journey-list::before{display:none;}.tech-list{grid-template-columns:repeat(2,minmax(0,1fr));}}
+ @media(max-width:680px){.examples{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto;gap:var(--s-6);}.example:nth-child(n){transform:none;}.example-copy p{font-size:var(--fs-base);}.value-list{grid-template-columns:minmax(0,1fr);}.journey-list{grid-template-columns:minmax(0,1fr);gap:var(--s-5);}.journey-list li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:var(--s-4);}.journey-number{width:48px;height:48px;margin:0;}.journey-list p{margin-top:var(--s-2);}.journey-action{flex-direction:column;align-items:stretch;text-align:center;}.tech-list{grid-template-columns:minmax(0,1fr);}.tech-panel summary{padding:var(--s-4);}.tech-panel summary>span{gap:var(--s-3);}.tech-panel summary small{font-size:var(--fs-xs);}.values-intro h2{line-height:1.2;}}
+</style>
