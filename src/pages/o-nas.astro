@@ -13,13 +13,14 @@ import { site } from '@/data/site';
 import { breadcrumbs, faqPage, BUSINESS_ID } from '@/lib/schema';
 const description = 'Мастерская сувениров в Калининграде: своё производство с 2019 года, печать от 1 штуки, помощь с макетом. ТЦ «Экватор», Генерала Челнокова, 9.';
 const schema = [
-  breadcrumbs([{name:'Главная',href:'/'},{name:'О мастерской',href:'/o-nas'}]),
+  breadcrumbs([{name:'Главная',href:'/'},{name:'О нас',href:'/o-nas'}]),
   faqPage(aboutFaq),
-  {'@context':'https://schema.org','@type':'AboutPage',name:'О Мастерской сувениров',url:`${site.url}/o-nas`,about:{'@id':BUSINESS_ID}},
+  {'@context':'https://schema.org','@type':'AboutPage',name:'О нас — Мастерская сувениров',url:`${site.url}/o-nas`,about:{'@id':BUSINESS_ID}},
 ];
 ---
-<BaseLayout title="О мастерской — Мастерская сувениров, Калининград" description={description} path="/o-nas" schema={schema}>
+<BaseLayout title="О нас — Мастерская сувениров, Калининград" description={description} path="/o-nas" schema={schema}>
   <AboutHero/>
+  <Contacts/>
   <section class="section about-story" aria-labelledby="story-title">
     <div class="wrap">
       <div class="story-top">
@@ -54,7 +55,6 @@ const schema = [
   </section>
   <Reviews items={reviews.slice(0,3)} showRatings={false}/>
   <div class="about-faq"><Faq items={aboutFaq} title="Ещё немного" accent="о нас"/></div>
-  <Contacts/>
 </BaseLayout>
 <style>
  .about-story{padding-top:var(--s-6);}.story-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:var(--s-7);align-items:start;margin-bottom:var(--s-7);}.story-copy{color:var(--muted);max-width:650px;}.story-copy p+p{margin-top:var(--s-4);}

@@ -7,7 +7,7 @@ import { site } from '@/data/site';
 ---
 <section class="about-hero" aria-labelledby="about-title">
   <div class="wrap about-hero-grid">
-    <nav class="about-crumbs" aria-label="Хлебные крошки"><ol role="list"><li><a href="/">Главная</a></li><li><Icon name="chevron-right" size={16}/><span aria-current="page">О мастерской</span></li></ol></nav>
+    <nav class="about-crumbs" aria-label="Хлебные крошки"><ol role="list"><li><a href="/">Главная</a></li><li><Icon name="chevron-right" size={16}/><span aria-current="page">О нас</span></li></ol></nav>
     <div class="about-intro">
       <p class="about-eyebrow">Мастерская сувениров · Калининград</p>
       <h1 id="about-title">Идея ваша.<br/><span>Мастерская наша.<svg viewBox="0 0 440 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 20Q180 2 430 8M300 20l132-12"/></svg></span></h1>
@@ -17,7 +17,7 @@ import { site } from '@/data/site';
       <HeroArt name="about-hero" w={1355} h={1138} mobileName="about-hero-mobile" mw={900} mh={756} alt="Рыжий кот мастерской у рабочего стола с футболкой и кружкой с синими сердцами" label="кот за рабочим столом"/>
       <span class="about-handnote" aria-hidden="true">Здесь идеи обретают форму<svg viewBox="0 0 100 60"><path d="M4 4Q80 0 80 46M68 37l13 12 12-15"/></svg></span>
     </div>
-    <div class="about-actions"><Button data-order="Хочу обсудить идею для печати" icon="pencil">Обсудить идею</Button><Button href="#contacts" variant="ghost" icon="map-pin">Заглянуть в мастерскую</Button></div>
+    <div class="about-actions"><Button data-order="Хочу обсудить идею для печати" icon="pencil">Обсудить идею</Button></div>
     <ul class="about-facts" role="list">{aboutFacts.map(f=><li><strong>{f.value}</strong><span>{f.label}</span></li>)}</ul>
   </div>
 </section>

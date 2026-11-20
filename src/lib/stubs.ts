@@ -16,6 +16,8 @@ export function stubPages(): StubPage[] {
     ...mainNav,
     ...infoNav,
     { href: '/uslugi', label: 'Все услуги' },
+    // Keep the existing URL available even though Contacts is no longer a menu item.
+    { href: '/kontakty', label: 'Контакты' },
   ];
   const seen = new Map<string, string>();
   for (const l of links) {

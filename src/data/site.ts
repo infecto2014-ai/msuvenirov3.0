@@ -105,8 +105,7 @@ export const mainNav: NavLink[] = [
   { href: '/price', label: 'Цены' },
   { href: '/korporativnym-klientam', label: 'Для бизнеса' },
   { href: '/portfolio', label: 'Портфолио' },
-  { href: '/o-nas', label: 'О мастерской' },
-  { href: '/kontakty', label: 'Контакты' },
+  { href: '/o-nas', label: 'О нас' },
 ];
 
 export const infoNav: NavLink[] = [
