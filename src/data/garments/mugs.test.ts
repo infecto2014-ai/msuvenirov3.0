@@ -65,8 +65,8 @@ test('FAQ передаёт актуальные цены и сохраняет �
   expect(mugs.careSub).toBe('Как мыть, чтобы рисунок оставался ярким');
   expect(mugs.images).toMatchObject({ hero: 'mug-hero', heroMobile: 'mug-hero-mobile' });
   expect(JSON.stringify(mugs)).not.toMatch(/УФ|своя кружка|свою кружку|portfolio-14/iu);
-  expect(mugs.images.label).toBe('кружки и пресс');
-  expect(mugs.images.alt).toBe('Белые кружки разных размеров и пресс для печати на кружках');
+  expect(mugs.images.label).not.toMatch(/пресс/);
+  expect(mugs.images.alt).not.toMatch(/пресс/);
 });
 
 test('работы — настоящие кружки с тегом kruzhki, исключая portfolio-14', () => {

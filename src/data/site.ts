@@ -93,7 +93,8 @@ export const serviceNav: { group: string; links: NavLink[] }[] = [
     group: 'Полиграфия',
     links: [
       { href: '/vizitki', label: 'Визитки' },
-      { href: '/poligrafiya', label: 'Листовки и блокноты' },
+      { href: '/poligrafiya', label: 'Листовки' },
+      { href: '/bloknoty', label: 'Блокноты' },
       { href: '/kalendari', label: 'Календари' },
       { href: '/shirokoformatnaya-pechat', label: 'Широкоформатная печать' },
     ],
@@ -106,6 +107,7 @@ export const mainNav: NavLink[] = [
   { href: '/korporativnym-klientam', label: 'Для бизнеса' },
   { href: '/portfolio', label: 'Портфолио' },
   { href: '/o-nas', label: 'О нас' },
+  { href: '/otzyvy', label: 'Отзывы' },
 ];
 
 export const infoNav: NavLink[] = [

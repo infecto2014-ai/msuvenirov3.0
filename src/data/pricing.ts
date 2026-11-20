@@ -1151,6 +1151,61 @@ const stickers: Category = {
 
 // ---------------------------------------------------------------- print: cards, flyers, notebooks, office
 
+/** Notebook rules confirmed by the owner, 20.11.2026. Base price includes the front cover. */
+export const NOTEBOOK_SHEETS = 30;
+export const NOTEBOOK_BOTH_COVERS_MARKUP = 0.15;
+export const NOTEBOOK_PRICES = { a5: 200, a6: 170 } as const;
+
+function notebookProduct(): Product {
+  const variants = [{ id: 'a5', label: 'А5' }, { id: 'a6', label: 'А6' }] as const;
+  const notes = [
+    `${NOTEBOOK_SHEETS} чистых внутренних листов.`,
+    'Печать внутри — индивидуально, уточняйте при заказе.',
+    'Тираж больше 30 штук — индивидуальный расчёт.',
+  ];
+  const formatOf = (sel: Selection) => variants.find((v) => v.id === one(sel, 'variant', 'a5')) ?? variants[0];
+  const bothCovers = (sel: Selection) => one(sel, 'cover', 'front') === 'both';
+  const unitAt = (sel: Selection) => round(NOTEBOOK_PRICES[formatOf(sel).id] * (bothCovers(sel) ? 1 + NOTEBOOK_BOTH_COVERS_MARKUP : 1));
+  return {
+    id: 'notebook',
+    name: 'Блокнот с вашей обложкой',
+    short: `${NOTEBOOK_SHEETS} чистых листов, печать передней обложки`,
+    image: '/img/showcase/stationery.webp',
+    qty: { min: 10, max: 30, default: 10, individualAbove: true },
+    options: [
+      { id: 'variant', label: 'Формат', type: 'one', choices: [...variants], default: 'a5' },
+      {
+        id: 'cover', label: 'Печать обложки', type: 'one', default: 'front', choices: [
+          { id: 'front', label: 'Передняя обложка', hint: 'включена в цену' },
+          { id: 'both', label: 'Передняя и задняя обложка', hint: '+15% к цене' },
+        ],
+      },
+    ],
+    fromPrice: Math.min(...Object.values(NOTEBOOK_PRICES)),
+    table: {
+      columns: ['10–30 шт'],
+      rows: variants.flatMap((variant) => [
+        { label: `${variant.label}, передняя обложка`, cells: [rub(NOTEBOOK_PRICES[variant.id])] },
+        { label: `${variant.label}, передняя и задняя обложка`, cells: [rub(round(NOTEBOOK_PRICES[variant.id] * (1 + NOTEBOOK_BOTH_COVERS_MARKUP)))] },
+      ]),
+      note: `${NOTEBOOK_SHEETS} чистых листов. Обе обложки — +15%. Печать внутри и тиражи больше 30 шт — индивидуально.`,
+    },
+    ladder: (sel) => [{ from: 10, price: unitAt(sel) }],
+    quote: (sel) => {
+      if (!Number.isInteger(sel.qty) || sel.qty < 10 || sel.qty > 30) return {
+        unit: 0, total: 0, breakdown: [], notes,
+        error: sel.qty > 30 ? 'Тираж больше 30 штук — индивидуальный расчёт.' : 'Минимальный тираж — 10 штук. Укажите целое количество.',
+      };
+      const variant = formatOf(sel);
+      const base = NOTEBOOK_PRICES[variant.id];
+      const unit = unitAt(sel);
+      const breakdown: Quote['breakdown'] = [{ label: `Блокнот ${variant.label}, передняя обложка`, amount: base, per: 'шт' }];
+      if (bothCovers(sel)) breakdown.push({ label: 'Печать передней и задней обложки (+15%)', amount: round(unit - base), per: 'шт' });
+      return { unit, total: round(unit * sel.qty), breakdown, notes };
+    },
+  };
+}
+
 const cards: Category = {
   id: 'cards',
   name: 'Визитки',
@@ -1259,18 +1314,7 @@ const flyers: Category = {
         };
       },
     },
-    tiered({
-      id: 'notebook',
-      name: 'Блокнот с вашей обложкой',
-      short: '40 листов',
-      image: '/img/showcase/stationery.webp',
-      qty: { min: 20, max: 1000, default: 20 },
-      variantLabel: 'Формат',
-      variants: [
-        { id: 'a5', label: 'А5', tiers: tiers([20, 50, 100, 200, 300], [150, 110, 100, 95, 80]) },
-        { id: 'a6', label: 'А6', tiers: tiers([20, 50, 100, 200, 300], [85, 75, 70, 65, 60]) },
-      ],
-    }),
+    notebookProduct(),
     tiered({
       id: 'office',
       name: 'Печать документов',

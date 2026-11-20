@@ -1,13 +1,11 @@
 ---
-// «Наши работы»: heading with the peeking cat over the strip, a strip of real work photos that scrolls by itself
+// «Наши работы»: heading and a strip of real work photos that scrolls by itself
 // (finger, wheel, keyboard) and, with JS, round arrow buttons at the sides and page dots (works-slider.ts).
 import SectionHead from '@/components/ui/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import Icon, { type IconName } from '@/components/ui/Icon.astro';
-import Pic from '@/components/ui/Pic.astro';
 import { homeWorks, workLabel } from '@/data/home';
 import type { PortfolioItem } from '@/data/types';
-import { resolvePic } from '@/lib/pic';
 
 const labelIcon: Record<string, IconName> = {
   Футболки: 'shirt',
@@ -35,8 +33,6 @@ interface Props {
   lead?: string;
 }
 const { works = homeWorks, eyebrow = 'Портфолио', title = 'Наши', accent = 'работы', lead = 'Настоящие заказы наших клиентов' } = Astro.props;
-// the owner's cat picture has not arrived yet: then a compact placeholder that never covers the cards
-const catReady = 'src' in resolvePic('hero');
 ---
 
 <section class="section works" aria-labelledby="works-title" data-works>
@@ -44,9 +40,6 @@ const catReady = 'src' in resolvePic('hero');
     <div class="wk-head">
       <SectionHead id="works-title" eyebrow={eyebrow} title={title} accent={accent} lead={lead}>
         <div slot="action" class="wk-action">
-          <div class:list={['wk-cat', { 'wk-cat-ph': !catReady }]}>
-            <Pic name="hero" alt="" w={1448} h={1086} fit="contain" label="изделия и оборудование для печати" />
-          </div>
           <Button href="/portfolio" variant="ghost" arrow>Смотреть всё портфолио</Button>
         </div>
       </SectionHead>
@@ -97,36 +90,6 @@ const catReady = 'src' in resolvePic('hero');
     position: relative;
     z-index: 1;
   }
-  /* the cat sits between the heading and the button, above the cards with air between, tilted 10deg */
-  /* Card tops are the heading's margin (--s-6) plus the strip's top padding (--s-2) below the heading block
-     (the action box ends level with the heading block). The cat is anchored to the button's own box,
-     so it stands just left of «Смотреть всё портфолио» whatever the button's width. */
-  .wk-action {
-    position: relative;
-  }
-  .wk-cat {
-    --cw: clamp(210px, 24vw, 340px);
-    position: absolute;
-    z-index: 2;
-    right: calc(100% + var(--s-4));
-    /* lifted off the cards: the picture's blank bottom strip, the card offset, the tilt (the low corner drops
-       about cw * 0.087) and 24px of air between the hoodie edge and the cards */
-    bottom: calc(-1 * (var(--s-6) + var(--s-2)) - var(--cw) * 58 / 1399 + var(--cw) * 0.09 + 28px);
-    width: var(--cw);
-    transform: none;
-    transform-origin: 50% 100%;
-    pointer-events: none;
-  }
-  .wk-cat-ph {
-    bottom: 0;
-    width: clamp(150px, 15vw, 210px);
-    opacity: 0.7;
-  }
-  .wk-cat-ph :global(.pic-ph) {
-    border-radius: var(--radius-card) var(--radius-card) 0 0;
-    border-bottom: 0;
-  }
-
   .wk-stage {
     position: relative;
   }
@@ -276,18 +239,6 @@ const catReady = 'src' in resolvePic('hero');
     background: var(--blue-hover);
   }
 
-  /* reduced motion: the cat is never hidden or moved (the script does not start either) */
-  @media (prefers-reduced-motion: reduce) {
-    .wk-cat[data-cat] {
-      opacity: 1;
-      animation: none;
-    }
-    .wk-cat[data-cat] :global(img) {
-      transform: none;
-      animation: none;
-    }
-  }
-
   @media (max-width: 1320px) {
     .wk-prev {
       left: -12px;
@@ -302,9 +253,6 @@ const catReady = 'src' in resolvePic('hero');
     }
   }
   @media (max-width: 900px) {
-    .wk-cat {
-      display: none;
-    }
     .wk-track {
       --per: 2;
     }

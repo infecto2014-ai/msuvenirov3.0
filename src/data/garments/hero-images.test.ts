@@ -13,8 +13,9 @@ import { mugs } from './mugs';
 import { badges } from './badges';
 import { stickers } from './stickers';
 import { calendars } from './calendars';
+import { notebooks } from './notebooks';
 
-const pages = { tshirt, hoodie, shopper, cap, workwear, sport, sublimation, transfers, mugs, badges, stickers, calendars };
+const pages = { tshirt, hoodie, shopper, cap, workwear, sport, sublimation, transfers, mugs, badges, stickers, calendars, notebooks };
 const file = (name: string) => {
   const pic = resolvePic(name);
   if (!('src' in pic)) throw new Error(`Missing hero image: ${name}`);

@@ -1,10 +1,8 @@
 ---
 import GarmentPage from '@/layouts/GarmentPage.astro';
-import CalendarOverview from '@/components/calendar/CalendarOverview.astro';
 import CalendarModels from '@/components/calendar/CalendarModels.astro';
 import { calendars } from '@/data/garments/calendars';
 ---
 <GarmentPage page={{ ...calendars, specs: undefined }} compact>
-  <CalendarOverview slot="after-hero" />
   <CalendarModels slot="before-details" />
 </GarmentPage>

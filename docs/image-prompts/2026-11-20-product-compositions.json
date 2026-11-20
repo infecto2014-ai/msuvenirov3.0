@@ -56,13 +56,6 @@
     "sha256": "b4e01777602f94b12e55edb9b064dfcd70485b090440e3a65428c2cf78d6a007"
   },
   {
-    "name": "mug-hero",
-    "width": 1536,
-    "height": 1024,
-    "bytes": 1437192,
-    "sha256": "48813df1239113f6496109b6102b3750ba0eb2171e24ce6a477f5b0a8330f632"
-  },
-  {
     "name": "reviews-hero",
     "width": 1448,
     "height": 1086,
@@ -110,5 +103,19 @@
     "height": 1086,
     "bytes": 2138227,
     "sha256": "5882cefebcdd3930d5e354e5f345c02c5b13136d63278f52c52ff09a6948158f"
+  },
+  {
+    "name": "mug-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1638672,
+    "sha256": "d5742d89f67693cd47c3dd10b74d36472e8e99b29413fb27030ac93223b3b886"
+  },
+  {
+    "name": "notebooks-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1685458,
+    "sha256": "ca3dea963c04c94ccfd4cb0301b36c99b6b4195500cf3a5170a7bafe5bf746c8"
   }
 ]
