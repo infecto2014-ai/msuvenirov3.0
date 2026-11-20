@@ -46,6 +46,6 @@ test('страница использует данные и схему 2027 го
   expect(calendarAnatomy).toHaveLength(5);
   expect(calendars.description).toContain('2027 год');
   expect(calendars.extra?.find((section) => section.id === 'layout')?.cards[0].points?.join(' ')).toContain('2027 год');
-  expect(calendars.images.heroSize).toEqual({ w: 898, h: 1300 });
-  expect(calendars.images.heroMobileSize).toEqual({ w: 622, h: 900 });
+  expect(calendars.images.hero).toBe('calendar-hero');
+  expect(calendars.images.heroMobile).toBe('calendar-hero-mobile');
 });

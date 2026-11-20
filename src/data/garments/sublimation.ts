@@ -274,10 +274,10 @@ export const sublimation: GarmentPage = {
   },
   images: {
     hero: 'sub-hero',
-    heroSize: { w: 1254, h: 1249 },
+    heroSize: { w: 1536, h: 1024 },
     heroMobile: 'sub-hero-mobile',
-    heroMobileSize: { w: 900, h: 896 },
-    alt: 'Рыжий кот у термопресса с яркой футболкой',
-    label: 'кот у термопресса с яркой синтетической футболкой',
+    heroMobileSize: { w: 1536, h: 1024 },
+    alt: 'Сублимационный принтер, футболка, кружка и материалы для печати',
+    label: 'изделия и оборудование для сублимации',
   },
 };

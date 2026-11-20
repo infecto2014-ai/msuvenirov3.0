@@ -83,7 +83,7 @@ export const calendars: GarmentPage = {
     { icon: 'info', text: 'Карманные календари: цена указана за весь тираж.' },
   ] },
   heads: { details: 'о календарях', worksLead: 'Календари с печатью в нашей мастерской' },
-  images: { hero: 'calendar-hero', heroSize: { w: 898, h: 1300 }, heroMobile: 'calendar-hero-mobile', heroMobileSize: { w: 622, h: 900 }, alt: 'Календарь на 2027 год', label: 'кот с календарём на 2027 год' },
+  images: { hero: 'calendar-hero', heroSize: { w: 1536, h: 1024 }, heroMobile: 'calendar-hero-mobile', heroMobileSize: { w: 1536, h: 1024 }, alt: 'Настольный, настенный и карманные календари с геометрическим оформлением', label: 'набор календарей' },
 };
 
 // Expose quote helper locally for tests without duplicating pricing rules.

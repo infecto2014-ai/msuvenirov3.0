@@ -1,0 +1,114 @@
+[
+  {
+    "name": "about-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 1866917,
+    "sha256": "29dab696fff73359335a81a44480bd776891465fcf30b8f6e641f287485acd40"
+  },
+  {
+    "name": "badge-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1914892,
+    "sha256": "2269fe4df7fb6d2aec62558d0a8f6e6da0317b5269f23139adb42b9a35fb3975"
+  },
+  {
+    "name": "calendar-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1898178,
+    "sha256": "228c962708d1d8c149d694880ca1c06afc529c234770c14c748381a0a779127d"
+  },
+  {
+    "name": "cap-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 1753145,
+    "sha256": "bb639f655fd7e1fbd76f9be2e7a113163a061c53ea895f229734bad2a4f03528"
+  },
+  {
+    "name": "corporate-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 2376571,
+    "sha256": "70541cb1edb06884bc04efca4de82bfdd854871958252767c02293dba6545c99"
+  },
+  {
+    "name": "dtf-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1624050,
+    "sha256": "cf76882f3f19c177cf72837702b8a2dcdfe28de802c2be1ed4857f418d7a28c4"
+  },
+  {
+    "name": "hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 1721675,
+    "sha256": "5b3386377f5f6790235ca9604906caf6e6a61e688f1f9fa5f4f7c4c2ff0e12da"
+  },
+  {
+    "name": "hoodie-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1959107,
+    "sha256": "b4e01777602f94b12e55edb9b064dfcd70485b090440e3a65428c2cf78d6a007"
+  },
+  {
+    "name": "mug-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1437192,
+    "sha256": "48813df1239113f6496109b6102b3750ba0eb2171e24ce6a477f5b0a8330f632"
+  },
+  {
+    "name": "reviews-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 1524377,
+    "sha256": "1bc1e94a847f3d5e7de7a8f360bee94b33f768e528aa698be9266fe233232a4c"
+  },
+  {
+    "name": "shopper-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 2404770,
+    "sha256": "2016c892f5a0a29e12b79cc559379094d83b29e279a7673eb7ec446de72fae9e"
+  },
+  {
+    "name": "sport-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 2033906,
+    "sha256": "9c4609d8bf5a2691a1b3da8c27d36620a74936a6c65cc7ef8114a10151b52ea0"
+  },
+  {
+    "name": "sticker-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1909130,
+    "sha256": "9559c9c52edaf6d14a82fc280bfce31e7f1a92b2c05b30b686fe543ff6f48147"
+  },
+  {
+    "name": "sub-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1726585,
+    "sha256": "03989fcbeeafc0d2842fe9764d19224c1d01f9cde262ffe4e733a94b73836272"
+  },
+  {
+    "name": "tee-hero",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 1985322,
+    "sha256": "915de06e348049ce176d707c45bb83d1cd3064d4f1b801517ec4265f9783630f"
+  },
+  {
+    "name": "workwear-hero",
+    "width": 1448,
+    "height": 1086,
+    "bytes": 2138227,
+    "sha256": "5882cefebcdd3930d5e354e5f345c02c5b13136d63278f52c52ff09a6948158f"
+  }
+]

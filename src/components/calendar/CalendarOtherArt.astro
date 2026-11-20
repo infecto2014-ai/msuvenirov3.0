@@ -8,13 +8,13 @@ const months = Array.from({length: 12}, (_, i) => monthArt({x: 59+(i%4)*50, y: 1
 const january = monthArt({x: 62,y:145,w:196,h:88},year,0,'c',{compact:true});
 const label = {poster:'Настенный плакат',flip:'Перекидной календарь',desk:'Настольный домик',pocket:'Карманный календарь'}[type];
 ---
-<svg viewBox="0 0 320 260" role="img" aria-label={`${label} с котом и надписью 2027`}>
+<svg viewBox="0 0 320 260" role="img" aria-label={`${label} с геометрическим оформлением и надписью 2027`}>
   <title>{label} — 2027</title>
   {type === 'desk' && <path d="M34 232L75 45H245L286 232Z" fill="#cedbf5" stroke="#b6c7e5" />}
   <rect x={pocket?28:50} y={pocket?52:24} width={pocket?264:220} height={pocket?164:218} rx={pocket?12:4} fill="white" stroke="#c5d2e7" />
   <svg x={pocket?32:54} y={pocket?56:28} width={pocket?256:212} height={pocket?156:type==='flip'?108:84} viewBox="0 0 320 200">
     <rect width="320" height="200" fill="#EAF2FF" />
-    <image href="/img/v3/calendar-print.webp" width="320" height="200" preserveAspectRatio="xMidYMid slice" />
+    <image href="/img/v3/calendar-print.png" width="320" height="200" preserveAspectRatio="xMidYMid slice" />
     <text x="16" y="54" font-size="38" font-weight="800" fill="#0B1A3F">2027</text>
   </svg>
   {(type==='flip'? [january] : pocket? [] : months).map(m => <g>

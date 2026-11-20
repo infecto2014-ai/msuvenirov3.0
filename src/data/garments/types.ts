@@ -121,9 +121,9 @@ export interface GarmentPage {
   heads: { details: string; worksLead: string };
   /**
    * picture names for Pic (public/img/v3), the alt text, what the placeholder says until the picture arrives
-   * («кот с футболкой»), `extra.measure` — the measuring cat next to the size charts
+   * («футболки и термопресс»), `extra.measure` — a product illustration next to the size charts
    */
-  /** first-screen cat (shared HeroArt): tight cut-outs in public/img/v3 with their pixel sizes */
+  /** first-screen composition (shared HeroArt): tight cut-outs in public/img/v3 with their pixel sizes */
   images: {
     hero: string;
     heroSize: { w: number; h: number };

@@ -255,10 +255,10 @@ export const sport: GarmentPage = {
   },
   images: {
     hero: 'sport-hero',
-    heroSize: { w: 910, h: 1398 },
+    heroSize: { w: 1448, h: 1086 },
     heroMobile: 'sport-hero-mobile',
-    heroMobileSize: { w: 586, h: 900 },
-    alt: 'Рыжий кот в футбольной форме с мячом',
-    label: 'кот в футбольной форме',
+    heroMobileSize: { w: 1448, h: 1086 },
+    alt: 'Белая спортивная футболка, шорты и оборудование для печати',
+    label: 'спортивная форма и термопресс',
   },
 };

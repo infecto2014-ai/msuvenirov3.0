@@ -168,10 +168,10 @@ export const transfers: GarmentPage = {
   },
   images: {
     hero: 'dtf-hero',
-    heroSize: { w: 1239, h: 1024 },
+    heroSize: { w: 1536, h: 1024 },
     heroMobile: 'dtf-hero-mobile',
-    heroMobileSize: { w: 900, h: 744 },
-    alt: 'Рыжий кот держит лист с яркими принтами',
-    label: 'кот держит лист DTF-плёнки с принтами',
+    heroMobileSize: { w: 1536, h: 1024 },
+    alt: 'DTF-принтер, рулон плёнки и листы с геометрическими трансферами',
+    label: 'DTF-принтер и трансферные листы',
   },
 };

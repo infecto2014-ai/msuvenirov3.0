@@ -179,3 +179,6 @@
 | corporate-hero-mobile.webp | 900 × 749 | Версия для телефона |
 
 Встроенный image_gen по about-hero и mug-hero; промпт и PNG: `docs/image-prompts/2026-11-18-corporate-cat.md`. Коробка — иллюстрация, отдельно от подтверждённых кейсов (corporate-polo, sport-jersey, portfolio-29, branded-caps). Настоящие логотипы Clients переиспользованы без генерации.
+
+## Обновление 20.11.2026: предметные PNG
+Новые `hero`, `tee/hoodie/shopper/cap/workwear/sport/sub/dtf/mug/badge/sticker/calendar/about/corporate/reviews-hero` и их `-mobile` варианты — PNG с прозрачностью. Они заменяют котов и имеют приоритет над прежними WebP. `calendar-print.png` — новое абстрактное оформление календарей. Мобильные файлы — полные копии композиций, вписываются без обрезания. Точные размеры читаются из заголовка PNG, резервирование места использует фактические размеры. Описание генераций: `docs/image-prompts/2026-11-20-product-compositions.md`. Старые таблицы размеров WebP выше описывают прежний набор.

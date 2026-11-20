@@ -229,10 +229,10 @@ export const workwear: GarmentPage = {
   },
   images: {
     hero: 'workwear-hero',
-    heroSize: { w: 891, h: 1389 },
+    heroSize: { w: 1448, h: 1086 },
     heroMobile: 'workwear-hero-mobile',
-    heroMobileSize: { w: 577, h: 900 },
-    alt: 'Рыжий кот в рабочей куртке и сигнальном жилете',
-    label: 'кот в спецодежде',
+    heroMobileSize: { w: 1448, h: 1086 },
+    alt: 'Рабочая куртка, сигнальный жилет, каска и термопресс',
+    label: 'спецодежда и оборудование для печати',
   },
 };

@@ -98,5 +98,5 @@ export const mugs: GarmentPage = {
     { icon: 'info', text: 'Больше 300 шт — индивидуально.' },
   ] },
   heads: { details: 'о кружках', worksLead: 'Настоящие кружки наших клиентов' },
-  images: { hero: 'mug-hero', heroSize: { w: 932, h: 1294 }, heroMobile: 'mug-hero-mobile', heroMobileSize: { w: 648, h: 900 }, alt: 'Рыжий кот с кружкой', label: 'кот с кружкой' },
+  images: { hero: 'mug-hero', heroSize: { w: 1536, h: 1024 }, heroMobile: 'mug-hero-mobile', heroMobileSize: { w: 1536, h: 1024 }, alt: 'Белые кружки разных размеров и пресс для печати на кружках', label: 'кружки и пресс' },
 };

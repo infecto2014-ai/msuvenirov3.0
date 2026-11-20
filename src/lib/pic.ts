@@ -3,7 +3,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const EXTS = ['webp', 'png', 'jpg'] as const;
+const EXTS = ['png', 'webp', 'jpg'] as const;
 
 export function resolvePic(
   name: string,

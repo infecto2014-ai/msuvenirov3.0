@@ -68,7 +68,7 @@ test('таблица цен «Цена печати на худи»; принт�
   expect(product.options!.filter((g) => /^print\d$/.test(g.id))).toHaveLength(5);
 });
 
-test('картинки котов и схема принтов', () => {
+test('изображения изделий и схема принтов', () => {
   expect(hoodie.images.hero).toBe('hoodie-hero');
   expect(hoodie.images.heroMobile).toBe('hoodie-hero-mobile');
   expect(hoodie.prints!.shape).toBe('hoodie');

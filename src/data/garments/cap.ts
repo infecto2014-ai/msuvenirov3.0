@@ -149,10 +149,10 @@ export const cap: GarmentPage = {
   },
   images: {
     hero: 'cap-hero',
-    heroSize: { w: 1175, h: 1260 },
+    heroSize: { w: 1448, h: 1086 },
     heroMobile: 'cap-hero-mobile',
-    heroMobileSize: { w: 839, h: 900 },
-    alt: 'Рыжий кот в тёмно-синем худи и бейсболке',
-    label: 'кот в бейсболке',
+    heroMobileSize: { w: 1448, h: 1086 },
+    alt: 'Белые бейсболки и пресс для печати на кепках',
+    label: 'бейсболки и пресс',
   },
 };

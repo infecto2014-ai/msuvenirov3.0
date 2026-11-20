@@ -53,3 +53,10 @@ test('imageSize: WebP с заголовками VP8X, VP8 и VP8L', () => {
   expect(imageSize(join(dir, 'n.webp'))).toEqual({ w: 1400, h: 1000 });
 });
 
+test('resolvePic: PNG заменяет прежний WebP с тем же именем', () => {
+  const pub = mkdtempSync(join(tmpdir(), 'pic-png-'));
+  mkdirSync(join(pub, 'img/v3'), { recursive: true });
+  writeFileSync(join(pub, 'img/v3/hero.webp'), 'previous image');
+  writeFileSync(join(pub, 'img/v3/hero.png'), 'new image');
+  expect(resolvePic('hero', undefined, pub)).toEqual({ src: '/img/v3/hero.png' });
+});

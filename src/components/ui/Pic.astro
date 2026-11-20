@@ -1,7 +1,8 @@
 ---
 // A picture slot: the owner's photo from public/img/v3/<name>.(webp|png|jpg), else `fallback`,
 // else a labelled placeholder of the right proportions (photos are not ready yet).
-import { resolvePic } from '@/lib/pic';
+import { join } from 'node:path';
+import { imageSize, resolvePic } from '@/lib/pic';
 
 interface Props {
   name: string;
@@ -23,6 +24,9 @@ interface Props {
 }
 const { name, alt, w, h, fit = 'cover', label, fallback, loading = 'lazy', fetchpriority, hiddenMedia, class: cls } = Astro.props;
 const pic = resolvePic(name, fallback);
+const actualSize = 'src' in pic ? imageSize(join(process.cwd(), 'public', pic.src)) : null;
+const width = actualSize?.w ?? w;
+const height = actualSize?.h ?? h;
 // 1×1 transparent GIF: the source chosen under `hiddenMedia`, so nothing is fetched there
 const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
@@ -35,12 +39,12 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
         class:list={['pic', cls]}
         src={pic.src}
         alt={alt}
-        width={w}
-        height={h}
+        width={width}
+        height={height}
         loading={loading}
         fetchpriority={fetchpriority}
         decoding="async"
-        style={`aspect-ratio: ${w} / ${h}; object-fit: ${fit};`}
+        style={`aspect-ratio: ${width} / ${height}; object-fit: ${fit};`}
       />
     </picture>
   ) : 'src' in pic ? (
@@ -48,15 +52,15 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
       class:list={['pic', cls]}
       src={pic.src}
       alt={alt}
-      width={w}
-      height={h}
+      width={width}
+      height={height}
       loading={loading}
         fetchpriority={fetchpriority}
       decoding="async"
-      style={`aspect-ratio: ${w} / ${h}; object-fit: ${fit};`}
+      style={`aspect-ratio: ${width} / ${height}; object-fit: ${fit};`}
     />
   ) : (
-    <div class:list={['pic', 'pic-ph', cls]} style={`aspect-ratio: ${w} / ${h};`} role="img" aria-label={alt}>
+    <div class:list={['pic', 'pic-ph', cls]} style={`aspect-ratio: ${width} / ${height};`} role="img" aria-label={alt}>
       <span class="pic-ph-label">{label ?? name}</span>
       <span class="pic-ph-size">
         {w}×{h}

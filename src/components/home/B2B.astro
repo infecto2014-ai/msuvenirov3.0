@@ -16,7 +16,7 @@ import Pic from '@/components/ui/Pic.astro';
       </span>
       <div class="b2b-cat">
         <span class="b2b-cat-in">
-          <Pic name="cat-like" alt="" w={1000} h={1000} fit="contain" label="cat-like" />
+          <Pic name="corporate-hero" alt="" w={1448} h={1086} fit="contain" label="корпоративный набор" />
         </span>
       </div>
       <div class="b2b-text">
@@ -69,17 +69,12 @@ import Pic from '@/components/ui/Pic.astro';
      (946 of 1000 px), so the hoodie sits flush on the edge and only the transparent margin is dropped. */
   .b2b-cat {
     position: relative;
-    align-self: stretch;
+    align-self: center;
     min-height: 1px;
   }
   .b2b-cat-in {
-    position: absolute;
-    left: 0;
-    bottom: calc(-1 * var(--pb));
+    display: block;
     width: 100%;
-    aspect-ratio: 1000 / 946;
-    overflow: hidden;
-    border-bottom-left-radius: calc(var(--radius-panel) - var(--s-6));
   }
   .b2b-cat-in :global(.pic) {
     width: 100%;
@@ -160,7 +155,7 @@ import Pic from '@/components/ui/Pic.astro';
       grid-row: auto;
       order: 3;
       width: 180px;
-      height: calc(180px * 946 / 1000);
+      height: auto;
       margin-top: var(--s-2);
     }
     .b2b-cat-in {

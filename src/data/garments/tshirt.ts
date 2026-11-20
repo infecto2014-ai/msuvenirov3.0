@@ -157,11 +157,11 @@ export const tshirt: GarmentPage = {
   },
   images: {
     hero: 'tee-hero',
-    heroSize: { w: 1160, h: 1252 },
+    heroSize: { w: 1536, h: 1024 },
     heroMobile: 'tee-hero-mobile',
-    heroMobileSize: { w: 834, h: 900 },
-    alt: 'Рыжий кот в тёмно-синем худи держит белую футболку',
-    label: 'кот с футболкой',
-    extra: { measure: 'tee-cat-measure' },
+    heroMobileSize: { w: 1536, h: 1024 },
+    alt: 'Белая футболка на термопрессе и сложенные футболки',
+    label: 'футболки и термопресс',
+    extra: { measure: 'tee-hero' },
   },
 };
