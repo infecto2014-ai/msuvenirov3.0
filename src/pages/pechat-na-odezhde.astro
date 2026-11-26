@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
 import { serviceNav, site } from '@/data/site';
 import { breadcrumbs } from '@/lib/schema';
 
@@ -8,6 +9,14 @@ const path = '/pechat-na-odezhde';
 const section = serviceNav.flatMap(group => group.links).find(link => link.href === path)!;
 const trail = [{ name: 'Главная', href: '/' }, { name: section.label, href: path }];
 const description = 'Печать на одежде в Калининграде. Выберите футболку, худи, шоппер, бейсболку, рабочую или спортивную форму и рассчитайте стоимость нанесения.';
+const previews: Record<string, { text: string; sideWidth?: number }> = {
+  '/pechat-na-futbolkah': { text: 'Рисунок, надпись или логотип на взрослой, детской или вашей футболке. В разделе — варианты печати, размеры и калькулятор стоимости.', sideWidth: 1.2 },
+  '/pechat-na-hudi': { text: 'Принт на груди, спине или рукаве худи. Можно выбрать наше худи или принести своё и рассчитать стоимость печати.', sideWidth: 1.2 },
+  '/pechat-na-shopperah': { text: 'Рисунки и надписи на хлопковых шопперах и сумках для сублимации. В разделе можно выбрать изделие и рассчитать печать с одной или двух сторон.' },
+  '/pechat-na-kepkah': { text: 'Имя, рисунок или логотип на бейсболке. Выберите нашу или свою кепку, цвет и количество принтов в калькуляторе.', sideWidth: 1.3 },
+  '/pechat-na-specodezhde': { text: 'Логотипы и надписи на рабочей одежде и униформе. Печатаем на ваших вещах или помогаем подобрать одежду для команды.', sideWidth: 1.2 },
+  '/pechat-na-sportivnoy-forme': { text: 'Фамилии, номера и эмблемы на спортивной форме. В разделе — варианты нанесения и расчёт печати на форме команды.' },
+};
 ---
 <BaseLayout title="Печать на одежде в Калининграде — Мастерская сувениров" {description} {path} schema={[breadcrumbs(trail)]}>
   <section class="showroom" aria-labelledby="rail-title">
@@ -20,7 +29,7 @@ const description = 'Печать на одежде в Калининграде.
         <ul class="pieces" id="clothing-pieces">
           {section.children!.map(({ href, label }) => (
             <li>
-              <a href={href} class="piece">
+              <a href={href} class="piece" data-description={previews[href].text} style={`--side-width: ${previews[href].sideWidth ?? 1}`}>
                 <div class="hanger">
                   <img class="front" src={`/img/rail${href}.webp`} width="400" height="540" alt="" draggable="false" />
                   <img class="side" src={`/img/rail${href}-side.webp`} width="400" height="540" alt="" draggable="false" />
@@ -43,6 +52,12 @@ const description = 'Печать на одежде в Калининграде.
       </article>
     </div>
   </section>
+  <dialog id="clothing-dialog" class="clothing-dialog" aria-labelledby="clothing-dialog-title" aria-describedby="clothing-dialog-description">
+    <button class="dialog-close" type="button" aria-label="Закрыть описание"><Icon name="x" size={22} /></button>
+    <h2 id="clothing-dialog-title"></h2>
+    <p id="clothing-dialog-description"></p>
+    <Button href={section.children![0].href} arrow data-clothing-link>Перейти в раздел</Button>
+  </dialog>
 </BaseLayout>
 <script>
   import { initClothingRail } from '@/scripts/clothing-rail';
@@ -55,13 +70,13 @@ const description = 'Печать на одежде в Калининграде.
   h1 { margin-top: var(--s-5); font-size: var(--fs-h1); line-height: 1.06; letter-spacing: -.045em; text-wrap: balance; }
   .intro { margin: var(--s-3) 0 var(--s-5); color: var(--muted); }
   .rail { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-color: var(--muted) var(--sky); }
-  .pieces { position: relative; isolation: isolate; display: flex; width: max-content; min-width: 100%; list-style: none; padding: 12px 12px 8px; margin: 0; }
+  .pieces { position: relative; isolation: isolate; display: flex; gap: 8px; width: max-content; min-width: 100%; list-style: none; padding: 12px 12px 8px; margin: 0; }
   .pieces::before { content: ''; position: absolute; z-index: -1; inset: 15px 0 auto; height: 8px; border-radius: 8px; background: linear-gradient(var(--muted), var(--line) 40%, var(--muted) 82%, var(--ink)); }
   .pieces li { flex: 1 0 0; min-width: 0; scroll-snap-align: center; }
   .piece { display: grid; justify-items: center; text-align: center; color: var(--ink); text-decoration: none; perspective: 650px; padding-bottom: 4px; }
   .hanger { position: relative; width: 100%; height: clamp(215px, 22vw, 308px); transform-origin: 50% 2%; perspective: 700px; pointer-events: none; }
   .hanger img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center top; user-select: none; }
-  .hanger .side { opacity: 0; }
+  .hanger .side { opacity: 0; scale: var(--side-width, 1) 1; }
   .piece span { padding: 10px 4px; font-weight: 650; line-height: 1.2; }
   .piece:focus-visible span { text-decoration: underline; }
   @media (hover: hover) { .piece:hover span { color: var(--blue); text-decoration: underline; } }
@@ -73,6 +88,8 @@ const description = 'Печать на одежде в Калининграде.
   .notes p { margin: var(--s-2) 0 var(--s-4); color: var(--muted); }
   @media (min-width: 901px) { .pieces { width: 100%; } }
   @media (max-width: 900px) {
+    .rail { scrollbar-width: none; }
+    .rail::-webkit-scrollbar { display: none; }
     .pieces li { width: clamp(144px, 30vw, 195px); flex: none; }
     .hanger { height: clamp(205px, 39vw, 260px); }
     .notes { grid-template-columns: 1fr; gap: var(--s-3); }
@@ -86,8 +103,16 @@ const description = 'Печать на одежде в Калининграде.
   }
   .rail[data-interactive]:not([data-open]) { overflow-x: hidden; }
   .rail[data-interactive]:not([data-open]) .unfold {
-    display: block; position: absolute; z-index: 2; inset: 0 0 0 60%;
-    width: 40%; border: 0; background: transparent; cursor: pointer;
+    display: block; position: absolute; z-index: 2; inset: 0 0 0 56%;
+    width: 44%; border: 0; background: transparent; cursor: pointer;
   }
   @media (max-width: 900px) { .rail[data-interactive] .intro { left: 0; width: 53%; } }
+  .clothing-dialog { position: fixed; inset: 0; margin: auto; width: min(440px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; padding: var(--s-6); color: var(--ink); background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-panel); box-shadow: var(--shadow-pop); }
+  .clothing-dialog::backdrop { background: rgba(11, 26, 63, .55); }
+  :global(body:has(#clothing-dialog[open])) { overflow: hidden; }
+  .dialog-close { position: absolute; right: var(--s-3); top: var(--s-3); display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; color: var(--ink); background: var(--sky-2); cursor: pointer; }
+  .dialog-close:hover { background: var(--sky); }
+  .clothing-dialog h2 { padding-right: var(--s-6); font-size: var(--fs-h3); }
+  .clothing-dialog p { margin: var(--s-3) 0 var(--s-5); color: var(--muted); }
+  @media (max-width: 560px) { .clothing-dialog { padding: var(--s-5); } }
 </style>
