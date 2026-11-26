@@ -217,6 +217,24 @@ const pieces = [
     height: 100%;
     object-fit: contain;
     object-position: center bottom;
+    filter: drop-shadow(0 12px 10px var(--merch-shadow));
+  }
+
+  .piece--mug .piece-link {
+    isolation: isolate;
+  }
+
+  .piece--mug .piece-link::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: auto auto 1% 11%;
+    width: 43%;
+    height: 11%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgb(16 16 16 / .28), transparent 70%);
+    filter: blur(5px);
+    pointer-events: none;
   }
 
   .piece--wear img {

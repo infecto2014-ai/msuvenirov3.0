@@ -3,7 +3,10 @@
     <div class="hero-art">
       <img src="/img/merch-concept/hero-man.png" width="1086" height="1448" alt="" fetchpriority="high" />
     </div>
-    <h1 class="merch-title" id="merch-title">МЕРЧ</h1>
+    <h1 class="merch-title" id="merch-title">
+      <span class="merch-shadow" aria-hidden="true">МЕРЧ</span>
+      <span class="merch-word">МЕРЧ</span>
+    </h1>
     <div class="hero-copy">
       <p>Печать на одежде и сувенирах в Калининграде</p>
       <button class="hero-order" type="button" data-order="">
@@ -12,6 +15,31 @@
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (() => {
+    const hero = document.currentScript.previousElementSibling;
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    if (!hero || motion.matches) return;
+    const word = hero.querySelector('.merch-word');
+    const image = hero.querySelector('.hero-art img');
+    const finish = () => {
+      hero.dataset.inkLift = 'done';
+      motion.removeEventListener('change', onMotionChange);
+    };
+    const onMotionChange = () => { if (motion.matches) finish(); };
+    hero.dataset.inkLift = 'waiting';
+    motion.addEventListener('change', onMotionChange);
+    word.addEventListener('animationend', finish, { once: true });
+    // Start from the print only after its shirt and the real Cyrillic typeface are ready.
+    Promise.all([
+      document.fonts.load('700 80px "Merch Oswald"', 'МЕРЧ').catch(() => {}),
+      image.decode().catch(() => {}),
+    ]).then(() => {
+      if (hero.dataset.inkLift === 'waiting' && !motion.matches) hero.dataset.inkLift = 'play';
+    });
+  })();
+</script>
 
 <style>
   .hero {
@@ -42,9 +70,13 @@
     height: 100%;
     object-fit: cover;
     object-position: center top;
+    filter: drop-shadow(12px 12px 15px rgb(16 16 16 / .12));
   }
 
   .merch-title {
+    --print-x: 12%;
+    --print-y: -44%;
+    --print-scale: .42;
     position: absolute;
     inset: auto 6% calc(9rem + 24cqi) auto;
     width: max-content;
@@ -56,6 +88,70 @@
     white-space: nowrap;
     transform: skew(-13deg, -12deg) scaleY(1.18);
     transform-origin: right center;
+  }
+
+  .merch-word {
+    position: relative;
+    display: block;
+    transform-origin: 0 60%;
+  }
+
+  .merch-shadow {
+    position: absolute;
+    inset: 0;
+    color: var(--merch-ink);
+    opacity: var(--merch-type-shadow-opacity);
+    filter: blur(7px);
+    mask-image: linear-gradient(90deg, transparent 8%, rgb(0 0 0 / .18) 32%, black 88%);
+    transform: translate(1.1%, 4%) skewY(2deg) scaleY(.97);
+    transform-origin: 0 60%;
+    pointer-events: none;
+  }
+
+  .hero[data-ink-lift='waiting'] .merch-word {
+    opacity: .9;
+    transform: translate(var(--print-x), var(--print-y)) scale(var(--print-scale));
+  }
+
+  .hero[data-ink-lift='waiting'] .merch-shadow {
+    opacity: 0;
+  }
+
+  .hero[data-ink-lift='play'] .merch-word {
+    animation: merch-unfold var(--merch-reveal-duration) var(--ease-out) both;
+  }
+
+  .hero[data-ink-lift='play'] .merch-shadow {
+    animation: merch-shadow-unfold var(--merch-reveal-duration) var(--ease-out) both;
+  }
+
+  @keyframes merch-unfold {
+    0%, 12% {
+      opacity: .9;
+      transform: translate(var(--print-x), var(--print-y)) scale(var(--print-scale));
+    }
+    100% { opacity: 1; transform: translate(0, 0) scale(1); }
+  }
+
+  @keyframes merch-shadow-unfold {
+    0%, 12% {
+      opacity: 0;
+      transform: translate(var(--print-x), var(--print-y)) scale(var(--print-scale));
+    }
+    100% { opacity: var(--merch-type-shadow-opacity); transform: translate(1.1%, 4%) skewY(2deg) scaleY(.97); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero[data-ink-lift] .merch-word {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .hero[data-ink-lift] .merch-shadow {
+      animation: none;
+      opacity: var(--merch-type-shadow-opacity);
+      transform: translate(1.1%, 4%) skewY(2deg) scaleY(.97);
+    }
   }
 
   .hero-copy {
@@ -132,6 +228,9 @@
     }
 
     .merch-title {
+      --print-x: -30%;
+      --print-y: 15%;
+      --print-scale: .38;
       inset: auto 5% calc(8.5rem + 13cqi) auto;
       font-size: clamp(12rem, 27cqi, 27rem);
       transform: perspective(4em) rotateY(-23deg) skew(-15deg, -10deg) scaleY(1.26);

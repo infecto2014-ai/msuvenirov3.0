@@ -11,6 +11,9 @@ body.merch-home {
   --merch-ink: #101010;
   --merch-lime: #c8ff00;
   --merch-muted: #60605a;
+  --merch-shadow: rgb(16 16 16 / .18);
+  --merch-type-shadow-opacity: .24;
+  --merch-reveal-duration: 1100ms;
   --ink: var(--merch-ink);
   --muted: var(--merch-muted);
   --blue: var(--merch-ink);
