@@ -18,10 +18,13 @@ const description = 'Печать на одежде в Калининграде.
         <p class="intro">Выберите вещь на вешалке, чтобы посмотреть варианты печати и рассчитать стоимость.</p>
         <button class="unfold" type="button" aria-label="Раздвинуть вешалки" aria-controls="clothing-pieces"></button>
         <ul class="pieces" id="clothing-pieces">
-          {section.children!.map(({ href, label }, index, items) => (
-            <li style={`--offset:${(items.length - index - 0.5) * 62}%; --delay:${index * 16}ms`}>
+          {section.children!.map(({ href, label }) => (
+            <li>
               <a href={href} class="piece">
-                <img src={`/img/rail${href}.webp`} width="400" height="540" alt="" decoding="async" />
+                <div class="hanger">
+                  <img class="front" src={`/img/rail${href}.webp`} width="400" height="540" alt="" draggable="false" />
+                  <img class="side" src={`/img/rail${href}-side.webp`} width="400" height="540" alt="" draggable="false" />
+                </div>
                 <span>{label}</span>
               </a>
             </li>
@@ -42,29 +45,9 @@ const description = 'Печать на одежде в Калининграде.
   </section>
 </BaseLayout>
 <script>
-  const rail = document.querySelector<HTMLElement>('.rail')!;
-  const trigger = rail.querySelector<HTMLButtonElement>('.unfold')!;
-  rail.dataset.interactive = '';
-  function openRail() { rail.dataset.open = ''; }
-  rail.addEventListener('pointerover', event => {
-    if (event.pointerType === 'mouse' && (event.target as Element).closest('.piece, .unfold')) openRail();
-  });
-  rail.addEventListener('pointerleave', event => {
-    if (event.pointerType === 'mouse' && !rail.querySelector(':focus-visible')) delete rail.dataset.open;
-  });
-  trigger.addEventListener('click', () => {
-    openRail();
-    rail.querySelector<HTMLAnchorElement>('.piece')?.focus({ preventScroll: true });
-  });
-  rail.addEventListener('focusin', event => {
-    if ((event.target as Element).closest('.piece')) openRail();
-  });
-  rail.addEventListener('focusout', event => {
-    if (!rail.contains(event.relatedTarget as Node) && !rail.matches(':hover')) delete rail.dataset.open;
-  });
-  document.addEventListener('pointerdown', event => {
-    if (!rail.contains(event.target as Node)) delete rail.dataset.open;
-  });
+  import { initClothingRail } from '@/scripts/clothing-rail';
+  const rail = document.querySelector<HTMLElement>('.rail');
+  if (rail) initClothingRail(rail);
 </script>
 <style>
   .showroom { background: var(--sky-2); padding: var(--s-5) 0 var(--s-6); }
@@ -76,15 +59,12 @@ const description = 'Печать на одежде в Калининграде.
   .pieces::before { content: ''; position: absolute; z-index: -1; inset: 15px 0 auto; height: 8px; border-radius: 8px; background: linear-gradient(var(--muted), var(--line) 40%, var(--muted) 82%, var(--ink)); }
   .pieces li { flex: 1 0 0; min-width: 0; scroll-snap-align: center; }
   .piece { display: grid; justify-items: center; text-align: center; color: var(--ink); text-decoration: none; perspective: 650px; padding-bottom: 4px; }
-  .piece img { width: 100%; height: clamp(215px, 22vw, 308px); object-fit: contain; object-position: center top; transform-origin: center top; transform: rotateY(-23deg); transition: transform .38s var(--ease-out); }
+  .hanger { position: relative; width: 100%; height: clamp(215px, 22vw, 308px); transform-origin: 50% 2%; perspective: 700px; pointer-events: none; }
+  .hanger img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center top; user-select: none; }
+  .hanger .side { opacity: 0; }
   .piece span { padding: 10px 4px; font-weight: 650; line-height: 1.2; }
-  .piece:focus-visible img { transform: none; }
-  @media (hover: hover) {
-    .piece:hover img { transform: rotateY(0) scale(1.04); }
-    .piece:hover span { color: var(--blue); text-decoration: underline; }
-    li:has(+ li .piece:hover) img { transform: translateX(-6%) rotateY(-36deg); }
-    li:has(.piece:hover) + li img { transform: translateX(6%) rotateY(36deg); }
-  }
+  .piece:focus-visible span { text-decoration: underline; }
+  @media (hover: hover) { .piece:hover span { color: var(--blue); text-decoration: underline; } }
   .guide { padding-block: var(--s-7) var(--s-8); }
   .guide h2 { font-size: var(--fs-h2); letter-spacing: -.035em; line-height: 1.13; }
   .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); margin-top: var(--s-5); }
@@ -94,37 +74,20 @@ const description = 'Печать на одежде в Калининграде.
   @media (min-width: 901px) { .pieces { width: 100%; } }
   @media (max-width: 900px) {
     .pieces li { width: clamp(144px, 30vw, 195px); flex: none; }
-    .piece img { height: clamp(205px, 39vw, 260px); }
+    .hanger { height: clamp(205px, 39vw, 260px); }
     .notes { grid-template-columns: 1fr; gap: var(--s-3); }
   }
-  @media (prefers-reduced-motion: reduce) { .piece img { transition: none; transform: none !important; } }
-  .rail { position: relative; margin-top: var(--s-5); }
+  .rail { position: relative; margin-top: var(--s-5); scroll-snap-type: none; }
   .unfold { display: none; }
   .rail[data-interactive] .intro {
     position: absolute; inset: 48% auto auto var(--s-4); width: 49%; max-width: 25ch;
     margin: 0; transform: translateY(-50%); font-size: clamp(1rem, 2.2vw, 2rem);
-    line-height: 1.25; letter-spacing: -.025em; color: var(--ink);
-    transition: opacity var(--t-fast), transform var(--t) var(--ease-out); pointer-events: none;
+    line-height: 1.25; letter-spacing: -.025em; color: var(--ink); pointer-events: none;
   }
-  .rail[data-open] .intro { opacity: 0; transform: translate(-12px,-50%); }
-  .rail[data-interactive] li { transition: transform .5s var(--ease-out) var(--delay); }
-  .rail[data-interactive]:not([data-open]) { overflow: clip; }
-  .rail[data-interactive]:not([data-open]) .pieces { width: 100%; min-width: 0; }
-  .rail[data-interactive]:not([data-open]) li { flex: 1 0 0; width: auto; transform: translateX(var(--offset)); }
-  .rail[data-interactive]:not([data-open]) img { transform: rotateY(-72deg); }
-  .rail[data-interactive] .piece span { transition: opacity var(--t); }
-  .rail[data-interactive]:not([data-open]) .piece span { opacity: 0; }
+  .rail[data-interactive]:not([data-open]) { overflow-x: hidden; }
   .rail[data-interactive]:not([data-open]) .unfold {
     display: block; position: absolute; z-index: 2; inset: 0 0 0 60%;
     width: 40%; border: 0; background: transparent; cursor: pointer;
   }
-  @media (max-width: 900px) {
-    .rail[data-interactive]:not([data-open]) .piece img { width: clamp(125px, 25vw, 180px); max-width: none; }
-    .rail[data-interactive]:not([data-open]) .piece { display: flex; flex-direction: column; align-items: center; }
-    .rail[data-interactive] .intro { left: 0; width: 54%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .rail[data-interactive] li, .rail[data-interactive] .intro, .rail[data-interactive] .piece span { transition: none; }
-    .rail[data-interactive]:not([data-open]) img { transform: rotateY(-72deg) !important; }
-  }
+  @media (max-width: 900px) { .rail[data-interactive] .intro { left: 0; width: 53%; } }
 </style>
