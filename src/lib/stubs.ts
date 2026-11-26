@@ -8,7 +8,7 @@ export interface StubPage {
 }
 
 /** menu addresses that already have a real page in the new design (src/pages/<slug>.astro) */
-export const REAL_PAGES: string[] = ['pechat-na-futbolkah', 'pechat-na-hudi', 'pechat-na-shopperah', 'pechat-na-kepkah', 'pechat-na-specodezhde', 'pechat-na-sportivnoy-forme', 'sublimacionnaya-pechat', 'dtf-pechat', 'pechat-na-kruzhkah', 'znachki', 'nakleyki', 'kalendari', 'otzyvy', 'o-nas', 'korporativnym-klientam', 'bloknoty'];
+export const REAL_PAGES: string[] = ['pechat-na-odezhde', 'pechat-na-futbolkah', 'pechat-na-hudi', 'pechat-na-shopperah', 'pechat-na-kepkah', 'pechat-na-specodezhde', 'pechat-na-sportivnoy-forme', 'sublimacionnaya-pechat', 'dtf-pechat', 'pechat-na-kruzhkah', 'znachki', 'nakleyki', 'kalendari', 'otzyvy', 'o-nas', 'korporativnym-klientam', 'bloknoty'];
 
 export function stubPages(): StubPage[] {
   const links: NavLink[] = [

@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import { serviceNav, site } from '@/data/site';
+import { breadcrumbs } from '@/lib/schema';
+
+const path = '/pechat-na-odezhde';
+const section = serviceNav.flatMap(group => group.links).find(link => link.href === path)!;
+const trail = [{ name: 'Главная', href: '/' }, { name: section.label, href: path }];
+const description = 'Печать на одежде в Калининграде. Выберите футболку, худи, шоппер, бейсболку, рабочую или спортивную форму и рассчитайте стоимость нанесения.';
+---
+<BaseLayout title="Печать на одежде в Калининграде — Мастерская сувениров" {description} {path} schema={[breadcrumbs(trail)]}>
+  <section class="showroom" aria-labelledby="rail-title">
+    <div class="wrap">
+      <a class="back" href="/">Главная</a>
+      <h1 id="rail-title">Печать на одежде в Калининграде</h1>
+      <p class="intro">Выберите вещь на вешалке, чтобы посмотреть варианты печати и рассчитать стоимость.</p>
+      <nav class="rail" aria-label="Категории одежды">
+        <ul class="pieces">
+          {section.children!.map(({ href, label }) => (
+            <li>
+              <a href={href} class="piece">
+                <img src={`/img/rail${href}.webp`} width="400" height="540" alt="" decoding="async" />
+                <span>{label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+  <section class="guide wrap" aria-labelledby="guide-title">
+    <h2 id="guide-title">Как заказать печать на одежде</h2>
+    <div class="notes">
+      <article><h3>Что можно напечатать</h3><p>На футболку или худи можно нанести рисунок, на шоппер или бейсболку — надпись. Для рабочей одежды часто выбирают логотип на груди или спине, а для спортивной формы — фамилию и номер игрока.</p></article>
+      <article><h3>От чего зависит цена</h3><p>В калькуляторе выбранной категории укажите тираж, размер принта и место нанесения. Для спецодежды и спортивной формы на ваших вещах калькулятор считает стоимость печати. Готовый расчёт можно добавить в смету.</p></article>
+      <article><h3>Как передать заказ</h3><p>Отправьте заявку из сметы или опишите задачу мастерской. Обсудить макет и посмотреть образцы можно в Калининграде по адресу {site.address.street}, {site.address.place}.</p>
+        <Button variant="ghost" data-order="Печать на одежде">Обсудить заказ</Button>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .showroom { background: var(--sky-2); padding: var(--s-5) 0 var(--s-6); }
+  .back { color: var(--muted); font-size: var(--fs-sm); }
+  h1 { margin-top: var(--s-5); font-size: var(--fs-h1); line-height: 1.06; letter-spacing: -.045em; text-wrap: balance; }
+  .intro { margin: var(--s-3) 0 var(--s-5); color: var(--muted); }
+  .rail { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-color: var(--muted) var(--sky); }
+  .pieces { position: relative; isolation: isolate; display: flex; width: max-content; min-width: 100%; list-style: none; padding: 12px 12px 8px; margin: 0; }
+  .pieces::before { content: ''; position: absolute; z-index: -1; inset: 15px 0 auto; height: 8px; border-radius: 8px; background: linear-gradient(var(--muted), var(--line) 40%, var(--muted) 82%, var(--ink)); }
+  .pieces li { flex: 1 0 0; min-width: 0; scroll-snap-align: center; }
+  .piece { display: grid; justify-items: center; text-align: center; color: var(--ink); text-decoration: none; perspective: 650px; padding-bottom: 4px; }
+  .piece img { width: 100%; height: clamp(215px, 22vw, 308px); object-fit: contain; object-position: center top; transform-origin: center top; transform: rotateY(-23deg); transition: transform .38s var(--ease-out); }
+  .piece img[src*="kepkah"] { padding-inline: 18%; }
+  .piece span { padding: 10px 4px; font-weight: 650; line-height: 1.2; }
+  .piece:focus-visible img { transform: none; }
+  @media (hover: hover) {
+    .piece:hover img { transform: rotateY(0) scale(1.04); }
+    .piece:hover span { color: var(--blue); text-decoration: underline; }
+    li:has(+ li .piece:hover) img { transform: translateX(-6%) rotateY(-36deg); }
+    li:has(.piece:hover) + li img { transform: translateX(6%) rotateY(36deg); }
+  }
+  .guide { padding-block: var(--s-7) var(--s-8); }
+  .guide h2 { font-size: var(--fs-h2); letter-spacing: -.035em; line-height: 1.13; }
+  .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); margin-top: var(--s-5); }
+  .notes article { border-top: 1px solid var(--line); padding-top: var(--s-4); }
+  .notes h3 { font-size: var(--fs-h3); }
+  .notes p { margin: var(--s-2) 0 var(--s-4); color: var(--muted); }
+  @media (min-width: 901px) { .pieces { width: 100%; } }
+  @media (max-width: 900px) {
+    .pieces li { width: clamp(144px, 30vw, 195px); flex: none; }
+    .piece img { height: clamp(205px, 39vw, 260px); }
+    .notes { grid-template-columns: 1fr; gap: var(--s-3); }
+  }
+  @media (prefers-reduced-motion: reduce) { .piece img { transition: none; transform: none !important; } }
+</style>
