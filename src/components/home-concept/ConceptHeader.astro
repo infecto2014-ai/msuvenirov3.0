@@ -1,0 +1,181 @@
+---
+import Logo from '../Logo.astro';
+import Icon from '../ui/Icon.astro';
+
+const links = [
+  { href: '#print-series', label: 'На чём печатаем' },
+  { href: '/price', label: 'Услуги и цены' },
+];
+---
+
+<header class="concept-header">
+  <a class="brand" href="/" aria-label="Мастерская сувениров — на главную">
+    <Logo size={46} />
+  </a>
+
+  <nav class="desktop-nav" aria-label="Главное меню">
+    {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+  </nav>
+  <button class="order desktop-order" type="button" data-order="">Обсудить заказ</button>
+
+  <details class="mobile-menu mnav" data-concept-menu>
+    <summary class="menu-toggle">
+      Меню
+      <Icon name="menu" size={21} class="menu-open" />
+      <Icon name="x" size={21} class="menu-close" />
+    </summary>
+    <nav class="mobile-nav" aria-label="Главное меню">
+      {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+      <button class="order" type="button" data-order="">Обсудить заказ</button>
+    </nav>
+  </details>
+</header>
+
+<script>
+  for (const menu of document.querySelectorAll<HTMLDetailsElement>('[data-concept-menu]')) {
+    const toggle = menu.querySelector('summary');
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        event.preventDefault();
+        menu.open = false;
+        toggle?.focus();
+      }
+    });
+    menu.querySelector('a[href="#print-series"]')?.addEventListener('click', () => {
+      menu.open = false;
+    });
+  }
+</script>
+
+<style>
+  .concept-header {
+    --edge: clamp(1.125rem, 4.2vw, 4.75rem);
+
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: clamp(1.65rem, 4.5vw, 4rem);
+    width: 100%;
+    max-width: 105rem;
+    margin-inline: auto;
+    padding: .75rem var(--edge);
+    color: var(--merch-ink);
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .brand {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .brand :global(.logo) {
+    color: var(--merch-ink);
+  }
+
+  .brand :global(.logo svg) {
+    height: clamp(2.25rem, 3.4vw, 3.25rem);
+  }
+
+  .brand::after,
+  .order::after {
+    position: absolute;
+    inset: auto 5% 0;
+    height: clamp(.32rem, .68vw, .65rem);
+    background: var(--merch-lime);
+    clip-path: polygon(0 95%, 17% 58%, 39% 28%, 68% 10%, 100% 12%, 93% 34%, 100% 45%, 75% 49%, 39% 63%, 12% 88%);
+    transform: rotate(-3deg);
+    content: '';
+  }
+
+  nav a,
+  .order,
+  .menu-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-decoration: none;
+  }
+
+  .desktop-nav,
+  .desktop-order {
+    display: none;
+  }
+
+  nav a:hover,
+  .order:hover {
+    text-decoration: underline;
+    text-underline-offset: .23em;
+  }
+
+  .mobile-menu {
+    margin-inline-start: auto;
+  }
+
+  .menu-toggle {
+    gap: .5rem;
+  }
+
+  .menu-toggle :global(.menu-close),
+  .mobile-menu[open] .menu-toggle :global(.menu-open) {
+    display: none;
+  }
+
+  .mobile-menu[open] .menu-toggle :global(.menu-close) {
+    display: block;
+  }
+
+  .mobile-nav {
+    position: absolute;
+    inset: 100% var(--edge) auto auto;
+    display: grid;
+    justify-items: start;
+    width: min(16rem, calc(100% - var(--edge) * 2));
+    padding: .5rem 1.2rem 1rem;
+    border: 1px solid var(--merch-ink);
+    background: var(--merch-paper);
+  }
+
+  .mobile-nav a {
+    width: 100%;
+  }
+
+  @media (min-width: 45rem) {
+    .concept-header {
+      min-height: 4.75rem;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.35rem, 3.6vw, 3.8rem);
+    }
+
+    .desktop-nav::before {
+      width: 2px;
+      height: 1.65rem;
+      margin-inline-end: -.25rem;
+      background: currentColor;
+      transform: skewX(-23deg);
+      content: '';
+    }
+
+    .desktop-order {
+      display: flex;
+      margin-inline-start: auto;
+      white-space: nowrap;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+  }
+</style>

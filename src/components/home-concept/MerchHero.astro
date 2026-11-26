@@ -1,0 +1,151 @@
+<section class="hero" aria-labelledby="merch-title">
+  <div class="hero-stage">
+    <div class="hero-art">
+      <img src="/img/merch-concept/hero-man.png" width="1086" height="1448" alt="" fetchpriority="high" />
+    </div>
+    <h1 class="merch-title" id="merch-title">МЕРЧ</h1>
+    <div class="hero-copy">
+      <p>Печать на одежде и сувенирах в Калининграде</p>
+      <button class="hero-order" type="button" data-order="">
+        Обсудить заказ<span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    --edge: clamp(1.125rem, 4.2vw, 4.75rem);
+
+    max-width: 105rem;
+    margin-inline: auto;
+    color: var(--merch-ink);
+    container-type: inline-size;
+  }
+
+  .hero-stage {
+    position: relative;
+    min-height: clamp(34rem, 114cqi + 8rem, 43rem);
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  .hero-art {
+    position: absolute;
+    inset: 0 auto 8rem -7%;
+    width: 92%;
+    overflow: clip;
+  }
+
+  .hero-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .merch-title {
+    position: absolute;
+    inset: auto 6% calc(9rem + 24cqi) auto;
+    width: max-content;
+    font-family: 'Merch Oswald', Impact, 'Arial Narrow', sans-serif;
+    font-size: clamp(6.7rem, 36.1cqi, 15.1rem);
+    font-weight: 700;
+    line-height: .92;
+    letter-spacing: -.038em;
+    white-space: nowrap;
+    transform: skew(-13deg, -12deg) scaleY(1.18);
+    transform-origin: right center;
+  }
+
+  .hero-copy {
+    position: absolute;
+    inset: auto var(--edge) 1.5rem auto;
+    display: grid;
+    gap: .85rem;
+    width: min(23rem, calc(100% - var(--edge) * 2));
+  }
+
+  .hero-copy::before {
+    position: absolute;
+    inset: auto 1% calc(100% + .4rem) 0;
+    height: clamp(2.6rem, 6.7cqi, 6.4rem);
+    background: var(--merch-lime);
+    clip-path: polygon(0 97%, 7% 78%, 19% 57%, 35% 39%, 54% 23%, 74% 10%, 99% 4%, 95% 11%, 100% 11%, 96% 18%, 98% 20%, 91% 27%, 82% 39%, 71% 48%, 80% 34%, 62% 41%, 44% 51%, 27% 65%, 12% 85%, 5% 97%, 6% 91%);
+    pointer-events: none;
+    content: '';
+  }
+
+  .hero-copy p {
+    padding-inline: .5rem;
+    font-size: clamp(1.0625rem, 2.35cqi, 1.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    text-wrap: wrap;
+  }
+
+  .hero-order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(.55rem, 1.2cqi, 1.15rem);
+    min-height: clamp(3.35rem, 6.2cqi, 5.35rem);
+    padding: .55rem 1rem;
+    border: 0;
+    border-radius: 100vmax;
+    background: var(--merch-lime);
+    color: var(--merch-ink);
+    font-size: clamp(1.25rem, 2.8cqi, 2.55rem);
+    font-weight: 650;
+    line-height: 1.15;
+  }
+
+  .hero-order span {
+    font-size: 1.3em;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .hero-order:hover {
+    background: #b9ed00;
+  }
+
+  .hero-order:focus-visible {
+    border-radius: 100vmax;
+  }
+
+  @media (min-width: 45rem) {
+    .hero-stage {
+      min-height: clamp(34rem, 55.5cqi, 53rem);
+    }
+
+    .hero-art {
+      inset: 0 auto 0 -2.5%;
+      width: 62%;
+    }
+
+    .hero-art img {
+      object-fit: cover;
+      object-position: center top;
+      transform: rotate(3deg) scale(1.03);
+      transform-origin: 50% 15%;
+    }
+
+    .merch-title {
+      inset: auto 5% calc(8.5rem + 13cqi) auto;
+      font-size: clamp(12rem, 27cqi, 27rem);
+      transform: perspective(4em) rotateY(-23deg) skew(-15deg, -10deg) scaleY(1.26);
+      transform-origin: 53% 72%;
+    }
+
+    .hero-copy {
+      inset-block-end: clamp(1.8rem, 3.4cqi, 4.2rem);
+      gap: clamp(.9rem, 1.5cqi, 1.35rem);
+      width: min(39%, 34rem);
+    }
+
+    .hero-copy p {
+      padding-inline: clamp(.75rem, 1.8cqi, 1.7rem) .25rem;
+    }
+  }
+</style>
