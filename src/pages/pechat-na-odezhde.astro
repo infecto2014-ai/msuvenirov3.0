@@ -14,11 +14,12 @@ const description = 'Печать на одежде в Калининграде.
     <div class="wrap">
       <a class="back" href="/">Главная</a>
       <h1 id="rail-title">Печать на одежде в Калининграде</h1>
-      <p class="intro">Выберите вещь на вешалке, чтобы посмотреть варианты печати и рассчитать стоимость.</p>
       <nav class="rail" aria-label="Категории одежды">
-        <ul class="pieces">
-          {section.children!.map(({ href, label }) => (
-            <li>
+        <p class="intro">Выберите вещь на вешалке, чтобы посмотреть варианты печати и рассчитать стоимость.</p>
+        <button class="unfold" type="button" aria-label="Раздвинуть вешалки" aria-controls="clothing-pieces"></button>
+        <ul class="pieces" id="clothing-pieces">
+          {section.children!.map(({ href, label }, index, items) => (
+            <li style={`--offset:${(items.length - index - 0.5) * 62}%; --delay:${index * 16}ms`}>
               <a href={href} class="piece">
                 <img src={`/img/rail${href}.webp`} width="400" height="540" alt="" decoding="async" />
                 <span>{label}</span>
@@ -40,6 +41,31 @@ const description = 'Печать на одежде в Калининграде.
     </div>
   </section>
 </BaseLayout>
+<script>
+  const rail = document.querySelector<HTMLElement>('.rail')!;
+  const trigger = rail.querySelector<HTMLButtonElement>('.unfold')!;
+  rail.dataset.interactive = '';
+  function openRail() { rail.dataset.open = ''; }
+  rail.addEventListener('pointerover', event => {
+    if (event.pointerType === 'mouse' && (event.target as Element).closest('.piece, .unfold')) openRail();
+  });
+  rail.addEventListener('pointerleave', event => {
+    if (event.pointerType === 'mouse' && !rail.querySelector(':focus-visible')) delete rail.dataset.open;
+  });
+  trigger.addEventListener('click', () => {
+    openRail();
+    rail.querySelector<HTMLAnchorElement>('.piece')?.focus({ preventScroll: true });
+  });
+  rail.addEventListener('focusin', event => {
+    if ((event.target as Element).closest('.piece')) openRail();
+  });
+  rail.addEventListener('focusout', event => {
+    if (!rail.contains(event.relatedTarget as Node) && !rail.matches(':hover')) delete rail.dataset.open;
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!rail.contains(event.target as Node)) delete rail.dataset.open;
+  });
+</script>
 <style>
   .showroom { background: var(--sky-2); padding: var(--s-5) 0 var(--s-6); }
   .back { color: var(--muted); font-size: var(--fs-sm); }
@@ -51,7 +77,6 @@ const description = 'Печать на одежде в Калининграде.
   .pieces li { flex: 1 0 0; min-width: 0; scroll-snap-align: center; }
   .piece { display: grid; justify-items: center; text-align: center; color: var(--ink); text-decoration: none; perspective: 650px; padding-bottom: 4px; }
   .piece img { width: 100%; height: clamp(215px, 22vw, 308px); object-fit: contain; object-position: center top; transform-origin: center top; transform: rotateY(-23deg); transition: transform .38s var(--ease-out); }
-  .piece img[src*="kepkah"] { padding-inline: 18%; }
   .piece span { padding: 10px 4px; font-weight: 650; line-height: 1.2; }
   .piece:focus-visible img { transform: none; }
   @media (hover: hover) {
@@ -73,4 +98,33 @@ const description = 'Печать на одежде в Калининграде.
     .notes { grid-template-columns: 1fr; gap: var(--s-3); }
   }
   @media (prefers-reduced-motion: reduce) { .piece img { transition: none; transform: none !important; } }
+  .rail { position: relative; margin-top: var(--s-5); }
+  .unfold { display: none; }
+  .rail[data-interactive] .intro {
+    position: absolute; inset: 48% auto auto var(--s-4); width: 49%; max-width: 25ch;
+    margin: 0; transform: translateY(-50%); font-size: clamp(1rem, 2.2vw, 2rem);
+    line-height: 1.25; letter-spacing: -.025em; color: var(--ink);
+    transition: opacity var(--t-fast), transform var(--t) var(--ease-out); pointer-events: none;
+  }
+  .rail[data-open] .intro { opacity: 0; transform: translate(-12px,-50%); }
+  .rail[data-interactive] li { transition: transform .5s var(--ease-out) var(--delay); }
+  .rail[data-interactive]:not([data-open]) { overflow: clip; }
+  .rail[data-interactive]:not([data-open]) .pieces { width: 100%; min-width: 0; }
+  .rail[data-interactive]:not([data-open]) li { flex: 1 0 0; width: auto; transform: translateX(var(--offset)); }
+  .rail[data-interactive]:not([data-open]) img { transform: rotateY(-72deg); }
+  .rail[data-interactive] .piece span { transition: opacity var(--t); }
+  .rail[data-interactive]:not([data-open]) .piece span { opacity: 0; }
+  .rail[data-interactive]:not([data-open]) .unfold {
+    display: block; position: absolute; z-index: 2; inset: 0 0 0 60%;
+    width: 40%; border: 0; background: transparent; cursor: pointer;
+  }
+  @media (max-width: 900px) {
+    .rail[data-interactive]:not([data-open]) .piece img { width: clamp(125px, 25vw, 180px); max-width: none; }
+    .rail[data-interactive]:not([data-open]) .piece { display: flex; flex-direction: column; align-items: center; }
+    .rail[data-interactive] .intro { left: 0; width: 54%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rail[data-interactive] li, .rail[data-interactive] .intro, .rail[data-interactive] .piece span { transition: none; }
+    .rail[data-interactive]:not([data-open]) img { transform: rotateY(-72deg) !important; }
+  }
 </style>
