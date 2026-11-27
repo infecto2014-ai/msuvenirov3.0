@@ -1,18 +1,48 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ConceptHeader from '@/components/home-concept/ConceptHeader.astro';
-import MerchHero from '@/components/home-concept/MerchHero.astro';
-import PrintSeries from '@/components/home-concept/PrintSeries.astro';
-import '@/styles/merch-home.css';
+import Hero from '@/components/home/Hero.astro';
+import Facts from '@/components/home/Facts.astro';
+import Catalog from '@/components/home/Catalog.astro';
+import ConstructorBanner from '@/components/home/ConstructorBanner.astro';
+import Works from '@/components/home/Works.astro';
+import Why from '@/components/home/Why.astro';
+import Steps from '@/components/home/Steps.astro';
+import Reviews from '@/components/home/Reviews.astro';
+import B2B from '@/components/home/B2B.astro';
+import Clients from '@/components/home/Clients.astro';
+import Faq from '@/components/home/Faq.astro';
+import About from '@/components/home/About.astro';
+import Contacts from '@/components/home/Contacts.astro';
+import { homeFaq } from '@/data/home';
+import { faqPage } from '@/lib/schema';
 ---
 
 <BaseLayout
-  title="Печать на одежде и сувенирах в Калининграде — Мастерская сувениров"
-  description="Ваш дизайн на одежде, кружках и шопперах. Мастерская печати в Калининграде, ТЦ «Экватор». Обсудим идею и поможем с заказом."
+  title="Печать на футболках, кружках и сувенирах в Калининграде — Мастерская сувениров"
+  description="Мастерская печати в ТЦ «Экватор»: футболки, кружки, значки, стикеры, полиграфия с вашим дизайном — от 1 штуки. Рассчитайте цену и оставьте заявку."
   path="/"
-  homeConcept
+  schema={[faqPage(homeFaq)]}
 >
-  <ConceptHeader slot="header" />
-  <MerchHero />
-  <PrintSeries />
+  <Hero />
+  <Facts />
+  <Catalog />
+  <ConstructorBanner />
+  <!-- below the constructor the sections take turns: light-blue band / white -->
+  <div class="band-sky"><Works /></div>
+  <Why />
+  <div class="band-sky"><Steps /></div>
+  <Reviews />
+  <div class="band-sky">
+    <B2B />
+    <Clients />
+  </div>
+  <Faq />
+  <div class="band-sky"><About /></div>
+  <Contacts />
 </BaseLayout>
+
+<style>
+  .band-sky {
+    background: var(--sky-2);
+  }
+</style>
